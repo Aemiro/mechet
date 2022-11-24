@@ -8,6 +8,6 @@ export class Blog {
   coverImage: FileDto;
   isPublished: boolean;
   publishedDate: Date;
-  tags: String[];
+  tags: string[];
   categoryId: string;
 }
