@@ -11,7 +11,7 @@ export class Partner {
   phoneNumber: string;
   coverImage: FileDto;
   website: string;
-  logo: string;
+  logo: FileDto;
   about: string;
   registrationDate: Date;
   status: string;

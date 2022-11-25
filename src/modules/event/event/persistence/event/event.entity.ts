@@ -22,9 +22,9 @@ export class EventEntity {
   @Column({ name: 'published_date' })
   publishedDate: Date;
   @Column()
-  from: string;
+  from: Date;
   @Column()
-  to: string;
+  to: Date;
   @Column({ name: 'average_rate' })
   averageRate: AverageRate;
   @Column()

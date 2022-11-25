@@ -23,7 +23,7 @@ export class PartnerEntity {
   @Column()
   website: string;
   @Column()
-  logo: string;
+  logo: FileDto;
   @Column()
   about: string;
   @Column({ name: 'registration_date' })
