@@ -1,7 +1,11 @@
+import { FavoriteEntity } from '@interaction/interaction/persistence/user-interaction/favorite.entity';
+import { InterestEntity } from '@interaction/interaction/persistence/user-interaction/interest.entity';
+import { ReviewEntity } from '@interaction/interaction/persistence/user-interaction/review.entity';
 import { AverageRate } from '@libs/common/average-rate';
 import { FileDto } from '@libs/common/file-dto';
 import { Address } from 'nodemailer/lib/mailer';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { EventCommentEntity } from './event-comment.entity';
 
 @Entity({ name: 'events' })
 export class EventEntity {
@@ -31,4 +35,24 @@ export class EventEntity {
   address: Address;
   @Column()
   location: Location;
+
+  @OneToMany(() => EventCommentEntity, (eventComment) => eventComment.event, {
+    cascade: true,
+  })
+  eventComments: EventCommentEntity[];
+
+  @OneToMany(() => FavoriteEntity, (favorite) => favorite.event, {
+    cascade: true,
+  })
+  favorites: FavoriteEntity[];
+
+  @OneToMany(() => InterestEntity, (interest) => interest.event, {
+    cascade: true,
+  })
+  interests: InterestEntity[];
+
+  @OneToMany(() => ReviewEntity, (review) => review.event, {
+    cascade: true,
+  })
+  reviews: ReviewEntity[];
 }

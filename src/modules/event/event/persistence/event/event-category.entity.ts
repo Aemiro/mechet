@@ -5,7 +5,7 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 export class EventCategoryEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
-  @Column()
+  @Column({ unique: true })
   name: string;
   @Column()
   description: string;
