@@ -6,16 +6,16 @@ import { UserModule } from '@user/user.module';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserEntity } from '@user/persistence/users/user.entity';
 import { FeedbackEntity } from '@interaction/persistence/feedbacks/feedback.entity';
 import { ReviewEntity } from '@interaction/persistence/reviews/review.entity';
-import { NotificationEntity } from '@notification/persistence/notifications/notification.entity';
 import * as dotenv from 'dotenv';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import {
   FileManagerModule,
   FileManagerService,
 } from '@libs/common/file-manager';
+import { UserEntity } from '@user/persistence/users/user.entity';
+import { NotificationEntity } from '@notification/persistence/notification/notification.entity';
 dotenv.config({ path: '.env' });
 @Module({
   imports: [
