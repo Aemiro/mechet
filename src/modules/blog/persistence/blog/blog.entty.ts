@@ -1,5 +1,14 @@
 import { FileDto } from '@libs/common/file-dto';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { BlogCategoryEntity } from './blog-category.entity';
+import { BlogCommentEntity } from './blog-comment.entity';
 
 @Entity({ name: 'blogs' })
 export class BlogEntity {
@@ -21,4 +30,17 @@ export class BlogEntity {
   publishedDate: Date;
   @Column({ type: 'simple-array' })
   tags: string[];
+
+  @OneToMany(() => BlogCommentEntity, (blogComment) => blogComment.blog, {
+    cascade: true,
+  })
+  blogComments: BlogCommentEntity[];
+
+  @ManyToOne(() => BlogCategoryEntity, (blogCategory) => blogCategory.blogs, {
+    orphanedRowAction: 'delete',
+    onUpdate: 'CASCADE',
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'category_id' })
+  blogCategory: BlogCategoryEntity;
 }

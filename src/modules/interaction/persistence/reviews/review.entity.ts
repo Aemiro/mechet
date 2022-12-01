@@ -1,5 +1,12 @@
 import { CommonEntity } from '@libs/common/common.entity';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { UserEntity } from '@user/persistence/users/user.entity';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 @Entity('reviews')
 export class ReviewEntity extends CommonEntity {
   @PrimaryGeneratedColumn('uuid')
@@ -8,13 +15,15 @@ export class ReviewEntity extends CommonEntity {
   score: number;
   @Column({ name: 'partner_id' })
   partnerId: string;
+  @Column({ name: 'user_id' })
+  userId: string;
   @Column({ nullable: true })
   description: string;
-  // @ManyToOne(() => PartnerEntity, (partner) => partner.reviews, {
-  //   orphanedRowAction: 'delete',
-  //   onUpdate: 'CASCADE',
-  //   onDelete: 'CASCADE',
-  // })
-  // @JoinColumn({ name: 'partner_id' })
-  // partner: PartnerEntity;
+  @ManyToOne(() => UserEntity, (user) => user.reviews, {
+    orphanedRowAction: 'delete',
+    onUpdate: 'CASCADE',
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'user_id' })
+  user: UserEntity;
 }

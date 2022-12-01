@@ -1,4 +1,11 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { PartnerEntity } from './partner.entity';
 
 @Entity({ name: 'schedules' })
 export class ScheduleEntity {
@@ -14,4 +21,12 @@ export class ScheduleEntity {
   to: Date;
   @Column()
   description: string;
+
+  @ManyToOne(() => PartnerEntity, (partner) => partner.schedules, {
+    orphanedRowAction: 'delete',
+    onUpdate: 'CASCADE',
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'partner_id' })
+  partner: PartnerEntity;
 }

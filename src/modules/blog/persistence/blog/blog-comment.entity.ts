@@ -6,28 +6,28 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { EventEntity } from './event.entity';
+import { BlogEntity } from './blog.entty';
 
-@Entity({ name: 'event_comments' })
-export class EventCommentEntity {
+@Entity({ name: 'blog_comments' })
+export class BlogCommentEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
-  @Column({ name: 'user_id', type: 'uuid' })
+  @Column({ type: 'uuid', name: 'user_id' })
   userId: string;
-  @Column({ name: 'event_id', type: 'uuid' })
-  eventId: string;
+  @Column({ type: 'uuid', name: 'blog_id' })
+  blogId: string;
   @Column()
   description: string;
 
-  @ManyToOne(() => EventEntity, (event) => event.eventComments, {
+  @ManyToOne(() => BlogEntity, (blog) => blog.blogComments, {
     orphanedRowAction: 'delete',
     onUpdate: 'CASCADE',
     onDelete: 'CASCADE',
   })
-  @JoinColumn({ name: 'event_id' })
-  event: EventEntity;
+  @JoinColumn({ name: 'blog_id' })
+  blog: BlogEntity;
 
-  @ManyToOne(() => UserEntity, (user) => user.eventComments, {
+  @ManyToOne(() => UserEntity, (user) => user.blogComments, {
     orphanedRowAction: 'delete',
     onUpdate: 'CASCADE',
     onDelete: 'CASCADE',

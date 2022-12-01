@@ -1,9 +1,15 @@
 import { AverageRate } from '@libs/common/average-rate';
 import { FileDto } from '@libs/common/file-dto';
 import { ApiProperty } from '@nestjs/swagger';
+import { IsEnum } from 'class-validator';
 import { Address } from 'nodemailer/lib/mailer';
 import { Partner } from './../../domains/partner/partner';
 
+enum Status {
+  PENDING = 'PENDING',
+  BLOCKED = 'BLOCKED',
+  APPROVED = 'APPROVED',
+}
 export class CreatePartnerCommand {
   @ApiProperty()
   categoryId: string;
@@ -24,7 +30,11 @@ export class CreatePartnerCommand {
   @ApiProperty()
   registrationDate: Date;
   @ApiProperty()
-  status: string;
+  @IsEnum(Status, {
+    message:
+      'status method must be one of the three PENDING,BLOCKED or APPROVED with capital letters',
+  })
+  status: Status;
   @ApiProperty()
   address: Address;
   @ApiProperty()
@@ -72,7 +82,11 @@ export class UpdatePartnerCommand {
   @ApiProperty()
   registrationDate: Date;
   @ApiProperty()
-  status: string;
+  @IsEnum(Status, {
+    message:
+      'status method must be one of the three PENDING,BLOCKED or APPROVED with capital letters',
+  })
+  status: Status;
   @ApiProperty()
   address: Address;
   @ApiProperty()

@@ -22,6 +22,7 @@
       "@user/*":["modules/user/*"],
       "@blog/*":["modules/blog/*"],
       "@event/*":["modules/event/*"],
+      "@partner/*":["modules/partner/*"],
       "@interaction/*":["modules/interaction/*"],
       "@notification/*":["modules/notification/*"],
       "@infrastructure/*":["infrastructure/*"],
