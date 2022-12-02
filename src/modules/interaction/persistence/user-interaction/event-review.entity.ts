@@ -21,7 +21,7 @@ export class EventReviewEntity {
   @Column()
   rate: number;
 
-  @ManyToOne(() => UserEntity, (user) => user.reviews, {
+  @ManyToOne(() => UserEntity, (user) => user.eventReviews, {
     orphanedRowAction: 'delete',
     onUpdate: 'CASCADE',
     onDelete: 'CASCADE',
@@ -29,7 +29,7 @@ export class EventReviewEntity {
   @JoinColumn({ name: 'user_id' })
   user: UserEntity;
 
-  @ManyToOne(() => EventEntity, (event) => event.reviews, {
+  @ManyToOne(() => EventEntity, (event) => event.eventReviews, {
     orphanedRowAction: 'delete',
     onUpdate: 'CASCADE',
     onDelete: 'CASCADE',

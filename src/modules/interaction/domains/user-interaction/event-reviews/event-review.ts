@@ -1,4 +1,4 @@
-export class Review {
+export class EventReview {
   id: string;
   userId: string;
   eventId: string;

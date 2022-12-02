@@ -13,7 +13,7 @@ export class CreateScheduleCommand {
   @ApiProperty()
   description: string;
 
-  static fromCommand(command: CreateScheduleCommand): Schedule {
+  static fromCommands(command: CreateScheduleCommand): Schedule {
     const schedule = new Schedule();
     schedule.partnerId = command.partnerId;
     schedule.daysOfWeek = command.daysOfWeek;
@@ -38,7 +38,7 @@ export class UpdateScheduleCommand {
   @ApiProperty()
   description: string;
 
-  static fromCommand(command: UpdateScheduleCommand): Schedule {
+  static fromCommands(command: UpdateScheduleCommand): Schedule {
     const schedule = new Schedule();
     schedule.partnerId = command.partnerId;
     schedule.daysOfWeek = command.daysOfWeek;

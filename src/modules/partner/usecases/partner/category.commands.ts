@@ -7,7 +7,7 @@ export class CreateCategoryCommand {
   @ApiProperty()
   description: string;
 
-  static fromCommand(command: CreateCategoryCommand): Category {
+  static fromCommands(command: CreateCategoryCommand): Category {
     const category = new Category();
     category.name = command.name;
     category.description = command.description;
@@ -22,7 +22,7 @@ export class UpdateCategoryCommand {
   @ApiProperty()
   description: string;
 
-  static fromCommand(command: UpdateCategoryCommand): Category {
+  static fromCommands(command: UpdateCategoryCommand): Category {
     const category = new Category();
     category.id = command.id;
     category.name = command.name;

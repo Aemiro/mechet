@@ -1,6 +1,7 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { PartnerCategoryEntity } from './partner-category.entity';
 
-@Entity({ name: 'categorys' })
+@Entity({ name: 'categories' })
 export class CategoryEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -8,4 +9,13 @@ export class CategoryEntity {
   name: string;
   @Column()
   description: string;
+
+  @OneToMany(
+    () => PartnerCategoryEntity,
+    (partnerCategory) => partnerCategory.category,
+    {
+      cascade: true,
+    },
+  )
+  partnerCategories: PartnerCategoryEntity[];
 }

@@ -14,7 +14,7 @@ import { FavoriteEntity } from '@interaction/persistence/user-interaction/favori
 import { FollowEntity } from '@interaction/persistence/user-interaction/follow.entity';
 import { InterestEntity } from '@interaction/persistence/user-interaction/interest.entity';
 import { PartnerReviewEntity } from '@interaction/persistence/user-interaction/partner-review.entity';
-import { ReviewEntity } from '@interaction/persistence/reviews/review.entity';
+import { EventReviewEntity } from '@interaction/persistence/user-interaction/event-review.entity';
 @Entity({ name: 'users' })
 export class UserEntity extends CommonEntity {
   @Index()
@@ -71,8 +71,8 @@ export class UserEntity extends CommonEntity {
   })
   partnerReviews: PartnerReviewEntity[];
 
-  @OneToMany(() => ReviewEntity, (review) => review.user, {
+  @OneToMany(() => EventReviewEntity, (eventReview) => eventReview.user, {
     cascade: true,
   })
-  reviews: ReviewEntity[];
+  eventReviews: EventReviewEntity[];
 }
