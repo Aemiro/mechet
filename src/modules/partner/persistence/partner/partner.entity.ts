@@ -2,29 +2,34 @@ import { FollowEntity } from '@interaction/persistence/user-interaction/follow.e
 import { PartnerReviewEntity } from '@interaction/persistence/user-interaction/partner-review.entity';
 import { AverageRate } from '@libs/common/average-rate';
 import { FileDto } from '@libs/common/file-dto';
-import { Address } from 'nodemailer/lib/mailer';
 import {
   Column,
+  CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   Index,
   OneToMany,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { ScheduleEntity } from './schedule.entity';
 import { Location } from '@libs/common/location';
+import { ReviewEntity } from '@interaction/persistence/reviews/review.entity';
+import { Address } from '@libs/common/address';
+import { PartnerCategoryEntity } from './partner-category.entity';
 
 @Entity({ name: 'partners' })
 export class PartnerEntity {
   @Index()
   @PrimaryGeneratedColumn('uuid')
   id: string;
-  @Column({ type: 'uuid', name: 'category_id' })
-  categoryId: string;
   @Column()
   name: string;
   @Index()
   @Column({ nullable: true })
   email: string;
+  @Column()
+  password: string;
   @Index()
   @Column({ name: 'phone_number', unique: true })
   phoneNumber: string;
@@ -46,6 +51,27 @@ export class PartnerEntity {
   location: Location;
   @Column({ type: 'jsonb', nullable: true, name: 'average_rate' })
   averageRate: AverageRate;
+  @Column({ nullable: true, name: 'created_by' })
+  createdBy: string;
+  @Column({ nullable: true, name: 'updated_by' })
+  updatedBy: string;
+
+  @CreateDateColumn({
+    type: 'timestamptz',
+    default: 'now()',
+    name: 'created_at',
+  })
+  createdAt: Date;
+  @UpdateDateColumn({
+    type: 'timestamptz',
+    default: 'now()',
+    name: 'updated_at',
+  })
+  updatedAt: Date;
+  @DeleteDateColumn({ nullable: true, name: 'deleted_at' })
+  deletedAt: Date;
+  @Column({ nullable: true, name: 'deleted_by' })
+  deletedBy: string;
 
   @OneToMany(() => FollowEntity, (follow) => follow.partner, {
     cascade: true,
@@ -65,4 +91,17 @@ export class PartnerEntity {
     cascade: true,
   })
   schedules: ScheduleEntity[];
+
+  @OneToMany(() => ReviewEntity, (review) => review.partner, {
+    cascade: true,
+  })
+  reviews: ReviewEntity[];
+  @OneToMany(
+    () => PartnerCategoryEntity,
+    (partnerCategory) => partnerCategory.partner,
+    {
+      cascade: true,
+    },
+  )
+  partnerCategories: PartnerCategoryEntity[];
 }

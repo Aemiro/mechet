@@ -1,16 +1,17 @@
-import { Follow } from '@interaction/domains/user-interaction/follow';
-import { PartnerReview } from '@interaction/domains/user-interaction/partner-review';
+import { Follow } from '@interaction/domains/user-interaction/follows/follow';
+import { PartnerReview } from '@interaction/domains/user-interaction/partner-reviews/partner-review';
 import { AverageRate } from '@libs/common/average-rate';
 import { FileDto } from '@libs/common/file-dto';
 import { Location } from '@libs/common/location';
-import { Address } from 'nodemailer/lib/mailer';
 import { Schedule } from './schedule';
+import { Address } from '@libs/common/address';
+import { PartnerCategory } from './partner-category';
 
 export class Partner {
   id: string;
-  categoryId: string;
   name: string;
   email: string;
+  password: string;
   phoneNumber: string;
   coverImage: FileDto;
   website: string;
@@ -21,9 +22,16 @@ export class Partner {
   address: Address;
   location: Location;
   averageRate: AverageRate;
+  createdBy?: string;
+  updatedBy?: string;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt?: Date;
+  deletedBy?: string;
   schedules: Schedule[];
   follows: Follow[];
   partnerReviews: PartnerReview[];
+  partnerCategories: PartnerCategory[];
 
   //schedule
   async addSchedule(createSchedule: Schedule) {

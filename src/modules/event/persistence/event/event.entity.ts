@@ -52,8 +52,8 @@ export class EventEntity {
   })
   interests: InterestEntity[];
 
-  @OneToMany(() => EventReviewEntity, (review) => review.event, {
+  @OneToMany(() => EventReviewEntity, (eventReview) => eventReview.event, {
     cascade: true,
   })
-  reviews: EventReviewEntity[];
+  eventReviews: EventReviewEntity[];
 }

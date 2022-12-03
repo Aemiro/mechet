@@ -1,5 +1,5 @@
-import { Follow } from '@interaction/domains/user-interaction/follow';
-import { PartnerReview } from '@interaction/domains/user-interaction/partner-review';
+import { Follow } from '@interaction/domains/user-interaction/follows/follow';
+import { PartnerReview } from '@interaction/domains/user-interaction/partner-reviews/partner-review';
 import { FollowEntity } from '@interaction/persistence/user-interaction/follow.entity';
 import { PartnerReviewEntity } from '@interaction/persistence/user-interaction/partner-review.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -9,6 +9,8 @@ import { Schedule } from '@partner/domains/partner/schedule';
 import { Repository } from 'typeorm';
 import { PartnerEntity } from './partner.entity';
 import { ScheduleEntity } from './schedule.entity';
+import { PartnerCategoryEntity } from './partner-category.entity';
+import { PartnerCategory } from '@partner/domains/partner/partner-category';
 
 export class PartnerRepository implements IPartner {
   constructor(
@@ -20,7 +22,7 @@ export class PartnerRepository implements IPartner {
     const result = await this.partnerRepository.save(partnerEntity);
     return result ? this.toPartner(result) : null;
   }
-  async update(partner: Partner): Promise<Partner> {
+  async update(id: string, partner: Partner): Promise<Partner> {
     const partnerEntity = this.toPartnerEntity(partner);
     const result = await this.partnerRepository.save(partnerEntity);
     return result ? this.toPartner(result) : null;
@@ -32,7 +34,11 @@ export class PartnerRepository implements IPartner {
   }
   async getAll(withDeleted: boolean): Promise<Partner[]> {
     const partners = await this.partnerRepository.find({
-      relations: ['schedules', 'follows', 'partner_reviews'],
+      relations: [
+        'schedules',
+        'follows',
+        'partner_reviews, partner_categories',
+      ],
       withDeleted: withDeleted,
     });
     if (!partners.length) {
@@ -43,7 +49,11 @@ export class PartnerRepository implements IPartner {
   async getById(id: string, withDeleted = false): Promise<Partner> {
     const partner = await this.partnerRepository.find({
       where: { id: id },
-      relations: ['schedules', 'follows', 'partner_reviews'],
+      relations: [
+        'schedules',
+        'follows',
+        'partner_reviews, partner_categories',
+      ],
       withDeleted: withDeleted,
     });
     if (!partner[0]) {
@@ -57,7 +67,11 @@ export class PartnerRepository implements IPartner {
   ): Promise<Partner> {
     const partner = await this.partnerRepository.find({
       where: { phoneNumber: phoneNumber },
-      relations: ['schedules', 'follows', 'partner_reviews'],
+      relations: [
+        'schedules',
+        'follows',
+        'partner_reviews, partner_categories',
+      ],
       withDeleted: withDeleted,
     });
     if (!partner[0]) {
@@ -68,7 +82,11 @@ export class PartnerRepository implements IPartner {
   async getByEmail(email: string, withDeleted: boolean): Promise<Partner> {
     const partner = await this.partnerRepository.find({
       where: { email: email },
-      relations: ['schedules', 'follows', 'partner_reviews'],
+      relations: [
+        'schedules',
+        'follows',
+        'partner_reviews, partner_categories',
+      ],
       withDeleted: withDeleted,
     });
     if (!partner[0]) {
@@ -89,9 +107,9 @@ export class PartnerRepository implements IPartner {
   toPartner(partnerEntity: PartnerEntity): Partner {
     const partner: Partner = new Partner();
     partner.id = partnerEntity.id;
-    partner.categoryId = partnerEntity.categoryId;
     partner.name = partnerEntity.name;
     partner.email = partnerEntity.email;
+    partner.password = partnerEntity.password;
     partner.phoneNumber = partnerEntity.phoneNumber;
     partner.coverImage = partnerEntity.coverImage;
     partner.website = partnerEntity.website;
@@ -113,14 +131,20 @@ export class PartnerRepository implements IPartner {
           this.toPartnerReview(element),
         )
       : [];
+    partner.partnerCategories = partnerEntity.partnerCategories
+      ? partnerEntity.partnerCategories.map((element) =>
+          this.toPartnerCategory(element),
+        )
+      : [];
+
     return partner;
   }
   toPartnerEntity(partner: Partner): PartnerEntity {
     const partnerEntity: PartnerEntity = new PartnerEntity();
     partnerEntity.id = partner.id;
-    partnerEntity.categoryId = partner.categoryId;
     partnerEntity.name = partner.name;
     partnerEntity.email = partner.email;
+    partnerEntity.password = partner.password;
     partnerEntity.phoneNumber = partner.phoneNumber;
     partnerEntity.coverImage = partner.coverImage;
     partnerEntity.website = partner.website;
@@ -142,7 +166,31 @@ export class PartnerRepository implements IPartner {
           this.toPartnerReviewEntity(element),
         )
       : [];
+    partnerEntity.partnerCategories = partner.partnerCategories
+      ? partner.partnerCategories.map((element) =>
+          this.toPartnerCategoryEntity(element),
+        )
+      : [];
     return partnerEntity;
+  }
+  toPartnerCategory(
+    partnerCategoryEntity: PartnerCategoryEntity,
+  ): PartnerCategory {
+    const partnerCategory: PartnerCategory = new PartnerCategory();
+    partnerCategory.id = partnerCategoryEntity.id;
+    partnerCategory.partnerId = partnerCategoryEntity.partnerId;
+    partnerCategory.categoryId = partnerCategoryEntity.categoryId;
+    return partnerCategory;
+  }
+  toPartnerCategoryEntity(
+    partnerCategory: PartnerCategory,
+  ): PartnerCategoryEntity {
+    const partnerCategoryEntity: PartnerCategoryEntity =
+      new PartnerCategoryEntity();
+    partnerCategoryEntity.id = partnerCategory.id;
+    partnerCategoryEntity.partnerId = partnerCategory.partnerId;
+    partnerCategoryEntity.categoryId = partnerCategory.categoryId;
+    return partnerCategoryEntity;
   }
   toSchedule(scheduleEntity: ScheduleEntity): Schedule {
     const schedule: Schedule = new Schedule();

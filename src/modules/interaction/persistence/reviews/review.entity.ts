@@ -1,5 +1,5 @@
 import { CommonEntity } from '@libs/common/common.entity';
-import { UserEntity } from '@user/persistence/users/user.entity';
+import { PartnerEntity } from '@partner/persistence/partner/partner.entity';
 import {
   Column,
   Entity,
@@ -15,15 +15,23 @@ export class ReviewEntity extends CommonEntity {
   score: number;
   @Column({ name: 'partner_id' })
   partnerId: string;
-  @Column({ name: 'user_id' })
+  // @Column({ name: 'user_id' })
   userId: string;
   @Column({ nullable: true })
   description: string;
-  @ManyToOne(() => UserEntity, (user) => user.reviews, {
+  // @ManyToOne(() => UserEntity, (user) => user.reviews, {
+  //   orphanedRowAction: 'delete',
+  //   onUpdate: 'CASCADE',
+  //   onDelete: 'CASCADE',
+  // })
+  // @JoinColumn({ name: 'user_id' })
+  // user: UserEntity;
+
+  @ManyToOne(() => PartnerEntity, (partner) => partner.reviews, {
     orphanedRowAction: 'delete',
     onUpdate: 'CASCADE',
     onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'user_id' })
-  user: UserEntity;
+  partner: PartnerEntity;
 }
