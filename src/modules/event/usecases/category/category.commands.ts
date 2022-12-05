@@ -1,4 +1,4 @@
-import { EventCategory } from '@event/domains/event/event-category';
+import { EventCategory } from '@event/domains/category/category';
 import { FileDto } from '@libs/common/file-dto';
 import { ApiProperty } from '@nestjs/swagger';
 

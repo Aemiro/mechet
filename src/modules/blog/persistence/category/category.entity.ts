@@ -1,6 +1,6 @@
 import { FileDto } from '@libs/common/file-dto';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { BlogEntity } from './blog.entty';
+import { BlogEntity } from '../blog/blog.entty';
 
 @Entity({ name: 'blog_categories' })
 export class BlogCategoryEntity {

@@ -1,5 +1,5 @@
-import { BlogCategory } from '@blog/domains/blog/bolg-category';
-import { BlogCategoryEntity } from '@blog/persistence/blog/blog-category.entity';
+import { BlogCategory } from '@blog/domains/category/category';
+import { BlogCategoryEntity } from '@blog/persistence/category/category.entity';
 import { FileDto } from '@libs/common/file-dto';
 import { ApiProperty } from '@nestjs/swagger';
 

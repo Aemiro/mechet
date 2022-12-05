@@ -1,6 +1,8 @@
+import { FileDto } from '@libs/common/file-dto';
 import {
   FileManagerHelper,
   FileManagerService,
+  FileResponseDto,
 } from '@libs/common/file-manager';
 import { Utility } from '@libs/common/utility';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
@@ -87,5 +89,21 @@ export class PartnerCommands {
       partner.deletedAt = null;
     }
     return PartnerResponse.fromDomain(partner);
+  }
+
+  async updatePartnerCoverImage(id: string, fileDto: FileResponseDto) {
+    const partnerDomain = await this.partnerRepository.getById(id, true);
+    if (!partnerDomain) {
+      throw new NotFoundException(`User not found with id ${id}`);
+    }
+    if (partnerDomain.coverImage && fileDto) {
+      await this.fileManagerService.removeFile(
+        partnerDomain.coverImage,
+        FileManagerHelper.UPLOADED_FILES_DESTINATION,
+      );
+    }
+    partnerDomain.coverImage = fileDto as FileDto;
+    const result = await this.partnerRepository.update(id, partnerDomain);
+    return PartnerResponse.fromDomain(result);
   }
 }

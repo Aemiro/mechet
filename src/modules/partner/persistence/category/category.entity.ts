@@ -1,5 +1,5 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { PartnerCategoryEntity } from './partner-category.entity';
+import { PartnerCategoryEntity } from '@partner/persistence/partner/partner-category.entity';
 
 @Entity({ name: 'categories' })
 export class CategoryEntity {

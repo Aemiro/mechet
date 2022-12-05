@@ -6,7 +6,8 @@ import {
   JoinColumn,
   ManyToOne,
 } from 'typeorm';
-import { CategoryEntity } from './category.entity';
+import { CategoryEntity } from '../category/category.entity';
+
 import { PartnerEntity } from './partner.entity';
 
 @Entity({ name: 'partner_categories' })

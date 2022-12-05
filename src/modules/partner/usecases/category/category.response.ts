@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Category } from '../../domains/partner/category';
-import { CategoryEntity } from './../../persistence/partner/category.entity';
+import { Category } from '@partner/domains/category/category';
+import { CategoryEntity } from '@partner/persistence/category/category.entity';
 export class CategoryResponse {
   @ApiProperty()
   id: string;

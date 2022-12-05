@@ -1,18 +1,24 @@
 import { FileManagerService } from '@libs/common/file-manager';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { PartnerController } from './controllers/partner.controller';
-import { PartnerEntity } from './persistence/partner/partner.entity';
-import { PartnerRepository } from './persistence/partner/partner.repository';
-import { PartnerCommands } from './usecases/partner/partner.usecases.commands';
-import { PartnerQueries } from './usecases/partner/partner.usecases.queries';
+import { PartnerEntity } from '@partner/persistence/partner/partner.entity';
+import { PartnerController } from '@partner/controllers/partner.controller';
+import { PartnerRepository } from '@partner/persistence/partner/partner.repository';
+import { PartnerCommands } from '@partner/usecases/partner/partner.usecases.commands';
+import { CategoryEntity } from '@partner/persistence/category/category.entity';
+import { PartnerQueries } from '@partner/usecases/partner/partner.usecases.queries';
+import { CategoryCommands } from '@partner/usecases/category/category.usecases.commands';
+import { CategoryQueries } from '@partner/usecases/category/category.usecases.queries';
+import { CategoryController } from '@partner/controllers/category.controller';
 @Module({
-  controllers: [PartnerController],
-  imports: [TypeOrmModule.forFeature([PartnerEntity])],
+  controllers: [PartnerController, CategoryController],
+  imports: [TypeOrmModule.forFeature([PartnerEntity, CategoryEntity])],
   providers: [
     PartnerRepository,
     PartnerCommands,
     PartnerQueries,
+    CategoryCommands,
+    CategoryQueries,
     FileManagerService,
   ],
 })

@@ -1,4 +1,4 @@
-import { BlogCategory } from '@blog/domains/blog/bolg-category';
+import { BlogCategory } from '@blog/domains/category/category';
 import { FileDto } from '@libs/common/file-dto';
 import { ApiProperty } from '@nestjs/swagger';
 
