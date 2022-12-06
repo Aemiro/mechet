@@ -7,7 +7,7 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { BlogCategoryEntity } from './blog-category.entity';
+import { BlogCategoryEntity } from '../category/category.entity';
 import { BlogCommentEntity } from './blog-comment.entity';
 
 @Entity({ name: 'blogs' })

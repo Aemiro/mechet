@@ -1,7 +1,7 @@
-import { EventCategory } from '@event/domains/event/event-category';
+import { EventCategory } from '@event/domains/category/category';
+import { EventCategoryEntity } from '@event/persistence/category/category.entity';
 import { FileDto } from '@libs/common/file-dto';
 import { ApiProperty } from '@nestjs/swagger';
-import { EventCategoryEntity } from './../../persistence/event/event-category.entity';
 export class EventCategoryResponse {
   @ApiProperty()
   id: string;

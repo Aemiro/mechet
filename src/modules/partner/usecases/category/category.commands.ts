@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Category } from './../../domains/partner/category';
+import { Category } from '@partner/domains/category/category';
 
 export class CreateCategoryCommand {
   @ApiProperty()

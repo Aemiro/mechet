@@ -1,7 +1,6 @@
 import { Follow } from '@interaction/domains/user-interaction/follows/follow';
 import { PartnerReview } from '@interaction/domains/user-interaction/partner-reviews/partner-review';
 import { FollowEntity } from '@interaction/persistence/user-interaction/follow.entity';
-import { PartnerReviewEntity } from '@interaction/persistence/user-interaction/partner-review.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Partner } from '@partner/domains/partner/partner';
 import { IPartner } from '@partner/domains/partner/partner.repository.interface';
@@ -11,10 +10,11 @@ import { PartnerEntity } from './partner.entity';
 import { ScheduleEntity } from './schedule.entity';
 import { PartnerCategoryEntity } from './partner-category.entity';
 import { PartnerCategory } from '@partner/domains/partner/partner-category';
+import { PartnerReviewEntity } from '@interaction/persistence/user-interaction/partner-review.entity';
 
 export class PartnerRepository implements IPartner {
   constructor(
-    @InjectRepository(PartnerReviewEntity)
+    @InjectRepository(PartnerEntity)
     private partnerRepository: Repository<PartnerEntity>,
   ) {}
   async insert(partner: Partner): Promise<Partner> {
@@ -37,7 +37,8 @@ export class PartnerRepository implements IPartner {
       relations: [
         'schedules',
         'follows',
-        'partner_reviews, partner_categories',
+        'partner_reviews',
+        'partner_categories',
       ],
       withDeleted: withDeleted,
     });
