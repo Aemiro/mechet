@@ -1,5 +1,3 @@
-import { FollowEntity } from '@interaction/persistence/user-interaction/follow.entity';
-import { FavoriteEntity } from './modules/interaction/persistence/user-interaction/favorite.entity';
 import { ScheduleEntity } from './modules/partner/persistence/partner/schedule.entity';
 import { BlogEntity } from './modules/blog/persistence/blog/blog.entty';
 import { EventEntity } from '@event/persistence/event/event.entity';
@@ -23,15 +21,18 @@ import {
 } from '@libs/common/file-manager';
 import { UserEntity } from '@user/persistence/users/user.entity';
 import { NotificationEntity } from '@notification/persistence/notification/notification.entity';
-import { InterestEntity } from '@interaction/persistence/user-interaction/interest.entity';
-import { EventReviewEntity } from '@interaction/persistence/user-interaction/event-review.entity';
-import { PartnerReviewEntity } from '@interaction/persistence/user-interaction/partner-review.entity';
 import { PartnerCategoryEntity } from '@partner/persistence/partner/partner-category.entity';
 import { PartnerrModule } from '@partner/partner.module';
 import { EventCategoryEntity } from '@event/persistence/category/category.entity';
 import { BlogCategoryEntity } from '@blog/persistence/category/category.entity';
 import { BlogCommentEntity } from '@blog/persistence/blog/blog-comment.entity';
 import { CategoryEntity } from '@partner/persistence/category/category.entity';
+import { InterestEntity } from '@interaction/persistence/user-interaction/interests/interest.entity';
+import { FavoriteEntity } from '@interaction/persistence/user-interaction/favorites/favorite.entity';
+import { FollowEntity } from '@interaction/persistence/user-interaction/follows/follow.entity';
+import { BranchEntity } from '@partner/persistence/partner/branch.entity';
+import { EventReviewEntity } from '@interaction/persistence/user-interaction/event-reviews/event-review.entity';
+import { BranchReviewEntity } from '@interaction/persistence/user-interaction/branch-reviews/branch-review.entity';
 dotenv.config({ path: '.env' });
 @Module({
   imports: [
@@ -58,8 +59,9 @@ dotenv.config({ path: '.env' });
         FavoriteEntity,
         FollowEntity,
         InterestEntity,
-        PartnerReviewEntity,
+        BranchReviewEntity,
         PartnerCategoryEntity,
+        BranchEntity,
       ],
       synchronize: true,
     }),

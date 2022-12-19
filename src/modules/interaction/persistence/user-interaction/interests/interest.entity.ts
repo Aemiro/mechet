@@ -1,27 +1,24 @@
 import { EventEntity } from '@event/persistence/event/event.entity';
+import { CommonEntity } from '@libs/common/common.entity';
 import { UserEntity } from '@user/persistence/users/user.entity';
 import {
-  Entity,
   PrimaryGeneratedColumn,
   Column,
-  JoinColumn,
   ManyToOne,
+  JoinColumn,
+  Entity,
 } from 'typeorm';
 
-@Entity({ name: 'event_reviews' })
-export class EventReviewEntity {
+@Entity({ name: 'interests' })
+export class InterestEntity extends CommonEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
   @Column({ type: 'uuid', name: 'user_id' })
   userId: string;
   @Column({ type: 'uuid', name: 'event_id' })
   eventId: string;
-  @Column()
-  description: string;
-  @Column()
-  rate: number;
 
-  @ManyToOne(() => UserEntity, (user) => user.eventReviews, {
+  @ManyToOne(() => UserEntity, (user) => user.interests, {
     orphanedRowAction: 'delete',
     onUpdate: 'CASCADE',
     onDelete: 'CASCADE',
@@ -29,7 +26,7 @@ export class EventReviewEntity {
   @JoinColumn({ name: 'user_id' })
   user: UserEntity;
 
-  @ManyToOne(() => EventEntity, (event) => event.eventReviews, {
+  @ManyToOne(() => EventEntity, (event) => event.interests, {
     orphanedRowAction: 'delete',
     onUpdate: 'CASCADE',
     onDelete: 'CASCADE',

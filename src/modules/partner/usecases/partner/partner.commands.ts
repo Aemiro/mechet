@@ -1,27 +1,19 @@
-import { Address } from '@libs/common/address';
-import { AverageRate } from '@libs/common/average-rate';
+import { ContactPerson } from '@libs/common/contact-person';
+import { Status } from '@libs/common/enums';
 import { FileDto } from '@libs/common/file-dto';
-import { Location } from '@libs/common/location';
 import { ApiProperty } from '@nestjs/swagger';
 import { Partner } from '@partner/domains/partner/partner';
 import { IsEnum } from 'class-validator';
 
-enum Status {
-  PENDING = 'PENDING',
-  BLOCKED = 'BLOCKED',
-  APPROVED = 'APPROVED',
-}
 export class CreatePartnerCommand {
+  @ApiProperty()
+  categoryId: string;
   @ApiProperty()
   name: string;
   @ApiProperty()
   email: string;
   @ApiProperty()
-  password: string;
-  @ApiProperty()
   phoneNumber: string;
-  @ApiProperty()
-  coverImage: FileDto;
   @ApiProperty()
   website: string;
   @ApiProperty()
@@ -29,35 +21,27 @@ export class CreatePartnerCommand {
   @ApiProperty()
   about: string;
   @ApiProperty()
-  registrationDate: Date;
-  @ApiProperty()
   @IsEnum(Status, {
     message:
-      'status method must be one of the three PENDING,BLOCKED or APPROVED with capital letters',
+      'status method must be one of the three PENDING,REJECTED, BLOCKED or APPROVED with capital letters',
   })
   status: Status;
   @ApiProperty()
-  address: Address;
-  @ApiProperty()
-  location: Location;
-  @ApiProperty()
-  averageRate: AverageRate;
+  contactPerson: ContactPerson;
+  createdBy: string;
 
   static fromCommands(command: CreatePartnerCommand): Partner {
     const partner = new Partner();
+    partner.categoryId = command.categoryId;
     partner.name = command.name;
     partner.email = command.email;
-    partner.password = command.password;
     partner.phoneNumber = command.phoneNumber;
-    partner.coverImage = command.coverImage;
     partner.website = command.website;
     partner.logo = command.logo;
     partner.about = command.about;
-    partner.registrationDate = command.registrationDate;
     partner.status = command.status;
-    partner.address = command.address;
-    partner.location = command.location;
-    partner.averageRate = command.averageRate;
+    partner.contactPerson = command.contactPerson;
+    partner.createdBy = command.createdBy;
     return partner;
   }
 }
@@ -65,15 +49,13 @@ export class UpdatePartnerCommand {
   @ApiProperty()
   id: string;
   @ApiProperty()
+  categoryId: string;
+  @ApiProperty()
   name: string;
   @ApiProperty()
   email: string;
   @ApiProperty()
-  password: string;
-  @ApiProperty()
   phoneNumber: string;
-  @ApiProperty()
-  coverImage: FileDto;
   @ApiProperty()
   website: string;
   @ApiProperty()
@@ -81,36 +63,28 @@ export class UpdatePartnerCommand {
   @ApiProperty()
   about: string;
   @ApiProperty()
-  registrationDate: Date;
-  @ApiProperty()
   @IsEnum(Status, {
     message:
-      'status method must be one of the three PENDING,BLOCKED or APPROVED with capital letters',
+      'status method must be one of the three PENDING,REJECTED, BLOCKED or APPROVED with capital letters',
   })
   status: Status;
   @ApiProperty()
-  address: Address;
-  @ApiProperty()
-  location: Location;
-  @ApiProperty()
-  averageRate: AverageRate;
+  contactPerson: ContactPerson;
+  updatedBy: string;
 
   static fromCommands(command: UpdatePartnerCommand): Partner {
     const partner = new Partner();
     partner.id = command.id;
+    partner.categoryId = command.categoryId;
     partner.name = command.name;
     partner.email = command.email;
-    partner.password = command.password;
     partner.phoneNumber = command.phoneNumber;
-    partner.coverImage = command.coverImage;
     partner.website = command.website;
     partner.logo = command.logo;
     partner.about = command.about;
-    partner.registrationDate = command.registrationDate;
     partner.status = command.status;
-    partner.address = command.address;
-    partner.location = command.location;
-    partner.averageRate = command.averageRate;
+    partner.contactPerson = command.contactPerson;
+    partner.updatedBy = command.updatedBy;
     return partner;
   }
 }

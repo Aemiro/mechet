@@ -4,6 +4,8 @@ import { Blog } from '@blog/domains/blog/blog';
 
 export class CreateBlogCommand {
   @ApiProperty()
+  branchId: string;
+  @ApiProperty()
   categoryId: string;
   @ApiProperty()
   title: string;
@@ -22,6 +24,7 @@ export class CreateBlogCommand {
 
   static fromCommand(command: CreateBlogCommand): Blog {
     const blog = new Blog();
+    blog.branchId = command.branchId;
     blog.categoryId = command.categoryId;
     blog.title = command.title;
     blog.description = command.description;
@@ -36,6 +39,8 @@ export class CreateBlogCommand {
 export class UpdateBlogCommand {
   @ApiProperty()
   id: string;
+  @ApiProperty()
+  branchId: string;
   @ApiProperty()
   categoryId: string;
   @ApiProperty()
@@ -55,6 +60,8 @@ export class UpdateBlogCommand {
 
   static fromCommand(command: UpdateBlogCommand): Blog {
     const blog = new Blog();
+    blog.id = command.id;
+    blog.branchId = command.branchId;
     blog.categoryId = command.categoryId;
     blog.title = command.title;
     blog.description = command.description;

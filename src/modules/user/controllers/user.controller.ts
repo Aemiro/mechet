@@ -42,59 +42,62 @@ import { UserQueries } from '../usecases/user/user.usecase.queries';
 @ApiExtraModels(DataResponseFormat)
 export class UsersController {
   constructor(
-    private command: UserCommands,
-    private userQuery: UserQueries,
+    private commands: UserCommands,
+    private queries: UserQueries,
     private readonly fileManagerService: FileManagerService,
   ) {}
   @Get('get-user/:id')
   @ApiOkResponse({ type: UserResponse })
   async getUser(@Param('id') id: string) {
-    return this.userQuery.getUser(id);
+    return this.queries.getUser(id);
   }
   @Get('get-archived-user/:id')
   @ApiOkResponse({ type: UserResponse })
   async getArchivedUser(@Param('id') id: string) {
-    return this.userQuery.getUser(id, true);
+    return this.queries.getUser(id, true);
   }
   @Get('get-users')
   @ApiPaginatedResponse(UserResponse)
   async getUsers(@Query() query: CollectionQuery) {
-    return this.userQuery.getUsers(query);
+    return this.queries.getUsers(query);
   }
   @Post('create-user')
   @ApiOkResponse({ type: UserResponse })
   async createUser(@Body() createUserCommand: CreateUserCommand) {
-    return this.command.createUser(createUserCommand);
+    return this.commands.createUser(createUserCommand);
   }
   @Put('update-user')
   @ApiOkResponse({ type: UserResponse })
-  async updateUser(@Body() updateUserCommand: UpdateUserCommand) {
-    return this.command.updateUser(updateUserCommand);
+  async updateUser(
+    @Param('id') id: string,
+    @Body() updateUserCommand: UpdateUserCommand,
+  ) {
+    return this.commands.updateUser(id, updateUserCommand);
   }
   @Delete('archive-user/:id')
   @ApiOkResponse({ type: Boolean })
   async archiveUser(@Param('id') id: string) {
-    return this.command.archiveUser(id);
+    return this.commands.archiveUser(id);
   }
   @Delete('delete-user/:id')
   @ApiOkResponse({ type: Boolean })
   async deleteUser(@Param('id') id: string) {
-    return this.command.deleteUser(id);
+    return this.commands.deleteUser(id);
   }
   @Post('restore-user/:id')
   @ApiOkResponse({ type: UserResponse })
   async restoreUser(@Param('id') id: string) {
-    return this.command.restoreUser(id);
+    return this.commands.restoreUser(id);
   }
   @Get('get-archived-users')
   @ApiPaginatedResponse(UserResponse)
   async getArchivedUsers(@Query() query: CollectionQuery) {
-    return this.userQuery.getArchivedUsers(query);
+    return this.queries.getArchivedUsers(query);
   }
   @Post('activate-or-block-user/:id')
   @ApiOkResponse({ type: UserResponse })
   async activateOrBlockUser(@Param('id') id: string) {
-    return this.command.activateOrBlockUser(id);
+    return this.commands.activateOrBlockUser(id);
   }
   @Post('update-profile/:id')
   @ApiConsumes('multipart/form-data')
@@ -125,7 +128,7 @@ export class UsersController {
         FileManagerHelper.UPLOADED_FILES_DESTINATION,
       );
       if (result) {
-        return this.command.updateUserProfileImage(id, result);
+        return this.commands.updateUserProfileImage(id, result);
       }
     }
     throw new BadRequestException(`Bad Request`);

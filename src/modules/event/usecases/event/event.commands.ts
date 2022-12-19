@@ -3,6 +3,7 @@ import { FileDto } from '@libs/common/file-dto';
 import { ApiProperty } from '@nestjs/swagger';
 import { Address } from 'nodemailer/lib/mailer';
 import { Event } from '@event/domains/event/event';
+import { Location } from '@libs/common/location';
 
 export class CreateEventCommand {
   @ApiProperty()
@@ -29,6 +30,10 @@ export class CreateEventCommand {
   address: Address;
   @ApiProperty()
   location: Location;
+  @ApiProperty()
+  numOfInterestedUser: number;
+  @ApiProperty()
+  tags: string[];
 
   static fromCommand(command: CreateEventCommand): Event {
     const event = new Event();
@@ -43,7 +48,9 @@ export class CreateEventCommand {
     event.to = command.to;
     event.averageRate = command.averageRate;
     event.address = command.address;
-    //event.location = command.location;
+    event.location = command.location;
+    event.numOfInterestedUser = command.numOfInterestedUser;
+    event.tags = command.tags;
     return event;
   }
 }
@@ -74,6 +81,8 @@ export class UpdateEventCommand {
   address: Address;
   @ApiProperty()
   location: Location;
+  @ApiProperty()
+  tags: string[];
   static fromCommand(command: UpdateEventCommand): Event {
     const event = new Event();
     event.id = command.id;
@@ -88,7 +97,8 @@ export class UpdateEventCommand {
     event.to = command.to;
     event.averageRate = command.averageRate;
     event.address = command.address;
-    //event.location = command.location;
+    event.location = command.location;
+    event.tags = command.tags;
     return event;
   }
 }

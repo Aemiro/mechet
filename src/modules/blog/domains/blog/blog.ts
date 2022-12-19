@@ -2,6 +2,8 @@ import { FileDto } from '@libs/common/file-dto';
 
 export class Blog {
   id: string;
+  branchId: string;
+  categoryId: string;
   title: string;
   description: string;
   views: number;
@@ -9,5 +11,4 @@ export class Blog {
   isPublished: boolean;
   publishedDate: Date;
   tags: string[];
-  categoryId: string;
 }

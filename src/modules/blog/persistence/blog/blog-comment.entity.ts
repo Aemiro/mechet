@@ -1,3 +1,4 @@
+import { CommonEntity } from '@libs/common/common.entity';
 import { UserEntity } from '@user/persistence/users/user.entity';
 import {
   Column,
@@ -9,7 +10,7 @@ import {
 import { BlogEntity } from './blog.entty';
 
 @Entity({ name: 'blog_comments' })
-export class BlogCommentEntity {
+export class BlogCommentEntity extends CommonEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
   @Column({ type: 'uuid', name: 'user_id' })

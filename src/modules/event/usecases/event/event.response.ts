@@ -4,6 +4,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Address } from 'nodemailer/lib/mailer';
 import { EventEntity } from './../../persistence/event/event.entity';
 import { Event } from '@event/domains/event/event';
+import { Location } from '@libs/common/location';
 
 export class EventResponse {
   @ApiProperty()
@@ -32,6 +33,10 @@ export class EventResponse {
   address: Address;
   @ApiProperty()
   location: Location;
+  @ApiProperty()
+  numOfInterestedUser: number;
+  @ApiProperty()
+  tags: string[];
 
   static fromEntity(eventEntity: EventEntity): EventResponse {
     const eventResponse = new EventResponse();
@@ -47,7 +52,9 @@ export class EventResponse {
     eventResponse.to = eventEntity.to;
     eventResponse.averageRate = eventEntity.averageRate;
     eventResponse.address = eventEntity.address;
-    //event.location = command.location;
+    eventResponse.location = eventEntity.location;
+    eventResponse.numOfInterestedUser = eventEntity.numOfInterestedUser;
+    eventResponse.tags = eventEntity.tags;
     return eventResponse;
   }
 
@@ -65,7 +72,9 @@ export class EventResponse {
     eventResponse.to = event.to;
     eventResponse.averageRate = event.averageRate;
     eventResponse.address = event.address;
-    //event.location = command.location;
+    eventResponse.location = event.location;
+    eventResponse.numOfInterestedUser = event.numOfInterestedUser;
+    eventResponse.tags = event.tags;
     return eventResponse;
   }
 }

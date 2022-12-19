@@ -5,6 +5,8 @@ import { Address } from 'nodemailer/lib/mailer';
 export class Event {
   id: string;
   categoryId: string;
+  partnerId: string;
+  branchId: string;
   title: string;
   description: string;
   views: number;
@@ -16,4 +18,6 @@ export class Event {
   averageRate: AverageRate;
   address: Address;
   location: Location;
+  numOfInterestedUser: number;
+  tags: string[];
 }

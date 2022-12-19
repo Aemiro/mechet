@@ -3,8 +3,13 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsArray, IsEmail, IsEnum, IsNotEmpty } from 'class-validator';
 import { Gender } from '@libs/common/enums';
 import { User } from '@user/domains/user/user';
+import { Location } from '@libs/common/location';
 
 export class CreateUserCommand {
+  @ApiProperty()
+  partnerId: string;
+  @ApiProperty()
+  branchId: string;
   @ApiProperty()
   @IsNotEmpty()
   name: string;
@@ -28,21 +33,28 @@ export class CreateUserCommand {
   @ApiProperty()
   address: Address;
   @ApiProperty()
+  location: Location;
+  @ApiProperty()
   password: string;
   @ApiProperty()
   @IsArray()
   @IsNotEmpty()
   role: string[];
+  createdBy: string;
 
-  static fromCommand(command: CreateUserCommand): User {
+  static fromCommands(command: CreateUserCommand): User {
     const userDomain: User = new User();
+    userDomain.partnerId = command.partnerId;
+    userDomain.branchId = command.branchId;
     userDomain.name = command.name;
     userDomain.email = command.email;
     userDomain.phoneNumber = command.phoneNumber;
     userDomain.gender = command.gender;
     userDomain.address = command.address;
+    userDomain.location = command.location;
     userDomain.password = command.password;
     userDomain.role = command.role;
+    userDomain.createdBy = command.createdBy;
     return userDomain;
   }
 }
@@ -52,6 +64,10 @@ export class UpdateUserCommand {
   })
   @IsNotEmpty()
   id: string;
+  @ApiProperty()
+  partnerId: string;
+  @ApiProperty()
+  branchId: string;
   @ApiProperty()
   @IsNotEmpty()
   name: string;
@@ -73,18 +89,26 @@ export class UpdateUserCommand {
   @ApiProperty()
   address: Address;
   @ApiProperty()
+  location: Location;
+  @ApiProperty()
   @IsArray()
   @IsNotEmpty()
   role: string[];
+  updatedBy: string;
 
-  static fromCommand(command: UpdateUserCommand): User {
+  static fromCommands(command: UpdateUserCommand): User {
     const userDomain: User = new User();
+    userDomain.id = command.id;
+    userDomain.partnerId = command.partnerId;
+    userDomain.branchId = command.branchId;
     userDomain.name = command.name;
     userDomain.email = command.email;
     userDomain.phoneNumber = command.phoneNumber;
     userDomain.gender = command.gender;
     userDomain.address = command.address;
+    userDomain.location = command.location;
     userDomain.role = command.role;
+    userDomain.updatedBy = command.updatedBy;
     return userDomain;
   }
 }

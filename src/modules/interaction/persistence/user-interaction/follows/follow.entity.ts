@@ -1,27 +1,26 @@
-import { PartnerEntity } from '@partner/persistence/partner/partner.entity';
 import { UserEntity } from '@user/persistence/users/user.entity';
+import { PartnerEntity } from '@partner/persistence/partner/partner.entity';
 import {
-  Column,
   Entity,
+  PrimaryGeneratedColumn,
+  Column,
   JoinColumn,
   ManyToOne,
-  PrimaryGeneratedColumn,
 } from 'typeorm';
+import { CommonEntity } from '@libs/common/common.entity';
 
-@Entity({ name: 'partner_reviews' })
-export class PartnerReviewEntity {
+@Entity({ name: 'follows' })
+export class FollowEntity extends CommonEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
-  @Column({ type: 'uuid', name: 'partner_id' })
-  partnerId: string;
   @Column({ type: 'uuid', name: 'user_id' })
   userId: string;
+  @Column({ type: 'uuid', name: 'partner_id' })
+  partnerId: string;
   @Column()
-  description: string;
-  @Column()
-  rate: number;
+  totalFollowers: number;
 
-  @ManyToOne(() => UserEntity, (user) => user.partnerReviews, {
+  @ManyToOne(() => UserEntity, (user) => user.follows, {
     orphanedRowAction: 'delete',
     onUpdate: 'CASCADE',
     onDelete: 'CASCADE',
@@ -29,7 +28,7 @@ export class PartnerReviewEntity {
   @JoinColumn({ name: 'user_id' })
   user: UserEntity;
 
-  @ManyToOne(() => PartnerEntity, (partner) => partner.partnerReviews, {
+  @ManyToOne(() => PartnerEntity, (partner) => partner.follows, {
     orphanedRowAction: 'delete',
     onUpdate: 'CASCADE',
     onDelete: 'CASCADE',

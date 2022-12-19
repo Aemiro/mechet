@@ -13,12 +13,14 @@ export class ScheduleEntity {
   id: string;
   @Column({ type: 'uuid', name: 'partner_id' })
   partnerId: string;
-  @Column()
+  @Column({ type: 'uuid', name: 'branch_id' })
+  branchId: string;
+  @Column({ name: 'days_of_week ' })
   daysOfWeek: string;
-  @Column()
-  from: Date;
-  @Column()
-  to: Date;
+  @Column({ name: 'starting_time' })
+  startingTime: Date;
+  @Column({ name: 'end_time' })
+  endTime: Date;
   @Column()
   description: string;
 

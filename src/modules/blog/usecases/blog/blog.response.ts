@@ -6,6 +6,8 @@ export class BlogResponse {
   @ApiProperty()
   id: string;
   @ApiProperty()
+  branchId: string;
+  @ApiProperty()
   categoryId: string;
   @ApiProperty()
   title: string;
@@ -24,6 +26,7 @@ export class BlogResponse {
   static fromEntity(blogEntity: BlogEntity): BlogResponse {
     const blogResponse = new BlogResponse();
     blogResponse.id = blogEntity.id;
+    blogResponse.branchId = blogEntity.branchId;
     blogResponse.categoryId = blogEntity.categoryId;
     blogResponse.title = blogEntity.title;
     blogResponse.description = blogEntity.description;
@@ -37,6 +40,7 @@ export class BlogResponse {
   static fromDomain(blog: Blog): BlogResponse {
     const blogResponse = new BlogResponse();
     blogResponse.id = blog.id;
+    blogResponse.branchId = blog.branchId;
     blogResponse.categoryId = blog.categoryId;
     blogResponse.title = blog.title;
     blogResponse.description = blog.description;
