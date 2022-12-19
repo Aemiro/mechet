@@ -14,7 +14,7 @@ export class EventCommentEntity {
   id: string;
   @Column({ name: 'user_id', type: 'uuid' })
   userId: string;
-  @Column({ name: 'event_id', type: 'uuid' })
+  @Column({ name: 'event_id', type: 'uuid', nullable: true })
   eventId: string;
   @Column()
   description: string;

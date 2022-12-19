@@ -14,7 +14,7 @@ export class FavoriteEntity {
   id: string;
   @Column({ type: 'uuid', name: 'user_id' })
   userId: string;
-  @Column({ type: 'uuid', name: 'event_id' })
+  @Column({ type: 'uuid', name: 'event_id', nullable: true })
   eventId: string;
 
   @ManyToOne(() => UserEntity, (user) => user.favorites, {
