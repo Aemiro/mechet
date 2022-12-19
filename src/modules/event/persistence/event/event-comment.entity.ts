@@ -1,3 +1,4 @@
+import { CommonEntity } from '@libs/common/common.entity';
 import { UserEntity } from '@user/persistence/users/user.entity';
 import {
   Column,
@@ -9,7 +10,7 @@ import {
 import { EventEntity } from './event.entity';
 
 @Entity({ name: 'event_comments' })
-export class EventCommentEntity {
+export class EventCommentEntity extends CommonEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
   @Column({ name: 'user_id', type: 'uuid' })

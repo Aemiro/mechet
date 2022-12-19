@@ -7,19 +7,28 @@ import {
   PrimaryGeneratedColumn,
   Index,
   OneToMany,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
 import { EventCommentEntity } from '@event/persistence/event/event-comment.entity';
 import { BlogCommentEntity } from '@blog/persistence/blog/blog-comment.entity';
-import { FavoriteEntity } from '@interaction/persistence/user-interaction/favorite.entity';
-import { FollowEntity } from '@interaction/persistence/user-interaction/follow.entity';
-import { InterestEntity } from '@interaction/persistence/user-interaction/interest.entity';
-import { PartnerReviewEntity } from '@interaction/persistence/user-interaction/partner-review.entity';
-import { EventReviewEntity } from '@interaction/persistence/user-interaction/event-review.entity';
+import { FavoriteEntity } from '@interaction/persistence/user-interaction/favorites/favorite.entity';
+import { FollowEntity } from '@interaction/persistence/user-interaction/follows/follow.entity';
+import { InterestEntity } from '@interaction/persistence/user-interaction/interests/interest.entity';
+import { PartnerEntity } from '@partner/persistence/partner/partner.entity';
+import { Location } from '@libs/common/location';
+import { BranchEntity } from '@partner/persistence/partner/branch.entity';
+import { BranchReviewEntity } from '@interaction/persistence/user-interaction/branch-reviews/branch-review.entity';
+import { EventReviewEntity } from '@interaction/persistence/user-interaction/event-reviews/event-review.entity';
 @Entity({ name: 'users' })
 export class UserEntity extends CommonEntity {
   @Index()
   @PrimaryGeneratedColumn('uuid')
   id: string;
+  @Column({ name: 'partner_id', nullable: true })
+  partnerId;
+  @Column({ name: 'branch_id', nullable: true })
+  branchId: string;
   @Column()
   name: string;
   @Index()
@@ -36,6 +45,8 @@ export class UserEntity extends CommonEntity {
   profileImage: FileDto;
   @Column({ type: 'jsonb', nullable: true })
   address: Address;
+  @Column({ type: 'jsonb', nullable: true })
+  location: Location;
   @Column({ type: 'simple-array' })
   role: string[];
   @Column()
@@ -66,13 +77,27 @@ export class UserEntity extends CommonEntity {
   })
   interests: InterestEntity[];
 
-  @OneToMany(() => PartnerReviewEntity, (partnerReview) => partnerReview.user, {
-    cascade: true,
-  })
-  partnerReviews: PartnerReviewEntity[];
+  @OneToMany(() => BranchReviewEntity, (branchReview) => branchReview.user, {})
+  branchReviews: BranchReviewEntity[];
 
   @OneToMany(() => EventReviewEntity, (eventReview) => eventReview.user, {
     cascade: true,
   })
   eventReviews: EventReviewEntity[];
+
+  @ManyToOne(() => PartnerEntity, (partner) => partner.users, {
+    orphanedRowAction: 'delete',
+    onUpdate: 'CASCADE',
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'partner_id' })
+  partner: PartnerEntity;
+
+  @ManyToOne(() => BranchEntity, (branch) => branch.users, {
+    orphanedRowAction: 'delete',
+    onUpdate: 'CASCADE',
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'branch_id' })
+  branch: BranchEntity;
 }

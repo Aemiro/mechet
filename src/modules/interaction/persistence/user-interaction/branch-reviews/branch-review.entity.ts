@@ -1,4 +1,5 @@
-import { PartnerEntity } from '@partner/persistence/partner/partner.entity';
+import { CommonEntity } from '@libs/common/common.entity';
+import { BranchEntity } from '@partner/persistence/partner/branch.entity';
 import { UserEntity } from '@user/persistence/users/user.entity';
 import {
   Column,
@@ -8,12 +9,12 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-@Entity({ name: 'partner_reviews' })
-export class PartnerReviewEntity {
+@Entity({ name: 'branch_reviews' })
+export class BranchReviewEntity extends CommonEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
-  @Column({ type: 'uuid', name: 'partner_id' })
-  partnerId: string;
+  @Column({ type: 'uuid', name: 'branch_id' })
+  branchId: string;
   @Column({ type: 'uuid', name: 'user_id' })
   userId: string;
   @Column()
@@ -21,7 +22,7 @@ export class PartnerReviewEntity {
   @Column()
   rate: number;
 
-  @ManyToOne(() => UserEntity, (user) => user.partnerReviews, {
+  @ManyToOne(() => UserEntity, (user) => user.branchReviews, {
     orphanedRowAction: 'delete',
     onUpdate: 'CASCADE',
     onDelete: 'CASCADE',
@@ -29,11 +30,11 @@ export class PartnerReviewEntity {
   @JoinColumn({ name: 'user_id' })
   user: UserEntity;
 
-  @ManyToOne(() => PartnerEntity, (partner) => partner.partnerReviews, {
+  @ManyToOne(() => BranchEntity, (branch) => branch.branchReviews, {
     orphanedRowAction: 'delete',
     onUpdate: 'CASCADE',
     onDelete: 'CASCADE',
   })
-  @JoinColumn({ name: 'partner_id' })
-  partner: PartnerEntity;
+  @JoinColumn({ name: 'branch_id' })
+  branch: BranchEntity;
 }

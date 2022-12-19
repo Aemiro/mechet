@@ -1,36 +1,32 @@
 import { Follow } from '@interaction/domains/user-interaction/follows/follow';
-import { PartnerReview } from '@interaction/domains/user-interaction/partner-reviews/partner-review';
-import { AverageRate } from '@libs/common/average-rate';
 import { FileDto } from '@libs/common/file-dto';
-import { Location } from '@libs/common/location';
 import { Schedule } from './schedule';
-import { Address } from '@libs/common/address';
 import { PartnerCategory } from './partner-category';
+import { Branch } from './branch';
+import { ContactPerson } from '@libs/common/contact-person';
+import { Status } from '@libs/common/enums';
 
 export class Partner {
   id: string;
+  categoryId: string;
   name: string;
   email: string;
-  password: string;
   phoneNumber: string;
-  coverImage: FileDto;
   website: string;
   logo: FileDto;
   about: string;
-  registrationDate: Date;
-  status: string;
-  address: Address;
-  location: Location;
-  averageRate: AverageRate;
+  status: Status;
+  contactPerson: ContactPerson;
   createdBy?: string;
   updatedBy?: string;
   createdAt: Date;
   updatedAt: Date;
   deletedAt?: Date;
   deletedBy?: string;
+  branches: Branch[];
   schedules: Schedule[];
   follows: Follow[];
-  partnerReviews: PartnerReview[];
+  // partnerReviews: PartnerReview[];
   partnerCategories: PartnerCategory[];
 
   //partner category
@@ -38,11 +34,11 @@ export class Partner {
     this.partnerCategories.push(createPartnerCategory);
   }
 
-  async updatePartnerCategory(partnerCategorie: PartnerCategory) {
+  async updatePartnerCategory(partnerCategory: PartnerCategory) {
     const existIndex = this.partnerCategories.findIndex(
-      (element) => element.id == partnerCategorie.id,
+      (element) => element.id == partnerCategory.id,
     );
-    this.partnerCategories[existIndex] = partnerCategorie;
+    this.partnerCategories[existIndex] = partnerCategory;
   }
 
   async removePartnerCategory(id: string) {
@@ -93,25 +89,25 @@ export class Partner {
   async updateFollows(follows: Follow[]) {
     this.follows = follows;
   }
-  //partner review
-  async addPartnerReview(createPartnerReview: PartnerReview) {
-    this.partnerReviews.push(createPartnerReview);
-  }
+  // //partner review
+  // async addPartnerReview(createPartnerReview: PartnerReview) {
+  //   this.partnerReviews.push(createPartnerReview);
+  // }
 
-  async updatePartnerReview(partnerReview: PartnerReview) {
-    const existIndex = this.partnerReviews.findIndex(
-      (element) => element.id == partnerReview.id,
-    );
-    this.follows[existIndex] = partnerReview;
-  }
+  // async updatePartnerReview(partnerReview: PartnerReview) {
+  //   const existIndex = this.partnerReviews.findIndex(
+  //     (element) => element.id == partnerReview.id,
+  //   );
+  //   this.follows[existIndex] = partnerReview;
+  // }
 
-  async removePartnerReview(id: string) {
-    this.partnerReviews = this.partnerReviews.filter(
-      (element) => element.id != id,
-    );
-  }
+  // async removePartnerReview(id: string) {
+  //   this.partnerReviews = this.partnerReviews.filter(
+  //     (element) => element.id != id,
+  //   );
+  // }
 
-  async updatePartnerReviews(partnerReviews: PartnerReview[]) {
-    this.partnerReviews = partnerReviews;
-  }
+  // async updatePartnerReviews(partnerReviews: PartnerReview[]) {
+  //   this.partnerReviews = partnerReviews;
+  // }
 }

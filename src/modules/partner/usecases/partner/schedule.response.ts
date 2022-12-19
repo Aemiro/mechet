@@ -6,31 +6,38 @@ export class ScheduleResponse {
   @ApiProperty()
   id: string;
   @ApiProperty()
+  branchId: string;
+  @ApiProperty()
   partnerId: string;
   @ApiProperty()
   daysOfWeek: string;
   @ApiProperty()
-  from: Date;
+  startingTime: Date;
   @ApiProperty()
-  to: Date;
+  endTime: Date;
   @ApiProperty()
   description: string;
 
   static fromEntity(scheduleEntity: ScheduleEntity): ScheduleResponse {
     const scheduleResponse = new ScheduleResponse();
+    scheduleResponse.id = scheduleEntity.id;
+    scheduleResponse.branchId = scheduleEntity.branchId;
     scheduleResponse.partnerId = scheduleEntity.partnerId;
     scheduleResponse.daysOfWeek = scheduleEntity.daysOfWeek;
-    scheduleResponse.from = scheduleEntity.from;
-    scheduleResponse.to = scheduleEntity.to;
+    scheduleResponse.startingTime = scheduleEntity.startingTime;
+    scheduleResponse.endTime = scheduleEntity.endTime;
     scheduleResponse.description = scheduleEntity.description;
+    scheduleResponse.id = scheduleEntity.id;
     return scheduleResponse;
   }
   static fromDomain(schedule: Schedule): ScheduleResponse {
     const scheduleResponse = new ScheduleResponse();
+    scheduleResponse.id = schedule.id;
+    scheduleResponse.branchId = schedule.branchId;
     scheduleResponse.partnerId = schedule.partnerId;
     scheduleResponse.daysOfWeek = schedule.daysOfWeek;
-    scheduleResponse.from = schedule.from;
-    scheduleResponse.to = schedule.to;
+    scheduleResponse.startingTime = schedule.startingTime;
+    scheduleResponse.endTime = schedule.endTime;
     scheduleResponse.description = schedule.description;
     return scheduleResponse;
   }

@@ -92,11 +92,11 @@ export class PartnerController {
     return await this.command.archivePartner(id);
   }
 
-  @Delete('delete-partner/:id')
-  @ApiOkResponse({ type: Boolean })
-  async deletePartner(@Param('id') id: string) {
-    return await this.command.deletePartner(id);
-  }
+  // @Delete('delete-partner/:id')
+  // @ApiOkResponse({ type: Boolean })
+  // async deletePartner(@Param('id') id: string) {
+  //   return await this.command.deletePartner(id);
+  // }
 
   @Post('restore-partner/:id')
   @ApiOkResponse({ type: PartnerResponse })
@@ -104,38 +104,38 @@ export class PartnerController {
     return await this.command.restorePartner(id);
   }
 
-  @Post('update-cover/:id')
-  @ApiConsumes('multipart/form-data')
-  @UseInterceptors(
-    FileInterceptor('coverImage', {
-      storage: diskStorage({
-        destination: FileManagerHelper.UPLOADED_FILES_DESTINATION,
-      }),
-      fileFilter: (request, file, callback) => {
-        if (!file.mimetype.includes('image')) {
-          return callback(
-            new BadRequestException('Provide a valid image'),
-            false,
-          );
-        }
-        callback(null, true);
-      },
-      limits: { fileSize: Math.pow(1024, 2) },
-    }),
-  )
-  async addCoverImage(
-    @Param('id') id: string,
-    @UploadedFile() coverImage: Express.Multer.File,
-  ) {
-    if (coverImage) {
-      const result = await this.fileManagerService.uploadFile(
-        coverImage,
-        FileManagerHelper.UPLOADED_FILES_DESTINATION,
-      );
-      if (result) {
-        return this.command.updatePartnerCoverImage(id, result);
-      }
-    }
-    throw new BadRequestException(`Bad Request`);
-  }
+  // @Post('update-cover/:id')
+  // @ApiConsumes('multipart/form-data')
+  // @UseInterceptors(
+  //   FileInterceptor('coverImage', {
+  //     storage: diskStorage({
+  //       destination: FileManagerHelper.UPLOADED_FILES_DESTINATION,
+  //     }),
+  //     fileFilter: (request, file, callback) => {
+  //       if (!file.mimetype.includes('image')) {
+  //         return callback(
+  //           new BadRequestException('Provide a valid image'),
+  //           false,
+  //         );
+  //       }
+  //       callback(null, true);
+  //     },
+  //     limits: { fileSize: Math.pow(1024, 2) },
+  //   }),
+  // )
+  // async addCoverImage(
+  //   @Param('id') id: string,
+  //   @UploadedFile() coverImage: Express.Multer.File,
+  // ) {
+  //   if (coverImage) {
+  //     const result = await this.fileManagerService.uploadFile(
+  //       coverImage,
+  //       FileManagerHelper.UPLOADED_FILES_DESTINATION,
+  //     );
+  //     if (result) {
+  //       return this.command.updatePartnerCoverImage(id, result);
+  //     }
+  //   }
+  //   throw new BadRequestException(`Bad Request`);
+  // }
 }

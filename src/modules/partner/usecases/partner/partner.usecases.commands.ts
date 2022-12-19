@@ -1,10 +1,4 @@
-import { FileDto } from '@libs/common/file-dto';
-import {
-  FileManagerHelper,
-  FileManagerService,
-  FileResponseDto,
-} from '@libs/common/file-manager';
-import { Utility } from '@libs/common/utility';
+
 import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { PartnerRepository } from '@partner/persistence/partner/partner.repository';
 import { CreatePartnerCommand, UpdatePartnerCommand } from './partner.commands';
@@ -13,8 +7,6 @@ import { PartnerResponse } from './partners.response';
 export class PartnerCommands {
   constructor(
     private partnerRepository: PartnerRepository,
-
-    private readonly fileManagerService: FileManagerService,
   ) {}
 
   async createPartner(command: CreatePartnerCommand): Promise<PartnerResponse> {
@@ -36,7 +28,7 @@ export class PartnerCommands {
     const partnerDomain = CreatePartnerCommand.fromCommands(command);
 
     console.log(partnerDomain);
-    partnerDomain.password = Utility.hashPassword(command.password);
+   // partnerDomain.password = Utility.hashPassword(command.password);
     const partner = await this.partnerRepository.insert(partnerDomain);
     return PartnerResponse.fromDomain(partner);
   }
@@ -54,22 +46,22 @@ export class PartnerCommands {
     throw new NotFoundException(`Partner not found with id ${command.id}`);
   }
 
-  async deletePartner(id: string): Promise<boolean> {
-    const partner = await this.partnerRepository.getById(id, true);
-    if (!partner) {
-      throw new NotFoundException(`partner not found with id ${id}`);
-    }
-    const result = await this.partnerRepository.delete(id);
-    if (result) {
-      if (partner.coverImage) {
-        await this.fileManagerService.removeFile(
-          partner.coverImage,
-          FileManagerHelper.UPLOADED_FILES_DESTINATION,
-        );
-      }
-    }
-    return result;
-  }
+  // async deletePartner(id: string): Promise<boolean> {
+  //   const partner = await this.partnerRepository.getById(id, true);
+  //   if (!partner) {
+  //     throw new NotFoundException(`partner not found with id ${id}`);
+  //   }
+  //   const result = await this.partnerRepository.delete(id);
+  //   if (result) {
+  //     if (partner.coverImage) {
+  //       await this.fileManagerService.removeFile(
+  //         partner.coverImage,
+  //         FileManagerHelper.UPLOADED_FILES_DESTINATION,
+  //       );
+  //     }
+  //   }
+  //   return result;
+  // }
 
   async archivePartner(id: string): Promise<boolean> {
     const partner = await this.partnerRepository.getById(id, true);
@@ -91,19 +83,19 @@ export class PartnerCommands {
     return PartnerResponse.fromDomain(partner);
   }
 
-  async updatePartnerCoverImage(id: string, fileDto: FileResponseDto) {
-    const partnerDomain = await this.partnerRepository.getById(id, true);
-    if (!partnerDomain) {
-      throw new NotFoundException(`User not found with id ${id}`);
-    }
-    if (partnerDomain.coverImage && fileDto) {
-      await this.fileManagerService.removeFile(
-        partnerDomain.coverImage,
-        FileManagerHelper.UPLOADED_FILES_DESTINATION,
-      );
-    }
-    partnerDomain.coverImage = fileDto as FileDto;
-    const result = await this.partnerRepository.update(id, partnerDomain);
-    return PartnerResponse.fromDomain(result);
-  }
+  // async updatePartnerCoverImage(id: string, fileDto: FileResponseDto) {
+  //   const partnerDomain = await this.partnerRepository.getById(id, true);
+  //   if (!partnerDomain) {
+  //     throw new NotFoundException(`User not found with id ${id}`);
+  //   }
+  //   if (partnerDomain.coverImage && fileDto) {
+  //     await this.fileManagerService.removeFile(
+  //       partnerDomain.coverImage,
+  //       FileManagerHelper.UPLOADED_FILES_DESTINATION,
+  //     );
+  //   }
+  //   partnerDomain.coverImage = fileDto as FileDto;
+  //   const result = await this.partnerRepository.update(id, partnerDomain);
+  //   return PartnerResponse.fromDomain(result);
+  // }
 }

@@ -12,9 +12,11 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { Utility } from '@libs/common/utility';
+import { User } from '@user/domains/user/user';
 import { UserRepository } from '@user/persistence/users/user.repository';
 @Injectable()
 export class UserCommands {
+  private userDomain = new User();
   constructor(
     private userRepository: UserRepository,
     private readonly fileManagerService: FileManagerService,
@@ -33,14 +35,17 @@ export class UserCommands {
         `User already exist with this email Address`,
       );
     }
-    const userDomain = CreateUserCommand.fromCommand(command);
+    const userDomain = CreateUserCommand.fromCommands(command);
 
     console.log(userDomain);
     userDomain.password = Utility.hashPassword(command.password);
     const user = await this.userRepository.insert(userDomain);
     return UserResponse.fromDomain(user);
   }
-  async updateUser(command: UpdateUserCommand): Promise<UserResponse> {
+  async updateUser(
+    id: string,
+    command: UpdateUserCommand,
+  ): Promise<UserResponse> {
     const userDomain = await this.userRepository.getById(command.id);
     if (!userDomain) {
       throw new NotFoundException(`User not found with id ${command.id}`);
@@ -51,7 +56,7 @@ export class UserCommands {
     userDomain.phoneNumber = command.phoneNumber;
     userDomain.gender = command.gender;
     userDomain.role = command.role;
-    const user = await this.userRepository.update(userDomain);
+    const user = await this.userRepository.update(id, userDomain);
     return UserResponse.fromDomain(user);
   }
   async archiveUser(id: string): Promise<boolean> {
@@ -94,7 +99,7 @@ export class UserCommands {
       throw new NotFoundException(`User not found with id ${id}`);
     }
     userDomain.enabled = !userDomain.enabled;
-    const result = await this.userRepository.update(userDomain);
+    const result = await this.userRepository.update(id, userDomain);
     return UserResponse.fromDomain(result);
   }
   async updateUserProfileImage(id: string, fileDto: FileResponseDto) {
@@ -109,7 +114,7 @@ export class UserCommands {
       );
     }
     userDomain.profileImage = fileDto as FileDto;
-    const result = await this.userRepository.update(userDomain);
+    const result = await this.userRepository.update(id, userDomain);
     return UserResponse.fromDomain(result);
   }
 }
