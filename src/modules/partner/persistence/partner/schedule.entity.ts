@@ -11,7 +11,7 @@ import { PartnerEntity } from './partner.entity';
 export class ScheduleEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
-  @Column({ type: 'uuid', name: 'partner_id', nullable: true })
+  @Column({ type: 'uuid', name: 'partner_id' })
   partnerId: string;
   @Column()
   daysOfWeek: string;
