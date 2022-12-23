@@ -1,91 +1,52 @@
-import { FollowEntity } from '@interaction/persistence/user-interaction/follow.entity';
-import { PartnerReviewEntity } from '@interaction/persistence/user-interaction/partner-review.entity';
-import { AverageRate } from '@libs/common/average-rate';
 import { FileDto } from '@libs/common/file-dto';
 import {
   Column,
-  CreateDateColumn,
-  DeleteDateColumn,
   Entity,
   Index,
   OneToMany,
   PrimaryGeneratedColumn,
-  UpdateDateColumn,
 } from 'typeorm';
 import { ScheduleEntity } from './schedule.entity';
-import { Location } from '@libs/common/location';
 import { ReviewEntity } from '@interaction/persistence/reviews/review.entity';
-import { Address } from '@libs/common/address';
 import { PartnerCategoryEntity } from './partner-category.entity';
+import { FollowEntity } from '@interaction/persistence/user-interaction/follows/follow.entity';
+import { UserEntity } from '@user/persistence/users/user.entity';
+import { CommonEntity } from '@libs/common/common.entity';
+import { EventEntity } from '@event/persistence/event/event.entity';
+import { BranchEntity } from './branch.entity';
+import { ContactPerson } from '@libs/common/contact-person';
+import { Status } from '@libs/common/enums';
 
 @Entity({ name: 'partners' })
-export class PartnerEntity {
+export class PartnerEntity extends CommonEntity {
   @Index()
   @PrimaryGeneratedColumn('uuid')
   id: string;
+  @Column({ type: 'uuid', name: 'category_id', nullable: true })
+  categoryId: string;
   @Column()
   name: string;
   @Index()
   @Column({ nullable: true })
   email: string;
-  @Column()
-  password: string;
   @Index()
   @Column({ name: 'phone_number', unique: true })
   phoneNumber: string;
-  @Column({ name: 'cover_image', type: 'jsonb', nullable: true })
-  coverImage: FileDto;
-  @Column()
+  @Column({ nullable: true })
   website: string;
   @Column({ type: 'jsonb', nullable: true })
   logo: FileDto;
-  @Column()
+  @Column({ nullable: true })
   about: string;
-  @Column({ name: 'registration_date' })
-  registrationDate: Date;
   @Column()
-  status: string;
-  @Column({ type: 'jsonb', nullable: true })
-  address: Address;
-  @Column({ type: 'jsonb', nullable: true })
-  location: Location;
-  @Column({ type: 'jsonb', nullable: true, name: 'average_rate' })
-  averageRate: AverageRate;
-  @Column({ nullable: true, name: 'created_by' })
-  createdBy: string;
-  @Column({ nullable: true, name: 'updated_by' })
-  updatedBy: string;
-
-  @CreateDateColumn({
-    type: 'timestamptz',
-    default: 'now()',
-    name: 'created_at',
-  })
-  createdAt: Date;
-  @UpdateDateColumn({
-    type: 'timestamptz',
-    default: 'now()',
-    name: 'updated_at',
-  })
-  updatedAt: Date;
-  @DeleteDateColumn({ nullable: true, name: 'deleted_at' })
-  deletedAt: Date;
-  @Column({ nullable: true, name: 'deleted_by' })
-  deletedBy: string;
+  status: Status;
+  @Column({ type: 'jsonb', name: 'contact_person' })
+  contactPerson: ContactPerson;
 
   @OneToMany(() => FollowEntity, (follow) => follow.partner, {
     cascade: true,
   })
   follows: FollowEntity[];
-
-  @OneToMany(
-    () => PartnerReviewEntity,
-    (partnerReview) => partnerReview.partner,
-    {
-      cascade: true,
-    },
-  )
-  partnerReviews: PartnerReviewEntity[];
 
   @OneToMany(() => ScheduleEntity, (schedule) => schedule.partner, {
     cascade: true,
@@ -104,4 +65,19 @@ export class PartnerEntity {
     },
   )
   partnerCategories: PartnerCategoryEntity[];
+
+  @OneToMany(() => UserEntity, (user) => user.partner, {
+    cascade: true,
+  })
+  users: UserEntity[];
+
+  @OneToMany(() => EventEntity, (event) => event.partner, {
+    cascade: true,
+  })
+  events: EventEntity[];
+
+  @OneToMany(() => BranchEntity, (branch) => branch.partner, {
+    cascade: true,
+  })
+  branches: BranchEntity[];
 }

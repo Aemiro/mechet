@@ -1,4 +1,5 @@
 import { EventEntity } from '@event/persistence/event/event.entity';
+import { CommonEntity } from '@libs/common/common.entity';
 import { UserEntity } from '@user/persistence/users/user.entity';
 import {
   PrimaryGeneratedColumn,
@@ -9,7 +10,7 @@ import {
 } from 'typeorm';
 
 @Entity({ name: 'interests' })
-export class InterestEntity {
+export class InterestEntity extends CommonEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
   @Column({ type: 'uuid', name: 'user_id' })

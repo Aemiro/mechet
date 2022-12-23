@@ -11,14 +11,16 @@ import { PartnerEntity } from './partner.entity';
 export class ScheduleEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
-  @Column({ type: 'uuid', name: 'partner_id' })
+  @Column({ type: 'uuid', name: 'partner_id', nullable: true })
   partnerId: string;
-  @Column()
+  @Column({ type: 'uuid', name: 'branch_id', nullable: true })
+  branchId: string;
+  @Column({ name: 'days_of_week ' })
   daysOfWeek: string;
-  @Column()
-  from: Date;
-  @Column()
-  to: Date;
+  @Column({ name: 'starting_time' })
+  startingTime: Date;
+  @Column({ name: 'end_time' })
+  endTime: Date;
   @Column()
   description: string;
 

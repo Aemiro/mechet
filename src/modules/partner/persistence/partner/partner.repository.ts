@@ -1,6 +1,4 @@
 import { Follow } from '@interaction/domains/user-interaction/follows/follow';
-import { PartnerReview } from '@interaction/domains/user-interaction/partner-reviews/partner-review';
-import { FollowEntity } from '@interaction/persistence/user-interaction/follow.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Partner } from '@partner/domains/partner/partner';
 import { IPartner } from '@partner/domains/partner/partner.repository.interface';
@@ -10,7 +8,9 @@ import { PartnerEntity } from './partner.entity';
 import { ScheduleEntity } from './schedule.entity';
 import { PartnerCategoryEntity } from './partner-category.entity';
 import { PartnerCategory } from '@partner/domains/partner/partner-category';
-import { PartnerReviewEntity } from '@interaction/persistence/user-interaction/partner-review.entity';
+import { FollowEntity } from '@interaction/persistence/user-interaction/follows/follow.entity';
+import { Branch } from '@partner/domains/partner/branch';
+import { BranchEntity } from './branch.entity';
 
 export class PartnerRepository implements IPartner {
   constructor(
@@ -108,34 +108,33 @@ export class PartnerRepository implements IPartner {
   toPartner(partnerEntity: PartnerEntity): Partner {
     const partner: Partner = new Partner();
     partner.id = partnerEntity.id;
+    partner.categoryId = partnerEntity.categoryId;
     partner.name = partnerEntity.name;
     partner.email = partnerEntity.email;
-    partner.password = partnerEntity.password;
     partner.phoneNumber = partnerEntity.phoneNumber;
-    partner.coverImage = partnerEntity.coverImage;
     partner.website = partnerEntity.website;
     partner.logo = partnerEntity.logo;
     partner.about = partnerEntity.about;
-    partner.registrationDate = partnerEntity.registrationDate;
     partner.status = partnerEntity.status;
-    partner.address = partnerEntity.address;
-    partner.location = partnerEntity.location;
-    partner.averageRate = partnerEntity.averageRate;
+    partner.contactPerson = partnerEntity.contactPerson;
     partner.schedules = partnerEntity.schedules
       ? partnerEntity.schedules.map((element) => this.toSchedule(element))
       : [];
     partner.follows = partnerEntity.follows
       ? partnerEntity.follows.map((element) => this.toFollow(element))
       : [];
-    partner.partnerReviews = partnerEntity.partnerReviews
-      ? partnerEntity.partnerReviews.map((element) =>
-          this.toPartnerReview(element),
-        )
-      : [];
+    // partner.partnerReviews = partnerEntity.partnerReviews
+    //   ? partnerEntity.partnerReviews.map((element) =>
+    //       this.toPartnerReview(element),
+    //     )
+    //   : [];
     partner.partnerCategories = partnerEntity.partnerCategories
       ? partnerEntity.partnerCategories.map((element) =>
           this.toPartnerCategory(element),
         )
+      : [];
+    partner.branches = partnerEntity.branches
+      ? partnerEntity.branches.map((element) => this.toBranch(element))
       : [];
 
     return partner;
@@ -143,37 +142,103 @@ export class PartnerRepository implements IPartner {
   toPartnerEntity(partner: Partner): PartnerEntity {
     const partnerEntity: PartnerEntity = new PartnerEntity();
     partnerEntity.id = partner.id;
+    partnerEntity.categoryId = partner.categoryId;
     partnerEntity.name = partner.name;
     partnerEntity.email = partner.email;
-    partnerEntity.password = partner.password;
     partnerEntity.phoneNumber = partner.phoneNumber;
-    partnerEntity.coverImage = partner.coverImage;
     partnerEntity.website = partner.website;
     partnerEntity.logo = partner.logo;
     partnerEntity.about = partner.about;
-    partnerEntity.registrationDate = partner.registrationDate;
     partnerEntity.status = partner.status;
-    partnerEntity.address = partner.address;
-    partnerEntity.location = partner.location;
-    partnerEntity.averageRate = partner.averageRate;
+    partnerEntity.contactPerson = partner.contactPerson;
     partnerEntity.schedules = partner.schedules
       ? partner.schedules.map((element) => this.toScheduleEntity(element))
       : [];
     partnerEntity.follows = partner.follows
       ? partner.follows.map((element) => this.toFollowEntity(element))
       : [];
-    partnerEntity.partnerReviews = partner.partnerReviews
-      ? partner.partnerReviews.map((element) =>
-          this.toPartnerReviewEntity(element),
-        )
-      : [];
+    // partnerEntity.partnerReviews = partner.partnerReviews
+    //   ? partner.partnerReviews.map((element) =>
+    //       this.toPartnerReviewEntity(element),
+    //     )
+    //   : [];
     partnerEntity.partnerCategories = partner.partnerCategories
       ? partner.partnerCategories.map((element) =>
           this.toPartnerCategoryEntity(element),
         )
       : [];
+    partnerEntity.branches = partner.branches
+      ? partnerEntity.branches.map((element) => this.toBranchEntity(element))
+      : [];
     return partnerEntity;
   }
+
+  toBranch(branchEntity: BranchEntity): Branch {
+    const branch: Branch = new Branch();
+    branch.id = branchEntity.id;
+    branch.partnerId = branchEntity.partnerId;
+    branch.name = branchEntity.name;
+    branch.email = branchEntity.email;
+    branch.phoneNumber = branchEntity.phoneNumber;
+    branch.coverImage = branchEntity.coverImage;
+    branch.about = branchEntity.about;
+    branch.address = branchEntity.address;
+    branch.location = branchEntity.location;
+    branch.averageRate = branchEntity.averageRate;
+    branch.contactPerson = branchEntity.contactPerson;
+    branch.isMainBranch = branchEntity.isMainBranch;
+    // partner.schedules = partnerEntity.schedules
+    //   ? partnerEntity.schedules.map((element) => this.toSchedule(element))
+    //   : [];
+    // partner.follows = partnerEntity.follows
+    //   ? partnerEntity.follows.map((element) => this.toFollow(element))
+    //   : [];
+    // partner.partnerReviews = partnerEntity.partnerReviews
+    //   ? partnerEntity.partnerReviews.map((element) =>
+    //       this.toPartnerReview(element),
+    //     )
+    //   : [];
+    // partner.partnerCategories = partnerEntity.partnerCategories
+    //   ? partnerEntity.partnerCategories.map((element) =>
+    //       this.toPartnerCategory(element),
+    //     )
+    //   : [];
+
+    return branch;
+  }
+  toBranchEntity(branch: Branch): BranchEntity {
+    const branchEntity: BranchEntity = new BranchEntity();
+    branchEntity.id = branch.id;
+    branchEntity.partnerId = branch.partnerId;
+    branchEntity.name = branch.name;
+    branchEntity.email = branch.email;
+    branchEntity.phoneNumber = branch.phoneNumber;
+    branchEntity.coverImage = branch.coverImage;
+    branchEntity.about = branch.about;
+    branchEntity.address = branch.address;
+    branchEntity.location = branch.location;
+    branchEntity.averageRate = branch.averageRate;
+    branchEntity.contactPerson = branch.contactPerson;
+    branchEntity.isMainBranch = branch.isMainBranch;
+    // partnerEntity.schedules = partner.schedules
+    //   ? partner.schedules.map((element) => this.toScheduleEntity(element))
+    //   : [];
+    // partnerEntity.follows = partner.follows
+    //   ? partner.follows.map((element) => this.toFollowEntity(element))
+    //   : [];
+    // partnerEntity.partnerReviews = partner.partnerReviews
+    //   ? partner.partnerReviews.map((element) =>
+    //       this.toPartnerReviewEntity(element),
+    //     )
+    //   : [];
+    // partnerEntity.partnerCategories = partner.partnerCategories
+    //   ? partner.partnerCategories.map((element) =>
+    //       this.toPartnerCategoryEntity(element),
+    //     )
+    //   : [];
+    return branchEntity;
+  }
+
   toPartnerCategory(
     partnerCategoryEntity: PartnerCategoryEntity,
   ): PartnerCategory {
@@ -197,10 +262,11 @@ export class PartnerRepository implements IPartner {
     const schedule: Schedule = new Schedule();
     schedule.id = scheduleEntity.id;
     schedule.partnerId = scheduleEntity.partnerId;
+    schedule.branchId = scheduleEntity.branchId;
     schedule.description = scheduleEntity.description;
     schedule.daysOfWeek = scheduleEntity.daysOfWeek;
-    schedule.from = scheduleEntity.from;
-    schedule.to = scheduleEntity.to;
+    schedule.startingTime = scheduleEntity.startingTime;
+    schedule.endTime = scheduleEntity.endTime;
     return schedule;
   }
   toScheduleEntity(schedule: Schedule): ScheduleEntity {
@@ -209,8 +275,8 @@ export class PartnerRepository implements IPartner {
     scheduleEntity.partnerId = schedule.partnerId;
     scheduleEntity.description = schedule.description;
     scheduleEntity.daysOfWeek = schedule.daysOfWeek;
-    scheduleEntity.from = schedule.from;
-    scheduleEntity.to = schedule.to;
+    scheduleEntity.startingTime = schedule.startingTime;
+    scheduleEntity.endTime = schedule.endTime;
     return scheduleEntity;
   }
   toFollow(followEntity: FollowEntity): Follow {
@@ -227,22 +293,22 @@ export class PartnerRepository implements IPartner {
     followEntity.userId = follow.userId;
     return followEntity;
   }
-  toPartnerReview(partnerReviewEntity: PartnerReviewEntity): PartnerReview {
-    const partnerReview: PartnerReview = new PartnerReview();
-    partnerReview.id = partnerReviewEntity.id;
-    partnerReview.partnerId = partnerReviewEntity.partnerId;
-    partnerReview.userId = partnerReviewEntity.userId;
-    partnerReview.description = partnerReviewEntity.description;
-    partnerReview.rate = partnerReviewEntity.rate;
-    return partnerReview;
-  }
-  toPartnerReviewEntity(partnerReview: PartnerReview): PartnerReviewEntity {
-    const partnerReviewEntity: PartnerReviewEntity = new PartnerReviewEntity();
-    partnerReviewEntity.id = partnerReview.id;
-    partnerReviewEntity.partnerId = partnerReview.partnerId;
-    partnerReviewEntity.userId = partnerReview.userId;
-    partnerReviewEntity.description = partnerReview.description;
-    partnerReviewEntity.rate = partnerReview.rate;
-    return partnerReviewEntity;
-  }
+  // toPartnerReview(partnerReviewEntity: PartnerReviewEntity): PartnerReview {
+  //   const partnerReview: PartnerReview = new PartnerReview();
+  //   partnerReview.id = partnerReviewEntity.id;
+  //   partnerReview.partnerId = partnerReviewEntity.partnerId;
+  //   partnerReview.userId = partnerReviewEntity.userId;
+  //   partnerReview.description = partnerReviewEntity.description;
+  //   partnerReview.rate = partnerReviewEntity.rate;
+  //   return partnerReview;
+  // }
+  // toPartnerReviewEntity(partnerReview: PartnerReview): PartnerReviewEntity {
+  //   const partnerReviewEntity: PartnerReviewEntity = new PartnerReviewEntity();
+  //   partnerReviewEntity.id = partnerReview.id;
+  //   partnerReviewEntity.partnerId = partnerReview.partnerId;
+  //   partnerReviewEntity.userId = partnerReview.userId;
+  //   partnerReviewEntity.description = partnerReview.description;
+  //   partnerReviewEntity.rate = partnerReview.rate;
+  //   return partnerReviewEntity;
+  // }
 }

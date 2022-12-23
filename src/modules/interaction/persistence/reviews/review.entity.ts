@@ -13,7 +13,7 @@ export class ReviewEntity extends CommonEntity {
   id: string;
   @Column()
   score: number;
-  @Column({ name: 'partner_id' })
+  @Column({ name: 'partner_id', nullable: true })
   partnerId: string;
   // @Column({ name: 'user_id' })
   userId: string;

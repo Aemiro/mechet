@@ -9,26 +9,29 @@ import {
 } from 'typeorm';
 import { BlogCategoryEntity } from '../category/category.entity';
 import { BlogCommentEntity } from './blog-comment.entity';
+import { BranchEntity } from '@partner/persistence/partner/branch.entity';
 
 @Entity({ name: 'blogs' })
 export class BlogEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
-  @Column({ type: 'uuid', name: 'category_id' })
+  @Column({ type: 'uuid', name: 'branch_id', nullable: true })
+  branchId: string;
+  @Column({ type: 'uuid', name: 'category_id', nullable: true })
   categoryId: string;
   @Column()
   title: string;
   @Column()
   description: string;
-  @Column()
+  @Column({ nullable: true })
   views: number;
   @Column({ name: 'cover_image', type: 'jsonb', nullable: true })
   coverImage: FileDto;
-  @Column({ name: 'is_published' })
+  @Column({ name: 'is_published', nullable: true })
   isPublished: boolean;
   @Column({ name: 'published_date' })
   publishedDate: Date;
-  @Column({ type: 'simple-array' })
+  @Column({ type: 'simple-array', nullable: true })
   tags: string[];
 
   @OneToMany(() => BlogCommentEntity, (blogComment) => blogComment.blog, {
@@ -43,4 +46,12 @@ export class BlogEntity {
   })
   @JoinColumn({ name: 'category_id' })
   blogCategory: BlogCategoryEntity;
+
+  @ManyToOne(() => BlogCategoryEntity, (branch) => branch.blogs, {
+    orphanedRowAction: 'delete',
+    onUpdate: 'CASCADE',
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'branch_id' })
+  branch: BranchEntity;
 }
