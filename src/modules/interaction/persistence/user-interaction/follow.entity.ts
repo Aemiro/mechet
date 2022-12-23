@@ -14,7 +14,7 @@ export class FollowEntity {
   id: string;
   @Column({ type: 'uuid', name: 'user_id' })
   userId: string;
-  @Column({ type: 'uuid', name: 'partner_id' })
+  @Column({ type: 'uuid', name: 'partner_id', nullable: true })
   partnerId: string;
 
   @ManyToOne(() => UserEntity, (user) => user.follows, {

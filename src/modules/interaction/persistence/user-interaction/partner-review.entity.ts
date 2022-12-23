@@ -12,7 +12,7 @@ import {
 export class PartnerReviewEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
-  @Column({ type: 'uuid', name: 'partner_id' })
+  @Column({ type: 'uuid', name: 'partner_id', nullable: true  })
   partnerId: string;
   @Column({ type: 'uuid', name: 'user_id' })
   userId: string;
