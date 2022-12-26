@@ -15,9 +15,9 @@ export class PartnerCategoryEntity {
   @Index()
   @PrimaryGeneratedColumn('uuid')
   id: string;
-  @Column({ type: 'uuid', name: 'category_id' })
+  @Column({ type: 'uuid', name: 'category_id', nullable: true })
   categoryId: string;
-  @Column({ type: 'uuid', name: 'partner_id' })
+  @Column({ type: 'uuid', name: 'partner_id', nullable: true })
   partnerId: string;
 
   @ManyToOne(() => PartnerEntity, (partner) => partner.partnerCategories, {

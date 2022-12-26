@@ -16,8 +16,10 @@ export class FollowEntity extends CommonEntity {
   id: string;
   @Column({ type: 'uuid', name: 'user_id', nullable: true })
   userId: string;
-  @Column({ type: 'uuid', name: 'branch_id', nullable: true })
-  branchId: string;
+  @Column({ type: 'uuid', name: 'partner_id' })
+  partnerId: string;
+  @Column()
+  totalFollowers: number;
 
   //totalFollowers: number;
   @ManyToOne(() => UserEntity, (user) => user.follows, {

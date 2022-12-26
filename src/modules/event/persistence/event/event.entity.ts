@@ -23,7 +23,9 @@ import { Address } from '@libs/common/address';
 export class EventEntity extends CommonEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
-  @Column({ name: 'partner_id', nullable: true })
+  @Column({ name: 'category_id' })
+  categoryId: string;
+  @Column({ name: 'partner_id' })
   partnerId: string;
   @Column({ name: 'branch_id', nullable: true })
   branchId: string;
