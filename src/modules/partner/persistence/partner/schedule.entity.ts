@@ -11,9 +11,7 @@ import { BranchEntity } from '@partner/persistence/partner/branch.entity';
 export class ScheduleEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
-  @Column({ type: 'uuid', name: 'partner_id' })
-  partnerId: string;
-  @Column({ type: 'uuid', name: 'branch_id' })
+  @Column({ type: 'uuid', name: 'branch_id',nullable: true  })
   branchId: string;
   @Column({ name: 'days_of_week ' })
   daysOfWeek: string;

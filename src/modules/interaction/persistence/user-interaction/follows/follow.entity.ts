@@ -16,8 +16,8 @@ export class FollowEntity extends CommonEntity {
   id: string;
   @Column({ type: 'uuid', name: 'user_id', nullable: true })
   userId: string;
-  @Column({ type: 'uuid', name: 'partner_id' })
-  partnerId: string;
+  @Column({ type: 'uuid', name: 'branch_id' })
+  branchId: string;
   @Column()
   totalFollowers: number;
 
