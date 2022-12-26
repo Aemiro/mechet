@@ -15,7 +15,7 @@ export class BranchReviewEntity extends CommonEntity {
   id: string;
   @Column({ type: 'uuid', name: 'branch_id', nullable: true })
   branchId: string;
-  @Column({ type: 'uuid', name: 'user_id' })
+  @Column({ type: 'uuid', name: 'user_id', nullable: true })
   userId: string;
   @Column()
   description: string;

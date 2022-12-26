@@ -35,11 +35,11 @@ export class UserCommands {
         `User already exist with this email Address`,
       );
     }
-    const userDomain = CreateUserCommand.fromCommands(command);
+    this.userDomain = CreateUserCommand.fromCommands(command);
 
-    console.log(userDomain);
-    userDomain.password = Utility.hashPassword(command.password);
-    const user = await this.userRepository.insert(userDomain);
+    console.log(this.userDomain);
+    this.userDomain.password = Utility.hashPassword(command.password);
+    const user = await this.userRepository.insert(this.userDomain);
     return UserResponse.fromDomain(user);
   }
   async updateUser(

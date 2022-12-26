@@ -1,6 +1,6 @@
 import { FileDto } from '@libs/common/file-dto';
 import { Address } from '@libs/common/address';
-import { EventComment } from '@event/domains/event/event-comments';
+import { EventComment } from '@event/domains/event/event-comment';
 import { BlogComment } from '@blog/domains/blog/blog-comment';
 import { Favorite } from '@interaction/domains/user-interaction/favorites/favorite';
 import { Follow } from '@interaction/domains/user-interaction/follows/follow';

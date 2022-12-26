@@ -6,9 +6,9 @@ import { User } from '@user/domains/user/user';
 import { Location } from '@libs/common/location';
 
 export class CreateUserCommand {
-  @ApiProperty()
+  //@ApiProperty()
   partnerId: string;
-  @ApiProperty()
+  //@ApiProperty()
   branchId: string;
   @ApiProperty()
   @IsNotEmpty()
@@ -64,9 +64,9 @@ export class UpdateUserCommand {
   })
   @IsNotEmpty()
   id: string;
-  @ApiProperty()
+  // @ApiProperty()
   partnerId: string;
-  @ApiProperty()
+  //@ApiProperty()
   branchId: string;
   @ApiProperty()
   @IsNotEmpty()

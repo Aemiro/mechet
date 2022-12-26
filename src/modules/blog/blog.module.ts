@@ -2,7 +2,7 @@ import { FileManagerService } from '@libs/common/file-manager';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { BlogController } from './controllers/blog.controller';
-import { BlogEntity } from './persistence/blog/blog.entty';
+import { BlogEntity } from './persistence/blog/blog.entity';
 import { BlogRepository } from './persistence/blog/blog.repository';
 import { BlogCommands } from './usecases/blog/blog.usecases.commands';
 import { BlogQueries } from './usecases/blog/blog.usecases.queries';

@@ -51,15 +51,21 @@ export class UsersController {
   async getUser(@Param('id') id: string) {
     return this.queries.getUser(id);
   }
-  @Get('get-archived-user/:id')
-  @ApiOkResponse({ type: UserResponse })
-  async getArchivedUser(@Param('id') id: string) {
-    return this.queries.getUser(id, true);
-  }
+  // @Get('get-archived-user/:id')
+  // @ApiOkResponse({ type: UserResponse })
+  // async getArchivedUser(@Param('id') id: string) {
+  //   return this.queries.getUser(id, true);
+  // }
   @Get('get-users')
   @ApiPaginatedResponse(UserResponse)
   async getUsers(@Query() query: CollectionQuery) {
     return this.queries.getUsers(query);
+  }
+
+  @Get('get-archived-users')
+  @ApiPaginatedResponse(UserResponse)
+  async getArchivedUsers(@Query() query: CollectionQuery) {
+    return this.queries.getArchivedUsers(query);
   }
   @Post('create-user')
   @ApiOkResponse({ type: UserResponse })
@@ -74,6 +80,7 @@ export class UsersController {
   ) {
     return this.commands.updateUser(id, updateUserCommand);
   }
+
   @Delete('archive-user/:id')
   @ApiOkResponse({ type: Boolean })
   async archiveUser(@Param('id') id: string) {
@@ -89,11 +96,7 @@ export class UsersController {
   async restoreUser(@Param('id') id: string) {
     return this.commands.restoreUser(id);
   }
-  @Get('get-archived-users')
-  @ApiPaginatedResponse(UserResponse)
-  async getArchivedUsers(@Query() query: CollectionQuery) {
-    return this.queries.getArchivedUsers(query);
-  }
+
   @Post('activate-or-block-user/:id')
   @ApiOkResponse({ type: UserResponse })
   async activateOrBlockUser(@Param('id') id: string) {

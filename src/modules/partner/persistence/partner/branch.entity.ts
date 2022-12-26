@@ -16,8 +16,10 @@ import { PartnerEntity } from './partner.entity';
 import { EventEntity } from '@event/persistence/event/event.entity';
 import { UserEntity } from '@user/persistence/users/user.entity';
 import { BranchReviewEntity } from '@interaction/persistence/user-interaction/branch-reviews/branch-review.entity';
-import { BlogEntity } from '@blog/persistence/blog/blog.entty';
+import { BlogEntity } from '@blog/persistence/blog/blog.entity';
 import { ContactPerson } from '@libs/common/contact-person';
+import { FollowEntity } from '@interaction/persistence/user-interaction/follows/follow.entity';
+import { ScheduleEntity } from '@partner/persistence/partner/schedule.entity';
 
 @Entity({ name: 'branches' })
 export class BranchEntity extends CommonEntity {
@@ -75,4 +77,14 @@ export class BranchEntity extends CommonEntity {
     cascade: true,
   })
   blogs: BlogEntity[];
+
+  @OneToMany(() => FollowEntity, (follow) => follow.branch, {
+    cascade: true,
+  })
+  follows: FollowEntity[];
+
+  @OneToMany(() => ScheduleEntity, (schedule) => schedule.branch, {
+    cascade: true,
+  })
+  schedules: ScheduleEntity[];
 }

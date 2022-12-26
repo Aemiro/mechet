@@ -1,11 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { IsNotEmpty } from 'class-validator';
 import { Schedule } from './../../domains/partner/schedule';
 
 export class CreateScheduleCommand {
-  @ApiProperty()
+  //@ApiProperty()
   branchId: string;
-  @ApiProperty()
-  partnerId: string;
   @ApiProperty()
   daysOfWeek: string;
   @ApiProperty()
@@ -18,7 +17,6 @@ export class CreateScheduleCommand {
   static fromCommands(command: CreateScheduleCommand): Schedule {
     const schedule = new Schedule();
     schedule.branchId = command.branchId;
-    schedule.partnerId = command.partnerId;
     schedule.daysOfWeek = command.daysOfWeek;
     schedule.startingTime = command.startingTime;
     schedule.endTime = command.endTime;
@@ -29,11 +27,10 @@ export class CreateScheduleCommand {
 
 export class UpdateScheduleCommand {
   @ApiProperty()
+  @IsNotEmpty()
   id: string;
-  @ApiProperty()
+  // @ApiProperty()
   branchId: string;
-  @ApiProperty()
-  partnerId: string;
   @ApiProperty()
   daysOfWeek: string;
   @ApiProperty()
@@ -47,7 +44,6 @@ export class UpdateScheduleCommand {
     const schedule = new Schedule();
     schedule.id = command.id;
     schedule.branchId = command.branchId;
-    schedule.partnerId = command.partnerId;
     schedule.daysOfWeek = command.daysOfWeek;
     schedule.startingTime = command.startingTime;
     schedule.endTime = command.endTime;

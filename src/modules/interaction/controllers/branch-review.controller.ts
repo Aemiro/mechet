@@ -32,7 +32,7 @@ export class BranchReviewController {
     private queries: BranchReviewQueries,
   ) {}
 
-  @Get('get-branch-review/:userId')
+  @Get('get-branch-reviews/:userId')
   @ApiPaginatedResponse(BranchReviewResponse)
   async getBranchReviewsByUser(
     @Param('userId') userId: string,
@@ -41,9 +41,9 @@ export class BranchReviewController {
     return this.queries.getBranchReviewsByUser(userId, query);
   }
 
-  @Post('add-branch-review')
+  @Post('create-branch-review')
   @ApiOkResponse({ type: BranchReviewResponse })
-  async addBranchReview(@Body() command: CreateBranchReviewCommand) {
+  async createBranchReview(@Body() command: CreateBranchReviewCommand) {
     return await this.commands.createBranchReview(command);
   }
 

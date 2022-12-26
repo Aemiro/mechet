@@ -1,23 +1,26 @@
 import { ContactPerson } from '@libs/common/contact-person';
 import { Status } from '@libs/common/enums';
-import { FileDto } from '@libs/common/file-dto';
 import { ApiProperty } from '@nestjs/swagger';
 import { Partner } from '@partner/domains/partner/partner';
-import { IsEnum } from 'class-validator';
+import { IsEmail, IsEnum, IsNotEmpty } from 'class-validator';
 
 export class CreatePartnerCommand {
-  @ApiProperty()
+  // @ApiProperty()
   categoryId: string;
   @ApiProperty()
   name: string;
-  @ApiProperty()
+  @ApiProperty({
+    example: 'someone@gmail.com',
+  })
+  @IsEmail()
   email: string;
-  @ApiProperty()
+  @ApiProperty({
+    example: '+251911111111',
+  })
+  @IsNotEmpty()
   phoneNumber: string;
   @ApiProperty()
   website: string;
-  @ApiProperty()
-  logo: FileDto;
   @ApiProperty()
   about: string;
   @ApiProperty()
@@ -37,7 +40,6 @@ export class CreatePartnerCommand {
     partner.email = command.email;
     partner.phoneNumber = command.phoneNumber;
     partner.website = command.website;
-    partner.logo = command.logo;
     partner.about = command.about;
     partner.status = command.status;
     partner.contactPerson = command.contactPerson;
@@ -48,7 +50,7 @@ export class CreatePartnerCommand {
 export class UpdatePartnerCommand {
   @ApiProperty()
   id: string;
-  @ApiProperty()
+  // @ApiProperty()
   categoryId: string;
   @ApiProperty()
   name: string;
@@ -58,8 +60,6 @@ export class UpdatePartnerCommand {
   phoneNumber: string;
   @ApiProperty()
   website: string;
-  @ApiProperty()
-  logo: FileDto;
   @ApiProperty()
   about: string;
   @ApiProperty()
@@ -80,7 +80,6 @@ export class UpdatePartnerCommand {
     partner.email = command.email;
     partner.phoneNumber = command.phoneNumber;
     partner.website = command.website;
-    partner.logo = command.logo;
     partner.about = command.about;
     partner.status = command.status;
     partner.contactPerson = command.contactPerson;

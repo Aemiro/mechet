@@ -8,13 +8,13 @@ export class FollowResponse {
   @ApiProperty()
   userId: string;
   @ApiProperty()
-  partnerId: string;
+  branchId: string;
 
   static fromEntity(followEntity: FollowEntity): FollowResponse {
     const followResponse = new FollowResponse();
     followResponse.id = followEntity.id;
     followResponse.userId = followEntity.userId;
-    followResponse.partnerId = followEntity.partnerId;
+    followResponse.branchId = followEntity.branchId;
     return followResponse;
   }
 
@@ -22,7 +22,7 @@ export class FollowResponse {
     const followResponse = new FollowResponse();
     followResponse.id = follow.id;
     followResponse.userId = follow.userId;
-    followResponse.partnerId = follow.partnerId;
+    followResponse.branchId = follow.branchId;
     return followResponse;
   }
 }

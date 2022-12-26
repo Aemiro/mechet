@@ -11,6 +11,8 @@ import { PartnerCategory } from '@partner/domains/partner/partner-category';
 import { FollowEntity } from '@interaction/persistence/user-interaction/follows/follow.entity';
 import { Branch } from '@partner/domains/partner/branch';
 import { BranchEntity } from './branch.entity';
+import { BranchReviewEntity } from '@interaction/persistence/user-interaction/branch-reviews/branch-review.entity';
+import { BranchReview } from '@interaction/domains/user-interaction/branch-reviews/branch-review';
 
 export class PartnerRepository implements IPartner {
   constructor(
@@ -22,7 +24,7 @@ export class PartnerRepository implements IPartner {
     const result = await this.partnerRepository.save(partnerEntity);
     return result ? this.toPartner(result) : null;
   }
-  async update(id: string, partner: Partner): Promise<Partner> {
+  async update(partner: Partner): Promise<Partner> {
     const partnerEntity = this.toPartnerEntity(partner);
     const result = await this.partnerRepository.save(partnerEntity);
     return result ? this.toPartner(result) : null;
@@ -34,12 +36,7 @@ export class PartnerRepository implements IPartner {
   }
   async getAll(withDeleted: boolean): Promise<Partner[]> {
     const partners = await this.partnerRepository.find({
-      relations: [
-        'schedules',
-        'follows',
-        'partner_reviews',
-        'partner_categories',
-      ],
+      relations: [],
       withDeleted: withDeleted,
     });
     if (!partners.length) {
@@ -50,11 +47,7 @@ export class PartnerRepository implements IPartner {
   async getById(id: string, withDeleted = false): Promise<Partner> {
     const partner = await this.partnerRepository.find({
       where: { id: id },
-      relations: [
-        'schedules',
-        'follows',
-        'partner_reviews, partner_categories',
-      ],
+      relations: [],
       withDeleted: withDeleted,
     });
     if (!partner[0]) {
@@ -68,11 +61,7 @@ export class PartnerRepository implements IPartner {
   ): Promise<Partner> {
     const partner = await this.partnerRepository.find({
       where: { phoneNumber: phoneNumber },
-      relations: [
-        'schedules',
-        'follows',
-        'partner_reviews, partner_categories',
-      ],
+      relations: [],
       withDeleted: withDeleted,
     });
     if (!partner[0]) {
@@ -83,11 +72,7 @@ export class PartnerRepository implements IPartner {
   async getByEmail(email: string, withDeleted: boolean): Promise<Partner> {
     const partner = await this.partnerRepository.find({
       where: { email: email },
-      relations: [
-        'schedules',
-        'follows',
-        'partner_reviews, partner_categories',
-      ],
+      relations: [],
       withDeleted: withDeleted,
     });
     if (!partner[0]) {
@@ -117,17 +102,6 @@ export class PartnerRepository implements IPartner {
     partner.about = partnerEntity.about;
     partner.status = partnerEntity.status;
     partner.contactPerson = partnerEntity.contactPerson;
-    partner.schedules = partnerEntity.schedules
-      ? partnerEntity.schedules.map((element) => this.toSchedule(element))
-      : [];
-    partner.follows = partnerEntity.follows
-      ? partnerEntity.follows.map((element) => this.toFollow(element))
-      : [];
-    // partner.partnerReviews = partnerEntity.partnerReviews
-    //   ? partnerEntity.partnerReviews.map((element) =>
-    //       this.toPartnerReview(element),
-    //     )
-    //   : [];
     partner.partnerCategories = partnerEntity.partnerCategories
       ? partnerEntity.partnerCategories.map((element) =>
           this.toPartnerCategory(element),
@@ -151,24 +125,13 @@ export class PartnerRepository implements IPartner {
     partnerEntity.about = partner.about;
     partnerEntity.status = partner.status;
     partnerEntity.contactPerson = partner.contactPerson;
-    partnerEntity.schedules = partner.schedules
-      ? partner.schedules.map((element) => this.toScheduleEntity(element))
-      : [];
-    partnerEntity.follows = partner.follows
-      ? partner.follows.map((element) => this.toFollowEntity(element))
-      : [];
-    // partnerEntity.partnerReviews = partner.partnerReviews
-    //   ? partner.partnerReviews.map((element) =>
-    //       this.toPartnerReviewEntity(element),
-    //     )
-    //   : [];
     partnerEntity.partnerCategories = partner.partnerCategories
       ? partner.partnerCategories.map((element) =>
           this.toPartnerCategoryEntity(element),
         )
       : [];
     partnerEntity.branches = partner.branches
-      ? partnerEntity.branches.map((element) => this.toBranchEntity(element))
+      ? partner.branches.map((element) => this.toBranchEntity(element))
       : [];
     return partnerEntity;
   }
@@ -187,17 +150,17 @@ export class PartnerRepository implements IPartner {
     branch.averageRate = branchEntity.averageRate;
     branch.contactPerson = branchEntity.contactPerson;
     branch.isMainBranch = branchEntity.isMainBranch;
-    // partner.schedules = partnerEntity.schedules
-    //   ? partnerEntity.schedules.map((element) => this.toSchedule(element))
-    //   : [];
-    // partner.follows = partnerEntity.follows
-    //   ? partnerEntity.follows.map((element) => this.toFollow(element))
-    //   : [];
-    // partner.partnerReviews = partnerEntity.partnerReviews
-    //   ? partnerEntity.partnerReviews.map((element) =>
-    //       this.toPartnerReview(element),
-    //     )
-    //   : [];
+    branch.branchReviews = branchEntity.branchReviews
+      ? branchEntity.branchReviews.map((element) =>
+          this.toBranchReview(element),
+        )
+      : [];
+    branch.follows = branchEntity.follows
+      ? branchEntity.follows.map((element) => this.toFollow(element))
+      : [];
+    branch.schedules = branchEntity.schedules
+      ? branchEntity.schedules.map((element) => this.toSchedule(element))
+      : [];
     // partner.partnerCategories = partnerEntity.partnerCategories
     //   ? partnerEntity.partnerCategories.map((element) =>
     //       this.toPartnerCategory(element),
@@ -220,23 +183,54 @@ export class PartnerRepository implements IPartner {
     branchEntity.averageRate = branch.averageRate;
     branchEntity.contactPerson = branch.contactPerson;
     branchEntity.isMainBranch = branch.isMainBranch;
-    // partnerEntity.schedules = partner.schedules
-    //   ? partner.schedules.map((element) => this.toScheduleEntity(element))
-    //   : [];
-    // partnerEntity.follows = partner.follows
-    //   ? partner.follows.map((element) => this.toFollowEntity(element))
-    //   : [];
-    // partnerEntity.partnerReviews = partner.partnerReviews
-    //   ? partner.partnerReviews.map((element) =>
-    //       this.toPartnerReviewEntity(element),
-    //     )
-    //   : [];
+    branchEntity.branchReviews = branch.branchReviews
+      ? branch.branchReviews.map((element) =>
+          this.toBranchReviewEntity(element),
+        )
+      : [];
+    branchEntity.follows = branch.follows
+      ? branch.follows.map((element) => this.toFollowEntity(element))
+      : [];
+    branchEntity.schedules = branch.schedules
+      ? branch.schedules.map((element) => this.toScheduleEntity(element))
+      : [];
     // partnerEntity.partnerCategories = partner.partnerCategories
     //   ? partner.partnerCategories.map((element) =>
     //       this.toPartnerCategoryEntity(element),
     //     )
     //   : [];
     return branchEntity;
+  }
+  toBranchReviewEntity(branchReview: BranchReview): BranchReviewEntity {
+    const branchReviewEntity: BranchReviewEntity = new BranchReviewEntity();
+    branchReviewEntity.id = branchReview.id;
+    branchReviewEntity.userId = branchReview.userId;
+    branchReviewEntity.branchId = branchReview.branchId;
+    branchReviewEntity.description = branchReview.description;
+    branchReviewEntity.rate = branchReview.rate;
+    branchReviewEntity.createdBy = branchReview.createdBy;
+    branchReviewEntity.updatedBy = branchReview.updatedBy;
+    branchReviewEntity.deletedBy = branchReview.deletedBy;
+    branchReviewEntity.createdAt = branchReview.createdAt;
+    branchReviewEntity.updatedAt = branchReview.updatedAt;
+    branchReviewEntity.deletedAt = branchReview.deletedAt;
+    return branchReviewEntity;
+  }
+
+  toBranchReview(branchReviewEntity: BranchReviewEntity): BranchReview {
+    const branchReview: BranchReview = new BranchReview();
+    branchReview.id = branchReviewEntity.id;
+    branchReview.userId = branchReviewEntity.userId;
+    branchReview.branchId = branchReviewEntity.branchId;
+    branchReview.description = branchReviewEntity.description;
+    branchReview.rate = branchReviewEntity.rate;
+    branchReview.createdBy = branchReviewEntity.createdBy;
+    branchReview.updatedBy = branchReviewEntity.updatedBy;
+    branchReview.deletedBy = branchReviewEntity.deletedBy;
+    branchReview.createdAt = branchReviewEntity.createdAt;
+    branchReview.updatedAt = branchReviewEntity.updatedAt;
+    branchReview.deletedAt = branchReviewEntity.deletedAt;
+    return branchReview;
   }
 
   toPartnerCategory(
@@ -261,7 +255,6 @@ export class PartnerRepository implements IPartner {
   toSchedule(scheduleEntity: ScheduleEntity): Schedule {
     const schedule: Schedule = new Schedule();
     schedule.id = scheduleEntity.id;
-    schedule.partnerId = scheduleEntity.partnerId;
     schedule.branchId = scheduleEntity.branchId;
     schedule.description = scheduleEntity.description;
     schedule.daysOfWeek = scheduleEntity.daysOfWeek;
@@ -272,7 +265,7 @@ export class PartnerRepository implements IPartner {
   toScheduleEntity(schedule: Schedule): ScheduleEntity {
     const scheduleEntity: ScheduleEntity = new ScheduleEntity();
     scheduleEntity.id = schedule.id;
-    scheduleEntity.partnerId = schedule.partnerId;
+    scheduleEntity.branchId = schedule.branchId;
     scheduleEntity.description = schedule.description;
     scheduleEntity.daysOfWeek = schedule.daysOfWeek;
     scheduleEntity.startingTime = schedule.startingTime;
@@ -282,33 +275,15 @@ export class PartnerRepository implements IPartner {
   toFollow(followEntity: FollowEntity): Follow {
     const follow: Follow = new Follow();
     follow.id = followEntity.id;
-    follow.partnerId = followEntity.partnerId;
+    follow.branchId = followEntity.branchId;
     follow.userId = followEntity.userId;
     return follow;
   }
   toFollowEntity(follow: Follow): FollowEntity {
     const followEntity: FollowEntity = new FollowEntity();
     followEntity.id = follow.id;
-    followEntity.partnerId = follow.partnerId;
+    followEntity.branchId = follow.branchId;
     followEntity.userId = follow.userId;
     return followEntity;
   }
-  // toPartnerReview(partnerReviewEntity: PartnerReviewEntity): PartnerReview {
-  //   const partnerReview: PartnerReview = new PartnerReview();
-  //   partnerReview.id = partnerReviewEntity.id;
-  //   partnerReview.partnerId = partnerReviewEntity.partnerId;
-  //   partnerReview.userId = partnerReviewEntity.userId;
-  //   partnerReview.description = partnerReviewEntity.description;
-  //   partnerReview.rate = partnerReviewEntity.rate;
-  //   return partnerReview;
-  // }
-  // toPartnerReviewEntity(partnerReview: PartnerReview): PartnerReviewEntity {
-  //   const partnerReviewEntity: PartnerReviewEntity = new PartnerReviewEntity();
-  //   partnerReviewEntity.id = partnerReview.id;
-  //   partnerReviewEntity.partnerId = partnerReview.partnerId;
-  //   partnerReviewEntity.userId = partnerReview.userId;
-  //   partnerReviewEntity.description = partnerReview.description;
-  //   partnerReviewEntity.rate = partnerReview.rate;
-  //   return partnerReviewEntity;
-  // }
 }

@@ -1,5 +1,5 @@
 import { Blog } from '@blog/domains/blog/blog';
-import { BlogEntity } from '@blog/persistence/blog/blog.entty';
+import { BlogEntity } from '@blog/persistence/blog/blog.entity';
 import { FileDto } from '@libs/common/file-dto';
 import { ApiProperty } from '@nestjs/swagger';
 export class BlogResponse {

@@ -5,15 +5,15 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { PartnerEntity } from './partner.entity';
+import { BranchEntity } from '@partner/persistence/partner/branch.entity';
 
 @Entity({ name: 'schedules' })
 export class ScheduleEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
-  @Column({ type: 'uuid', name: 'partner_id', nullable: true })
+  @Column({ type: 'uuid', name: 'partner_id' })
   partnerId: string;
-  @Column({ type: 'uuid', name: 'branch_id', nullable: true })
+  @Column({ type: 'uuid', name: 'branch_id' })
   branchId: string;
   @Column({ name: 'days_of_week ' })
   daysOfWeek: string;
@@ -24,11 +24,11 @@ export class ScheduleEntity {
   @Column()
   description: string;
 
-  @ManyToOne(() => PartnerEntity, (partner) => partner.schedules, {
+  @ManyToOne(() => BranchEntity, (branch) => branch.schedules, {
     orphanedRowAction: 'delete',
     onUpdate: 'CASCADE',
     onDelete: 'CASCADE',
   })
-  @JoinColumn({ name: 'partner_id' })
-  partner: PartnerEntity;
+  @JoinColumn({ name: 'branch_id' })
+  branch: BranchEntity;
 }

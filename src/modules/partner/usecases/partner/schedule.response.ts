@@ -8,8 +8,6 @@ export class ScheduleResponse {
   @ApiProperty()
   branchId: string;
   @ApiProperty()
-  partnerId: string;
-  @ApiProperty()
   daysOfWeek: string;
   @ApiProperty()
   startingTime: Date;
@@ -22,7 +20,6 @@ export class ScheduleResponse {
     const scheduleResponse = new ScheduleResponse();
     scheduleResponse.id = scheduleEntity.id;
     scheduleResponse.branchId = scheduleEntity.branchId;
-    scheduleResponse.partnerId = scheduleEntity.partnerId;
     scheduleResponse.daysOfWeek = scheduleEntity.daysOfWeek;
     scheduleResponse.startingTime = scheduleEntity.startingTime;
     scheduleResponse.endTime = scheduleEntity.endTime;
@@ -34,7 +31,6 @@ export class ScheduleResponse {
     const scheduleResponse = new ScheduleResponse();
     scheduleResponse.id = schedule.id;
     scheduleResponse.branchId = schedule.branchId;
-    scheduleResponse.partnerId = schedule.partnerId;
     scheduleResponse.daysOfWeek = schedule.daysOfWeek;
     scheduleResponse.startingTime = schedule.startingTime;
     scheduleResponse.endTime = schedule.endTime;

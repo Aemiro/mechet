@@ -5,12 +5,12 @@ export class CreateFollowCommand {
   @ApiProperty()
   userId: string;
   @ApiProperty()
-  partnerId: string;
+  branchId: string;
 
   static fromCommands(command: CreateFollowCommand): Follow {
     const follow = new Follow();
     follow.userId = command.userId;
-    follow.partnerId = command.partnerId;
+    follow.branchId = command.branchId;
     return follow;
   }
 }
@@ -21,13 +21,13 @@ export class UpdateFollowCommand {
   @ApiProperty()
   userId: string;
   @ApiProperty()
-  partnerId: string;
+  branchId: string;
 
   static fromCommands(command: UpdateFollowCommand): Follow {
     const follow = new Follow();
     follow.id = command.id;
     follow.userId = command.userId;
-    follow.partnerId = command.partnerId;
+    follow.branchId = command.branchId;
     return follow;
   }
 }

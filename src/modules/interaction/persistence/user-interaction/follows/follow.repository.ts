@@ -63,7 +63,7 @@ export class FollowRepository implements IFollow {
     const followEntity: FollowEntity = new FollowEntity();
     followEntity.id = follow.id;
     followEntity.userId = follow.userId;
-    followEntity.partnerId = follow.partnerId;
+    followEntity.branchId = follow.branchId;
     return followEntity;
   }
 
@@ -71,7 +71,7 @@ export class FollowRepository implements IFollow {
     const follow: Follow = new Follow();
     follow.id = followEntity.id;
     follow.userId = followEntity.userId;
-    follow.partnerId = followEntity.partnerId;
+    follow.branchId = followEntity.branchId;
     return follow;
   }
 }

@@ -43,16 +43,6 @@ export class PartnerEntity extends CommonEntity {
   @Column({ type: 'jsonb', name: 'contact_person' })
   contactPerson: ContactPerson;
 
-  @OneToMany(() => FollowEntity, (follow) => follow.partner, {
-    cascade: true,
-  })
-  follows: FollowEntity[];
-
-  @OneToMany(() => ScheduleEntity, (schedule) => schedule.partner, {
-    cascade: true,
-  })
-  schedules: ScheduleEntity[];
-
   @OneToMany(() => ReviewEntity, (review) => review.partner, {
     cascade: true,
   })

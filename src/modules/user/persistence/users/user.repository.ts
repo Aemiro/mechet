@@ -16,7 +16,7 @@ import { Interest } from '@interaction/domains/user-interaction/interests/intere
 import { InterestEntity } from '@interaction/persistence/user-interaction/interests/interest.entity';
 import { BlogComment } from '@blog/domains/blog/blog-comment';
 import { BlogCommentEntity } from '@blog/persistence/blog/blog-comment.entity';
-import { EventComment } from '@event/domains/event/event-comments';
+import { EventComment } from '@event/domains/event/event-comment';
 import { EventCommentEntity } from '@event/persistence/event/event-comment.entity';
 @Injectable()
 export class UserRepository implements IUserRepository {
@@ -60,15 +60,7 @@ export class UserRepository implements IUserRepository {
   async getById(id: string, withDeleted = false): Promise<User> {
     const user = await this.userRepository.find({
       where: { id: id },
-      relations: [
-        // 'favorites',
-        // 'interests',
-        // 'follows',
-        // 'branch_reviews',
-        // 'event_reviews',
-        // 'blog_comments',
-        // 'event_comments',
-      ],
+      relations: [],
       withDeleted: withDeleted,
     });
     if (!user[0]) {
@@ -312,7 +304,7 @@ export class UserRepository implements IUserRepository {
     const followEntity: FollowEntity = new FollowEntity();
     followEntity.id = follow.id;
     followEntity.userId = follow.userId;
-    followEntity.partnerId = follow.partnerId;
+    followEntity.branchId = follow.branchId;
     followEntity.createdBy = follow.createdBy;
     followEntity.updatedBy = follow.updatedBy;
     followEntity.deletedBy = follow.deletedBy;
@@ -326,7 +318,7 @@ export class UserRepository implements IUserRepository {
     const follow: Follow = new Follow();
     follow.id = followEntity.id;
     follow.userId = followEntity.userId;
-    follow.partnerId = followEntity.partnerId;
+    follow.branchId = followEntity.branchId;
     follow.createdBy = followEntity.createdBy;
     follow.updatedBy = followEntity.updatedBy;
     follow.deletedBy = followEntity.deletedBy;
@@ -399,12 +391,6 @@ export class UserRepository implements IUserRepository {
     eventComment.eventId = eventCommentEntity.eventId;
     eventComment.userId = eventCommentEntity.userId;
     eventComment.description = eventCommentEntity.description;
-    eventComment.createdBy = eventCommentEntity.createdBy;
-    eventComment.updatedBy = eventCommentEntity.updatedBy;
-    eventComment.deletedBy = eventCommentEntity.deletedBy;
-    eventComment.createdAt = eventCommentEntity.createdAt;
-    eventComment.updatedAt = eventCommentEntity.updatedAt;
-    eventComment.deletedAt = eventCommentEntity.deletedAt;
     return eventComment;
   }
   toEventCommentEntity(eventComment: EventComment): EventCommentEntity {
@@ -413,12 +399,6 @@ export class UserRepository implements IUserRepository {
     eventCommentEntity.eventId = eventComment.eventId;
     eventCommentEntity.userId = eventComment.userId;
     eventCommentEntity.description = eventComment.description;
-    eventCommentEntity.createdBy = eventComment.createdBy;
-    eventCommentEntity.updatedBy = eventComment.updatedBy;
-    eventCommentEntity.deletedBy = eventComment.deletedBy;
-    eventCommentEntity.createdAt = eventComment.createdAt;
-    eventCommentEntity.updatedAt = eventComment.updatedAt;
-    eventCommentEntity.deletedAt = eventComment.deletedAt;
     return eventCommentEntity;
   }
 }

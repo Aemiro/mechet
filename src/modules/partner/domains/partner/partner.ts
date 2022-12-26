@@ -24,10 +24,29 @@ export class Partner {
   deletedAt?: Date;
   deletedBy?: string;
   branches: Branch[];
-  schedules: Schedule[];
   follows: Follow[];
   // partnerReviews: PartnerReview[];
   partnerCategories: PartnerCategory[];
+
+  //branch
+  async addBanch(createBranch: Branch) {
+    this.branches.push(createBranch);
+  }
+
+  async updateBranch(branch: Branch) {
+    const existIndex = this.branches.findIndex(
+      (element) => element.id == branch.id,
+    );
+    this.branches[existIndex] = branch;
+  }
+
+  async removeBranch(id: string) {
+    this.branches = this.branches.filter((element) => element.id != id);
+  }
+
+  async updateBranches(branches: Branch[]) {
+    this.branches = branches;
+  }
 
   //partner category
   async addPartnerCategory(createPartnerCategory: PartnerCategory) {
@@ -51,25 +70,6 @@ export class Partner {
     this.partnerCategories = partnerCategories;
   }
 
-  //schedule
-  async addSchedule(createSchedule: Schedule) {
-    this.schedules.push(createSchedule);
-  }
-
-  async updateSchedule(schedule: Schedule) {
-    const existIndex = this.schedules.findIndex(
-      (element) => element.id == schedule.id,
-    );
-    this.schedules[existIndex] = schedule;
-  }
-
-  async removeSchedule(id: string) {
-    this.schedules = this.schedules.filter((element) => element.id != id);
-  }
-
-  async updateSchedules(schedules: Schedule[]) {
-    this.schedules = schedules;
-  }
   //follow
   async addFollow(createFollow: Follow) {
     this.follows.push(createFollow);
