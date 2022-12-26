@@ -1,21 +1,20 @@
 import { AverageRate } from '@libs/common/average-rate';
-import { FileDto } from '@libs/common/file-dto';
 import { ApiProperty } from '@nestjs/swagger';
-import { Address } from 'nodemailer/lib/mailer';
 import { Event } from '@event/domains/event/event';
 import { Location } from '@libs/common/location';
+import { Address } from '@libs/common/address';
 
 export class CreateEventCommand {
-  @ApiProperty()
-  categoryId: string;
+  //@ApiProperty()
+  branchId: string;
+  // @ApiProperty()
+  partnerId: string;
   @ApiProperty()
   title: string;
   @ApiProperty()
   description: string;
   @ApiProperty()
   views: number;
-  @ApiProperty()
-  coverImage: FileDto;
   @ApiProperty()
   isPublished: boolean;
   @ApiProperty()
@@ -31,17 +30,15 @@ export class CreateEventCommand {
   @ApiProperty()
   location: Location;
   @ApiProperty()
-  numOfInterestedUser: number;
-  @ApiProperty()
   tags: string[];
 
-  static fromCommand(command: CreateEventCommand): Event {
+  static fromCommands(command: CreateEventCommand): Event {
     const event = new Event();
-    event.categoryId = command.categoryId;
+    event.branchId = command.branchId;
+    event.partnerId = command.partnerId;
     event.title = command.title;
     event.description = command.description;
     event.views = command.views;
-    event.coverImage = command.coverImage;
     event.isPublished = command.isPublished;
     event.publishedDate = command.publishedDate;
     event.from = command.from;
@@ -49,7 +46,6 @@ export class CreateEventCommand {
     event.averageRate = command.averageRate;
     event.address = command.address;
     event.location = command.location;
-    event.numOfInterestedUser = command.numOfInterestedUser;
     event.tags = command.tags;
     return event;
   }
@@ -57,16 +53,16 @@ export class CreateEventCommand {
 export class UpdateEventCommand {
   @ApiProperty()
   id: string;
-  @ApiProperty()
-  categoryId: string;
+  // @ApiProperty()
+  partnerId: string;
+  // @ApiProperty()
+  branchId: string;
   @ApiProperty()
   title: string;
   @ApiProperty()
   description: string;
   @ApiProperty()
   views: number;
-  @ApiProperty()
-  coverImage: FileDto;
   @ApiProperty()
   isPublished: boolean;
   @ApiProperty()
@@ -83,14 +79,14 @@ export class UpdateEventCommand {
   location: Location;
   @ApiProperty()
   tags: string[];
-  static fromCommand(command: UpdateEventCommand): Event {
+  static fromCommands(command: UpdateEventCommand): Event {
     const event = new Event();
     event.id = command.id;
-    event.categoryId = command.categoryId;
+    event.branchId = command.branchId;
+    event.partnerId = command.partnerId;
     event.title = command.title;
     event.description = command.description;
     event.views = command.views;
-    event.coverImage = command.coverImage;
     event.isPublished = command.isPublished;
     event.publishedDate = command.publishedDate;
     event.from = command.from;

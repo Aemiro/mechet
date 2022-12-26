@@ -6,7 +6,7 @@ import {
   JoinColumn,
   ManyToOne,
 } from 'typeorm';
-import { CategoryEntity } from '../category/category.entity';
+import { PCategoryEntity } from '../p-category/p-category.entity';
 
 import { PartnerEntity } from './partner.entity';
 
@@ -28,11 +28,15 @@ export class PartnerCategoryEntity {
   @JoinColumn({ name: 'partner_id' })
   partner: PartnerEntity;
 
-  @ManyToOne(() => CategoryEntity, (category) => category.partnerCategories, {
-    orphanedRowAction: 'delete',
-    onUpdate: 'CASCADE',
-    onDelete: 'CASCADE',
-  })
+  @ManyToOne(
+    () => PCategoryEntity,
+    (pCategory) => pCategory.partnerCategories,
+    {
+      orphanedRowAction: 'delete',
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE',
+    },
+  )
   @JoinColumn({ name: 'category_id' })
-  category: CategoryEntity;
+  pCategory: PCategoryEntity;
 }

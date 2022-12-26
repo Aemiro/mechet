@@ -5,20 +5,22 @@ import { PartnerEntity } from '@partner/persistence/partner/partner.entity';
 import { PartnerController } from '@partner/controllers/partner.controller';
 import { PartnerRepository } from '@partner/persistence/partner/partner.repository';
 import { PartnerCommands } from '@partner/usecases/partner/partner.usecases.commands';
-import { CategoryEntity } from '@partner/persistence/category/category.entity';
-import { PartnerQueries } from '@partner/usecases/partner/partner.usecases.queries';
-import { CategoryCommands } from '@partner/usecases/category/category.usecases.commands';
-import { CategoryQueries } from '@partner/usecases/category/category.usecases.queries';
-import { CategoryController } from '@partner/controllers/category.controller';
+import { PCategoryController } from './controllers/p-category.controller';
+import { PCategoryEntity } from './persistence/p-category/p-category.entity';
+import { PCategoryRepository } from './persistence/p-category/p-category.repository';
+import { PCategoryCommands } from './usecases/p-category/p-category.usecases.commands';
+import { PCategoryQueries } from './usecases/p-category/p-category.usecases.queries';
+import { PartnerQueries } from './usecases/partner/partner.usecases.queries';
 @Module({
-  controllers: [PartnerController, CategoryController],
-  imports: [TypeOrmModule.forFeature([PartnerEntity, CategoryEntity])],
+  controllers: [PartnerController, PCategoryController],
+  imports: [TypeOrmModule.forFeature([PartnerEntity, PCategoryEntity])],
   providers: [
     PartnerRepository,
     PartnerCommands,
     PartnerQueries,
-    CategoryCommands,
-    CategoryQueries,
+    PCategoryRepository,
+    PCategoryCommands,
+    PCategoryQueries,
     FileManagerService,
   ],
 })

@@ -1,4 +1,4 @@
-import { EventComment } from '@event/domains/event/event-comments';
+import { EventComment } from '@event/domains/event/event-comment';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateEventCommentCommand {
@@ -9,7 +9,7 @@ export class CreateEventCommentCommand {
   @ApiProperty()
   description: string;
 
-  static fromCommand(command: CreateEventCommentCommand): EventComment {
+  static fromCommands(command: CreateEventCommentCommand): EventComment {
     const eventComment = new EventComment();
     eventComment.userId = command.userId;
     eventComment.eventId = command.eventId;
@@ -28,7 +28,7 @@ export class UpdateEventCommentCommand {
   @ApiProperty()
   description: string;
 
-  static fromCommand(command: UpdateEventCommentCommand): EventComment {
+  static fromCommands(command: UpdateEventCommentCommand): EventComment {
     const eventComment = new EventComment();
     eventComment.id = command.id;
     eventComment.userId = command.userId;

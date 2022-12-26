@@ -1,4 +1,4 @@
-import { EventComment } from '@event/domains/event/event-comments';
+import { EventComment } from '@event/domains/event/event-comment';
 import { ApiProperty } from '@nestjs/swagger';
 import { EventCommentEntity } from '@event/persistence/event/event-comment.entity';
 export class EventCommentResponse {

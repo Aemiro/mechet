@@ -3,7 +3,6 @@ import { InterestEntity } from '@interaction/persistence/user-interaction/intere
 import { AverageRate } from '@libs/common/average-rate';
 import { FileDto } from '@libs/common/file-dto';
 import { Location } from '@libs/common/location';
-import { Address } from 'nodemailer/lib/mailer';
 import {
   Column,
   Entity,
@@ -16,16 +15,17 @@ import { EventCommentEntity } from './event-comment.entity';
 import { PartnerEntity } from '@partner/persistence/partner/partner.entity';
 import { BranchEntity } from '@partner/persistence/partner/branch.entity';
 import { EventReviewEntity } from '@interaction/persistence/user-interaction/event-reviews/event-review.entity';
+import { CommonEntity } from '@libs/common/common.entity';
+import { EventCategoryEntity } from './event-category.entity';
+import { Address } from '@libs/common/address';
 
 @Entity({ name: 'events' })
-export class EventEntity {
+export class EventEntity extends CommonEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
-  @Column({ name: 'category_id' })
-  categoryId: string;
-  @Column({ name: 'partner_id' })
+  @Column({ name: 'partner_id', nullable: true })
   partnerId: string;
-  @Column({ name: 'branch_id' })
+  @Column({ name: 'branch_id', nullable: true })
   branchId: string;
   @Column()
   title: string;
@@ -73,6 +73,15 @@ export class EventEntity {
     cascade: true,
   })
   eventReviews: EventReviewEntity[];
+
+  @OneToMany(
+    () => EventCategoryEntity,
+    (eventCategory) => eventCategory.event,
+    {
+      cascade: true,
+    },
+  )
+  eventCategories: EventCategoryEntity[];
 
   @ManyToOne(() => PartnerEntity, (partner) => partner.events, {
     orphanedRowAction: 'delete',

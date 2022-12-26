@@ -22,7 +22,7 @@ export class PartnerEntity extends CommonEntity {
   @Index()
   @PrimaryGeneratedColumn('uuid')
   id: string;
-  @Column({ type: 'uuid', name: 'category_id' })
+  @Column({ type: 'uuid', name: 'category_id', nullable: true })
   categoryId: string;
   @Column()
   name: string;
@@ -42,16 +42,6 @@ export class PartnerEntity extends CommonEntity {
   status: Status;
   @Column({ type: 'jsonb', name: 'contact_person' })
   contactPerson: ContactPerson;
-
-  @OneToMany(() => FollowEntity, (follow) => follow.partner, {
-    cascade: true,
-  })
-  follows: FollowEntity[];
-
-  @OneToMany(() => ScheduleEntity, (schedule) => schedule.partner, {
-    cascade: true,
-  })
-  schedules: ScheduleEntity[];
 
   @OneToMany(() => ReviewEntity, (review) => review.partner, {
     cascade: true,

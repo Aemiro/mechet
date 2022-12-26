@@ -1,9 +1,8 @@
 export class Schedule {
   id: string;
-  partnerId: string;
+  branchId: string;
   daysOfWeek: string;
   startingTime: Date;
   endTime: Date;
   description: string;
-  branchId: string;
 }

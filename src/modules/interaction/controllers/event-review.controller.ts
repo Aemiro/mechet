@@ -32,7 +32,7 @@ export class EventReviewController {
     private queries: EventReviewQueries,
   ) {}
 
-  @Get('get-event-review/:userId')
+  @Get('get-event-reviews/:userId')
   @ApiPaginatedResponse(EventReviewResponse)
   async getEventReviewsByUser(
     @Param('userId') userId: string,
@@ -41,15 +41,15 @@ export class EventReviewController {
     return this.queries.getEventReviewsByUser(userId, query);
   }
 
-  @Post('add-event-review')
+  @Post('create-event-review')
   @ApiOkResponse({ type: EventReviewResponse })
-  async addEventReview(@Body() command: CreateEventReviewCommand) {
+  async createEventReview(@Body() command: CreateEventReviewCommand) {
     return await this.commands.createEventReview(command);
   }
 
   @Delete('remove-event-review/:id')
   @ApiOkResponse({ type: Boolean })
-  async removeEventReview(@Param() id: string) {
+  async removeEventReview(@Param('id') id: string) {
     return await this.commands.removeEventReview(id);
   }
 }

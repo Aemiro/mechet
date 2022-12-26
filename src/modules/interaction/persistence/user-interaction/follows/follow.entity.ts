@@ -8,18 +8,18 @@ import {
   ManyToOne,
 } from 'typeorm';
 import { CommonEntity } from '@libs/common/common.entity';
+import { BranchEntity } from '@partner/persistence/partner/branch.entity';
 
 @Entity({ name: 'follows' })
 export class FollowEntity extends CommonEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
-  @Column({ type: 'uuid', name: 'user_id' })
+  @Column({ type: 'uuid', name: 'user_id', nullable: true })
   userId: string;
-  @Column({ type: 'uuid', name: 'partner_id' })
-  partnerId: string;
-  @Column()
-  totalFollowers: number;
+  @Column({ type: 'uuid', name: 'branch_id', nullable: true })
+  branchId: string;
 
+  //totalFollowers: number;
   @ManyToOne(() => UserEntity, (user) => user.follows, {
     orphanedRowAction: 'delete',
     onUpdate: 'CASCADE',
@@ -28,11 +28,11 @@ export class FollowEntity extends CommonEntity {
   @JoinColumn({ name: 'user_id' })
   user: UserEntity;
 
-  @ManyToOne(() => PartnerEntity, (partner) => partner.follows, {
+  @ManyToOne(() => BranchEntity, (branch) => branch.follows, {
     orphanedRowAction: 'delete',
     onUpdate: 'CASCADE',
     onDelete: 'CASCADE',
   })
-  @JoinColumn({ name: 'partner_id' })
-  partner: PartnerEntity;
+  @JoinColumn({ name: 'branch_id' })
+  branch: BranchEntity;
 }

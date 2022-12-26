@@ -7,7 +7,7 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { BlogEntity } from './blog.entty';
+import { BlogEntity } from './blog.entity';
 
 @Entity({ name: 'blog_comments' })
 export class BlogCommentEntity extends CommonEntity {

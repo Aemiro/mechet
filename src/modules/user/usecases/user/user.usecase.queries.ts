@@ -31,7 +31,6 @@ export class UserQueries {
       this.userRepository,
       query,
     );
-    // console.log(dataQuery.getSql(), dataQuery.getParameters());
     const d = new DataResponseFormat<UserResponse>();
     if (query.count) {
       d.count = await dataQuery.getCount();

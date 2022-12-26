@@ -13,7 +13,7 @@ import {
 export class FavoriteEntity extends CommonEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
-  @Column({ type: 'uuid', name: 'user_id' })
+  @Column({ type: 'uuid', name: 'user_id', nullable: true })
   userId: string;
   @Column({ type: 'uuid', name: 'event_id', nullable: true })
   eventId: string;

@@ -2,7 +2,7 @@ import { Blog } from '@blog/domains/blog/blog';
 import { IBlogRepository } from '@blog/domains/blog/blog.repository.interface';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { BlogEntity } from './blog.entty';
+import { BlogEntity } from './blog.entity';
 
 export class BlogRepository implements IBlogRepository {
   constructor(
