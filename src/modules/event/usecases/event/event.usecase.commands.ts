@@ -4,9 +4,6 @@ import { EventRepository } from '@event/persistence/event/event.repository';
 import { FileManagerService } from '@libs/common/file-manager';
 import { CreateEventCommand, UpdateEventCommand } from './event.commands';
 import { EventResponse } from './event.response';
-import { CreateEventCommentCommand } from './event-comment.commands';
-import { EventCommentResponse } from './event-comment.response';
-import { EventComment } from '@event/domains/event/event-comment';
 
 @Injectable()
 export class EventCommands {

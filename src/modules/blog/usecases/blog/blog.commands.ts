@@ -3,9 +3,9 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Blog } from '@blog/domains/blog/blog';
 
 export class CreateBlogCommand {
-  @ApiProperty()
+ // @ApiProperty()
   branchId: string;
-  @ApiProperty()
+  //@ApiProperty()
   categoryId: string;
   @ApiProperty()
   title: string;
@@ -21,8 +21,9 @@ export class CreateBlogCommand {
   publishedDate: Date;
   @ApiProperty()
   tags: string[];
+  createdBy: string;
 
-  static fromCommand(command: CreateBlogCommand): Blog {
+  static fromCommands(command: CreateBlogCommand): Blog {
     const blog = new Blog();
     blog.branchId = command.branchId;
     blog.categoryId = command.categoryId;
@@ -33,15 +34,16 @@ export class CreateBlogCommand {
     blog.isPublished = command.isPublished;
     blog.publishedDate = command.publishedDate;
     blog.tags = command.tags;
+    blog.createdBy = command.createdBy
     return blog;
   }
 }
 export class UpdateBlogCommand {
   @ApiProperty()
   id: string;
-  @ApiProperty()
+ // @ApiProperty()
   branchId: string;
-  @ApiProperty()
+ // @ApiProperty()
   categoryId: string;
   @ApiProperty()
   title: string;
@@ -57,8 +59,9 @@ export class UpdateBlogCommand {
   publishedDate: Date;
   @ApiProperty()
   tags: string[];
+  updatedBy: string;
 
-  static fromCommand(command: UpdateBlogCommand): Blog {
+  static fromCommands(command: UpdateBlogCommand): Blog {
     const blog = new Blog();
     blog.id = command.id;
     blog.branchId = command.branchId;
@@ -70,6 +73,7 @@ export class UpdateBlogCommand {
     blog.isPublished = command.isPublished;
     blog.publishedDate = command.publishedDate;
     blog.tags = command.tags;
+    blog.updatedBy = command.updatedBy;
     return blog;
   }
 }

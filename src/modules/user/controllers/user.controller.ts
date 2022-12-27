@@ -97,12 +97,17 @@ export class UsersController {
     return this.commands.restoreUser(id);
   }
 
-  @Post('activate-or-block-user/:id')
+  @Post('block-user/:id')
   @ApiOkResponse({ type: UserResponse })
-  async activateOrBlockUser(@Param('id') id: string) {
-    return this.commands.activateOrBlockUser(id);
+  async blockUser(@Param('id') id: string) {
+    return this.commands.blockUser(id);
   }
-  @Post('update-profile/:id')
+  @Post('activate-user/:id')
+  @ApiOkResponse({ type: UserResponse })
+  async activateUser(@Param('id') id: string) {
+    return this.commands.activateUser(id);
+  }
+  @Post('add-profile/:id')
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(
     FileInterceptor('profileImage', {
@@ -131,7 +136,7 @@ export class UsersController {
         FileManagerHelper.UPLOADED_FILES_DESTINATION,
       );
       if (result) {
-        return this.commands.updateUserProfileImage(id, result);
+        return this.commands.addUserProfileImage(id, result);
       }
     }
     throw new BadRequestException(`Bad Request`);
