@@ -1,4 +1,5 @@
 import { FileDto } from '@libs/common/file-dto';
+import { BlogComment } from './blog-comment';
 
 export class Blog {
   id: string;
@@ -11,4 +12,11 @@ export class Blog {
   isPublished: boolean;
   publishedDate: Date;
   tags: string[];
+  blogComments: BlogComment[];
+  createdBy?: string;
+  updatedBy?: string;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt?: Date;
+  deletedBy?: string;
 }

@@ -10,9 +10,10 @@ import {
 import { BlogCommentEntity } from './blog-comment.entity';
 import { BranchEntity } from '@partner/persistence/partner/branch.entity';
 import { BCategoryEntity } from '../b-category/b-category.entity';
+import { CommonEntity } from '@libs/common/common.entity';
 
 @Entity({ name: 'blogs' })
-export class BlogEntity {
+export class BlogEntity extends CommonEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
   @Column({ type: 'uuid', name: 'branch_id', nullable: true })

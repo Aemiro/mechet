@@ -93,7 +93,7 @@ export class UserCommands {
     }
     return result;
   }
-  async activateOrBlockUser(id: string): Promise<UserResponse> {
+  async blockUser(id: string): Promise<UserResponse> {
     const userDomain = await this.userRepository.getById(id);
     if (!userDomain) {
       throw new NotFoundException(`User not found with id ${id}`);
@@ -102,7 +102,16 @@ export class UserCommands {
     const result = await this.userRepository.update(id, userDomain);
     return UserResponse.fromDomain(result);
   }
-  async updateUserProfileImage(id: string, fileDto: FileResponseDto) {
+  async activateUser(id: string): Promise<UserResponse> {
+    const userDomain = await this.userRepository.getById(id);
+    if (!userDomain) {
+      throw new NotFoundException(`User not found with id ${id}`);
+    }
+    userDomain.enabled = userDomain.enabled;
+    const result = await this.userRepository.update(id, userDomain);
+    return UserResponse.fromDomain(result);
+  }
+  async addUserProfileImage(id: string, fileDto: FileResponseDto) {
     const userDomain = await this.userRepository.getById(id, true);
     if (!userDomain) {
       throw new NotFoundException(`User not found with id ${id}`);

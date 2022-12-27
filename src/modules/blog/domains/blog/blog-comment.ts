@@ -4,10 +4,5 @@ export class BlogComment {
   blogId: string;
   description: string;
 
-  createdBy?: string;
-  updatedBy?: string;
-  createdAt: Date;
-  updatedAt: Date;
-  deletedAt?: Date;
-  deletedBy?: string;
+  
 }

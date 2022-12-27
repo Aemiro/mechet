@@ -362,12 +362,6 @@ export class UserRepository implements IUserRepository {
     blogComment.blogId = blogCommentEntity.blogId;
     blogComment.userId = blogCommentEntity.userId;
     blogComment.description = blogCommentEntity.description;
-    blogComment.createdBy = blogCommentEntity.createdBy;
-    blogComment.updatedBy = blogCommentEntity.updatedBy;
-    blogComment.deletedBy = blogCommentEntity.deletedBy;
-    blogComment.createdAt = blogCommentEntity.createdAt;
-    blogComment.updatedAt = blogCommentEntity.updatedAt;
-    blogComment.deletedAt = blogCommentEntity.deletedAt;
     return blogComment;
   }
   toBlogCommentEntity(blogComment: BlogComment): BlogCommentEntity {
@@ -376,12 +370,6 @@ export class UserRepository implements IUserRepository {
     blogCommentEntity.blogId = blogComment.blogId;
     blogCommentEntity.userId = blogComment.userId;
     blogCommentEntity.description = blogComment.description;
-    blogCommentEntity.createdBy = blogComment.createdBy;
-    blogCommentEntity.updatedBy = blogComment.updatedBy;
-    blogCommentEntity.deletedBy = blogComment.deletedBy;
-    blogCommentEntity.createdAt = blogComment.createdAt;
-    blogCommentEntity.updatedAt = blogComment.updatedAt;
-    blogCommentEntity.deletedAt = blogComment.deletedAt;
     return blogCommentEntity;
   }
 
