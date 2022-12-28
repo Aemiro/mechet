@@ -10,7 +10,7 @@ export class CreateBCategoryCommand {
   @ApiProperty()
   coverImage: FileDto;
 
-  static fromCommand(command: CreateBCategoryCommand): BCategory {
+  static fromCommands(command: CreateBCategoryCommand): BCategory {
     const category = new BCategory();
     category.name = command.name;
     category.description = command.description;
@@ -28,7 +28,7 @@ export class UpdateBCategoryCommand {
   description: string;
   @ApiProperty()
   coverImage: FileDto;
-  static fromCommand(command: UpdateBCategoryCommand): BCategory {
+  static fromCommands(command: UpdateBCategoryCommand): BCategory {
     const category = new BCategory();
     category.id = command.id;
     category.name = command.name;

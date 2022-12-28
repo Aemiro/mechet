@@ -11,11 +11,10 @@ export class BlogRepository implements IBlogRepository {
     @InjectRepository(BlogEntity)
     private blogRepository: Repository<BlogEntity>,
   ) {}
- async insert(blog: Blog): Promise<Blog> {
+  async insert(blog: Blog): Promise<Blog> {
     const blogEntity = this.toBlogEntity(blog);
     const result = await this.blogRepository.save(blogEntity);
     return result ? this.toBlog(result) : null;
-  
   }
   async update(id: string, blog: Blog): Promise<Blog> {
     const blogEntity = this.toBlogEntity(blog);
@@ -38,7 +37,7 @@ export class BlogRepository implements IBlogRepository {
     return blogs.map((blog) => this.toBlog(blog));
   }
   async getById(id: string, withDeleted = false): Promise<Blog> {
-     const blog = await this.blogRepository.find({
+    const blog = await this.blogRepository.find({
       where: { id: id },
       relations: [],
       withDeleted: withDeleted,
@@ -54,16 +53,15 @@ export class BlogRepository implements IBlogRepository {
     return false;
   }
   async restore(id: string): Promise<boolean> {
-     const result = await this.blogRepository.restore(id);
+    const result = await this.blogRepository.restore(id);
     if (result.affected > 0) return true;
     return false;
   }
 
-  toBlog(blogEntity: BlogEntity): Blog{
-    const blog: Blog = new Blog()
+  toBlog(blogEntity: BlogEntity): Blog {
+    const blog: Blog = new Blog();
     blog.id = blogEntity.id;
     blog.branchId = blogEntity.branchId;
-    blog.categoryId = blogEntity.categoryId;
     blog.title = blogEntity.title;
     blog.description = blogEntity.description;
     blog.views = blogEntity.views;
@@ -71,21 +69,22 @@ export class BlogRepository implements IBlogRepository {
     blog.isPublished = blogEntity.isPublished;
     blog.publishedDate = blogEntity.publishedDate;
     blog.tags = blogEntity.tags;
-    blog.blogComments = blogEntity.blogComments? blogEntity.blogComments.map((element)=> this.toBlogComment(element)): [];
+    blog.blogComments = blogEntity.blogComments
+      ? blogEntity.blogComments.map((element) => this.toBlogComment(element))
+      : [];
     blog.createdBy = blogEntity.createdBy;
     blog.updatedBy = blogEntity.updatedBy;
     blog.deletedBy = blogEntity.deletedBy;
     blog.createdAt = blogEntity.createdAt;
     blog.updatedAt = blogEntity.updatedAt;
     blog.deletedAt = blogEntity.deletedAt;
-    
+
     return blog;
   }
-  toBlogEntity(blog: Blog): BlogEntity{
-    const blogEntity: BlogEntity = new BlogEntity()
+  toBlogEntity(blog: Blog): BlogEntity {
+    const blogEntity: BlogEntity = new BlogEntity();
     blogEntity.id = blog.id;
     blogEntity.branchId = blog.branchId;
-    blogEntity.categoryId = blog.categoryId;
     blogEntity.title = blog.title;
     blogEntity.description = blog.description;
     blogEntity.views = blog.views;
@@ -93,7 +92,9 @@ export class BlogRepository implements IBlogRepository {
     blogEntity.isPublished = blog.isPublished;
     blogEntity.publishedDate = blog.publishedDate;
     blogEntity.tags = blog.tags;
-    blogEntity.blogComments = blog.blogComments? blog.blogComments.map((element)=> this.toBlogCommentEntity(element)): [];
+    blogEntity.blogComments = blog.blogComments
+      ? blog.blogComments.map((element) => this.toBlogCommentEntity(element))
+      : [];
     blogEntity.createdBy = blog.createdBy;
     blogEntity.updatedBy = blog.updatedBy;
     blogEntity.deletedBy = blog.deletedBy;
@@ -109,7 +110,7 @@ export class BlogRepository implements IBlogRepository {
     blogComment.blogId = blogCommentEntity.blogId;
     blogComment.userId = blogCommentEntity.userId;
     blogComment.description = blogCommentEntity.description;
-  
+
     return blogComment;
   }
   toBlogCommentEntity(blogComment: BlogComment): BlogCommentEntity {
@@ -118,7 +119,7 @@ export class BlogRepository implements IBlogRepository {
     blogCommentEntity.blogId = blogComment.blogId;
     blogCommentEntity.userId = blogComment.userId;
     blogCommentEntity.description = blogComment.description;
-    
+
     return blogCommentEntity;
-}
+  }
 }

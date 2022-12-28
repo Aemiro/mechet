@@ -1,23 +1,23 @@
-import { ECategoryEntity } from '@event/persistence/e-category/e-category.entity';
+import { BCategoryEntity } from '@blog/persistence/b-category/b-category.entity';
 import { CollectionQuery } from '@libs/collection-query/collection-query';
 import { FilterOperators } from '@libs/collection-query/filter_operators';
 import { QueryConstructor } from '@libs/collection-query/query-constructor';
 import { DataResponseFormat } from '@libs/response-format/data-response-format';
-import { BadRequestException, NotFoundException } from '@nestjs/common';
+import { NotFoundException, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { ECategoryResponse } from './e-category.response';
+import { BCategoryResponse } from './b-category.response';
 
-export class ECategoryQueries {
+export class BCategoryQueries {
   constructor(
-    @InjectRepository(ECategoryEntity)
-    private categoryRepository: Repository<ECategoryEntity>,
+    @InjectRepository(BCategoryEntity)
+    private categoryRepository: Repository<BCategoryEntity>,
   ) {}
 
   async getCategory(
     id: string,
     withDeleted = false,
-  ): Promise<ECategoryResponse> {
+  ): Promise<BCategoryResponse> {
     const category = await this.categoryRepository.find({
       where: { id: id },
       relations: [],
@@ -26,23 +26,23 @@ export class ECategoryQueries {
     if (!category[0]) {
       throw new NotFoundException(`category not found with id ${id}`);
     }
-    return ECategoryResponse.fromEntity(category[0]);
+    return BCategoryResponse.fromEntity(category[0]);
   }
 
   async getCategories(
     query: CollectionQuery,
-  ): Promise<DataResponseFormat<ECategoryResponse>> {
+  ): Promise<DataResponseFormat<BCategoryResponse>> {
     try {
-      const dataQuery = QueryConstructor.constructQuery<ECategoryEntity>(
+      const dataQuery = QueryConstructor.constructQuery<BCategoryEntity>(
         this.categoryRepository,
         query,
       );
-      const d = new DataResponseFormat<ECategoryResponse>();
+      const d = new DataResponseFormat<BCategoryResponse>();
       if (query.count) {
         d.count = await dataQuery.getCount();
       } else {
         const [result, total] = await dataQuery.getManyAndCount();
-        d.data = result.map((entity) => ECategoryResponse.fromEntity(entity));
+        d.data = result.map((entity) => BCategoryResponse.fromEntity(entity));
         d.count = total;
       }
       return d;
@@ -53,7 +53,7 @@ export class ECategoryQueries {
 
   async getArchivedCategories(
     query: CollectionQuery,
-  ): Promise<DataResponseFormat<ECategoryResponse>> {
+  ): Promise<DataResponseFormat<BCategoryResponse>> {
     if (!query.filter) {
       query.filter = [];
     }
@@ -63,17 +63,17 @@ export class ECategoryQueries {
         operator: FilterOperators.NotNull,
       },
     ]);
-    const dataQuery = QueryConstructor.constructQuery<ECategoryEntity>(
+    const dataQuery = QueryConstructor.constructQuery<BCategoryEntity>(
       this.categoryRepository,
       query,
     );
     dataQuery.withDeleted();
-    const d = new DataResponseFormat<ECategoryResponse>();
+    const d = new DataResponseFormat<BCategoryResponse>();
     if (query.count) {
       d.count = await dataQuery.getCount();
     } else {
       const [result, total] = await dataQuery.getManyAndCount();
-      d.data = result.map((entity) => ECategoryResponse.fromEntity(entity));
+      d.data = result.map((entity) => BCategoryResponse.fromEntity(entity));
       d.count = total;
     }
     return d;

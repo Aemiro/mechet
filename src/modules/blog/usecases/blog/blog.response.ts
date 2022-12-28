@@ -8,8 +8,6 @@ export class BlogResponse {
   @ApiProperty()
   branchId: string;
   @ApiProperty()
-  categoryId: string;
-  @ApiProperty()
   title: string;
   @ApiProperty()
   description: string;
@@ -27,7 +25,6 @@ export class BlogResponse {
     const blogResponse = new BlogResponse();
     blogResponse.id = blogEntity.id;
     blogResponse.branchId = blogEntity.branchId;
-    blogResponse.categoryId = blogEntity.categoryId;
     blogResponse.title = blogEntity.title;
     blogResponse.description = blogEntity.description;
     blogResponse.views = blogEntity.views;
@@ -41,7 +38,6 @@ export class BlogResponse {
     const blogResponse = new BlogResponse();
     blogResponse.id = blog.id;
     blogResponse.branchId = blog.branchId;
-    blogResponse.categoryId = blog.categoryId;
     blogResponse.title = blog.title;
     blogResponse.description = blog.description;
     blogResponse.views = blog.views;

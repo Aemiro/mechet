@@ -1,10 +1,10 @@
 import { FileDto } from '@libs/common/file-dto';
+import { BlogCategory } from './blog-category';
 import { BlogComment } from './blog-comment';
 
 export class Blog {
   id: string;
   branchId: string;
-  categoryId: string;
   title: string;
   description: string;
   views: number;
@@ -13,6 +13,7 @@ export class Blog {
   publishedDate: Date;
   tags: string[];
   blogComments: BlogComment[];
+  blogCategories: BlogCategory[];
   createdBy?: string;
   updatedBy?: string;
   createdAt: Date;

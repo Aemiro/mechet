@@ -3,10 +3,8 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Blog } from '@blog/domains/blog/blog';
 
 export class CreateBlogCommand {
- // @ApiProperty()
+  // @ApiProperty()
   branchId: string;
-  //@ApiProperty()
-  categoryId: string;
   @ApiProperty()
   title: string;
   @ApiProperty()
@@ -26,7 +24,6 @@ export class CreateBlogCommand {
   static fromCommands(command: CreateBlogCommand): Blog {
     const blog = new Blog();
     blog.branchId = command.branchId;
-    blog.categoryId = command.categoryId;
     blog.title = command.title;
     blog.description = command.description;
     blog.views = command.views;
@@ -34,17 +31,15 @@ export class CreateBlogCommand {
     blog.isPublished = command.isPublished;
     blog.publishedDate = command.publishedDate;
     blog.tags = command.tags;
-    blog.createdBy = command.createdBy
+    blog.createdBy = command.createdBy;
     return blog;
   }
 }
 export class UpdateBlogCommand {
   @ApiProperty()
   id: string;
- // @ApiProperty()
+  // @ApiProperty()
   branchId: string;
- // @ApiProperty()
-  categoryId: string;
   @ApiProperty()
   title: string;
   @ApiProperty()
@@ -65,7 +60,6 @@ export class UpdateBlogCommand {
     const blog = new Blog();
     blog.id = command.id;
     blog.branchId = command.branchId;
-    blog.categoryId = command.categoryId;
     blog.title = command.title;
     blog.description = command.description;
     blog.views = command.views;

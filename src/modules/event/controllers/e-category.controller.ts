@@ -4,7 +4,7 @@ import {
 } from '@event/usecases/e-category/e-category.commands';
 import { ECategoryResponse } from '@event/usecases/e-category/e-category.response';
 import { ECategoryCommands } from '@event/usecases/e-category/e-category.usecases.commands';
-import { CategoryQueries } from '@event/usecases/e-category/e-category.usecases.queries';
+import { ECategoryQueries } from '@event/usecases/e-category/e-category.usecases.queries';
 import { CollectionQuery } from '@libs/collection-query/collection-query';
 import { DataResponseFormat } from '@libs/response-format/data-response-format';
 import {
@@ -24,15 +24,15 @@ import {
   ApiOkResponse,
 } from '@nestjs/swagger';
 
-@Controller('event_categories')
-@ApiTags('event_categories')
+@Controller('event-categories')
+@ApiTags('event-categories')
 @ApiResponse({ status: 500, description: 'Internal error' })
 @ApiResponse({ status: 404, description: 'Item not found' })
 @ApiExtraModels(DataResponseFormat)
 export class ECategoryController {
   constructor(
     private commands: ECategoryCommands,
-    private queries: CategoryQueries,
+    private queries: ECategoryQueries,
   ) {}
 
   @Get('get-event-category/:id')
