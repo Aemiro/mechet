@@ -39,7 +39,7 @@ export class ECategoryCommands {
   async DeleteCategory(id: string): Promise<boolean> {
     const category = await this.categoryRepository.getById(id, true);
     if (!category) {
-      throw new NotFoundException(`Event not found with id ${id}`);
+      throw new NotFoundException(`category not found with id ${id}`);
     }
     const result = await this.categoryRepository.delete(id);
 
@@ -49,7 +49,7 @@ export class ECategoryCommands {
   async ArchiveCategory(id: string): Promise<boolean> {
     const category = await this.categoryRepository.getById(id, true);
     if (!category) {
-      throw new NotFoundException(`Event not found with id ${id}`);
+      throw new NotFoundException(`category not found with id ${id}`);
     }
     return await this.categoryRepository.archive(id);
   }

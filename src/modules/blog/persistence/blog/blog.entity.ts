@@ -9,8 +9,8 @@ import {
 } from 'typeorm';
 import { BlogCommentEntity } from './blog-comment.entity';
 import { BranchEntity } from '@partner/persistence/partner/branch.entity';
-import { BCategoryEntity } from '../b-category/b-category.entity';
 import { CommonEntity } from '@libs/common/common.entity';
+import { BlogCategoryEntity } from './blog-category.entity';
 
 @Entity({ name: 'blogs' })
 export class BlogEntity extends CommonEntity {
@@ -18,8 +18,6 @@ export class BlogEntity extends CommonEntity {
   id: string;
   @Column({ type: 'uuid', name: 'branch_id', nullable: true })
   branchId: string;
-  @Column({ type: 'uuid', name: 'category_id', nullable: true })
-  categoryId: string;
   @Column()
   title: string;
   @Column()
@@ -40,13 +38,10 @@ export class BlogEntity extends CommonEntity {
   })
   blogComments: BlogCommentEntity[];
 
-  @ManyToOne(() => BCategoryEntity, (bCategory) => bCategory.blogs, {
-    orphanedRowAction: 'delete',
-    onUpdate: 'CASCADE',
-    onDelete: 'CASCADE',
+  @OneToMany(() => BlogCategoryEntity, (blogCategory) => blogCategory.blog, {
+    cascade: true,
   })
-  @JoinColumn({ name: 'category_id' })
-  bCategory: BCategoryEntity;
+  blogCategories: BlogCategoryEntity[];
 
   @ManyToOne(() => BranchEntity, (branch) => branch.blogs, {
     orphanedRowAction: 'delete',
