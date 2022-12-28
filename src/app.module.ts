@@ -35,6 +35,7 @@ import { EventCategoryEntity } from '@event/persistence/event/event-category.ent
 import { ECategoryEntity } from '@event/persistence/e-category/e-category.entity';
 import { BCategoryEntity } from '@blog/persistence/b-category/b-category.entity';
 import { PCategoryEntity } from '@partner/persistence/p-category/p-category.entity';
+import { BlogCategoryEntity } from '@blog/persistence/blog/blog-category.entity';
 dotenv.config({ path: '.env' });
 @Module({
   imports: [
@@ -69,6 +70,7 @@ dotenv.config({ path: '.env' });
         PartnerCategoryEntity,
         BranchEntity,
         ScheduleEntity,
+        BlogCategoryEntity,
       ],
       synchronize: true,
     }),
