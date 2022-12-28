@@ -21,7 +21,7 @@ import {
   ApiOkResponse,
 } from '@nestjs/swagger';
 
-@Controller('event-review')
+@Controller('event-reviews')
 @ApiTags('event-reviews')
 @ApiResponse({ status: 500, description: 'Internal error' })
 @ApiResponse({ status: 404, description: 'Item not found' })
