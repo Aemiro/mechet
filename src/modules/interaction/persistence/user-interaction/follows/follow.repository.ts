@@ -37,7 +37,7 @@ export class FollowRepository implements IFollow {
     }
     return follows.map((follow) => this.toFollow(follow));
   }
-  async getById(id: string, withDeleted: boolean): Promise<Follow> {
+  async getById(id: string, withDeleted = false): Promise<Follow> {
     const follow = await this.followRepository.find({
       where: { id: id },
       relations: [],

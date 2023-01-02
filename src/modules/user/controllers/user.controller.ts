@@ -34,6 +34,7 @@ import {
 import { UserResponse } from '../usecases/user/user.response';
 import { UserCommands } from '../usecases/user/user.usecase.commands';
 import { UserQueries } from '../usecases/user/user.usecase.queries';
+import { CreateStaffUSerCommand } from '@user/usecases/user/staff-user.commands';
 
 @Controller('users')
 @ApiTags('users')
@@ -140,5 +141,12 @@ export class UsersController {
       }
     }
     throw new BadRequestException(`Bad Request`);
+  }
+  @Post('create-staff-user')
+  @ApiOkResponse({ type: UserResponse })
+  async createSataffUser(
+    @Body() createStaffUSerCommand: CreateStaffUSerCommand,
+  ) {
+    return this.commands.createSataffUser(createStaffUSerCommand);
   }
 }

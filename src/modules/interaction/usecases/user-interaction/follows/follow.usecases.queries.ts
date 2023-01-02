@@ -3,7 +3,11 @@ import { CollectionQuery } from '@libs/collection-query/collection-query';
 import { FilterOperators } from '@libs/collection-query/filter_operators';
 import { QueryConstructor } from '@libs/collection-query/query-constructor';
 import { DataResponseFormat } from '@libs/response-format/data-response-format';
-import { Injectable, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  BadRequestException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { FollowResponse } from './follow.response';
@@ -15,7 +19,37 @@ export class FollowQueries {
     private followRepository: Repository<FollowEntity>,
   ) {}
 
-  async getFavoritesByUser(
+  async getFollower(id: string, withDeleted = false): Promise<FollowResponse> {
+    const follow = await this.followRepository.find({
+      where: { id: id },
+      relations: [],
+      withDeleted: withDeleted,
+    });
+    if (!follow[0]) {
+      throw new NotFoundException(`follow not found with id ${id}`);
+    }
+    return FollowResponse.fromEntity(follow[0]);
+  }
+
+  async getFollwers(
+    query: CollectionQuery,
+  ): Promise<DataResponseFormat<FollowResponse>> {
+    const dataQuery = QueryConstructor.constructQuery<FollowEntity>(
+      this.followRepository,
+      query,
+    );
+    const d = new DataResponseFormat<FollowResponse>();
+    if (query.count) {
+      d.count = await dataQuery.getCount();
+    } else {
+      const [result, total] = await dataQuery.getManyAndCount();
+      d.data = result.map((entity) => FollowResponse.fromEntity(entity));
+      d.count = total;
+    }
+    return d;
+  }
+
+  async getFollowersByUser(
     userId: string,
     query: CollectionQuery,
   ): Promise<DataResponseFormat<FollowResponse>> {
@@ -48,7 +82,7 @@ export class FollowQueries {
       throw new BadRequestException(error.code, error.message);
     }
   }
-  async getFavoritesByEvent(
+  async getFollowersByBranch(
     branchId: string,
     query: CollectionQuery,
   ): Promise<DataResponseFormat<FollowResponse>> {

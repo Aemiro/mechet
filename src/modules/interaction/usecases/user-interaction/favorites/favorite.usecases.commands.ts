@@ -1,6 +1,6 @@
 import { Favorite } from '@interaction/domains/user-interaction/favorites/favorite';
 import { FavoriteRepository } from '@interaction/persistence/user-interaction/favorites/favorite.repository';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateFavoriteCommand } from './favorite.command';
 import { FavoriteResponse } from './favorite.response';
 
@@ -17,9 +17,12 @@ export class FavoriteCommands {
     return FavoriteResponse.fromDomain(result);
   }
   async removeFavorite(id: string): Promise<boolean> {
-    const result = await this.favoriteRepository.getById(id, false);
-    if (result) return true;
+    const favorite = await this.favoriteRepository.getById(id);
+    if (!favorite) {
+      throw new NotFoundException(`favorite not found with id ${id}`);
+    }
+    const result = await this.favoriteRepository.delete(id);
 
-    return false;
+    return result;
   }
 }

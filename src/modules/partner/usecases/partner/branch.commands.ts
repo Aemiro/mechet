@@ -17,8 +17,8 @@ export class CreateBranchCommand {
   email: string;
   @ApiProperty()
   phoneNumber: string;
-  @ApiProperty()
-  coverImage: FileDto;
+  // @ApiProperty()
+  // coverImage: FileDto;
   @ApiProperty()
   about: string;
   @ApiProperty()
@@ -39,7 +39,7 @@ export class CreateBranchCommand {
     branch.name = command.name;
     branch.email = command.email;
     branch.phoneNumber = command.phoneNumber;
-    branch.coverImage = command.coverImage;
+    // branch.coverImage = command.coverImage;
     branch.about = command.about;
     branch.address = command.address;
     branch.location = command.location;
@@ -61,8 +61,8 @@ export class UpdateBranchCommand {
   email: string;
   @ApiProperty()
   phoneNumber: string;
-  @ApiProperty()
-  coverImage: FileDto;
+  // @ApiProperty()
+  // coverImage: FileDto;
   @ApiProperty()
   about: string;
   @ApiProperty()
@@ -83,7 +83,7 @@ export class UpdateBranchCommand {
     branch.name = command.name;
     branch.email = command.email;
     branch.phoneNumber = command.phoneNumber;
-    branch.coverImage = command.coverImage;
+    // branch.coverImage = command.coverImage;
     branch.about = command.about;
     branch.address = command.address;
     branch.location = command.location;

@@ -32,6 +32,16 @@ export class BranchReviewController {
     private queries: BranchReviewQueries,
   ) {}
 
+  @Get('get-branch-review/:id')
+  @ApiPaginatedResponse(BranchReviewResponse)
+  async getBranchReview(@Param('id') id: string) {
+    return this.queries.getBranchReview(id);
+  }
+  @Get('get-branch-reviews')
+  @ApiPaginatedResponse(BranchReviewResponse)
+  async getBranchReviews(@Query() query: CollectionQuery) {
+    return this.queries.getBranchReviews(query);
+  }
   @Get('get-branch-reviews/:userId')
   @ApiPaginatedResponse(BranchReviewResponse)
   async getBranchReviewsByUser(
@@ -39,6 +49,14 @@ export class BranchReviewController {
     @Query() query: CollectionQuery,
   ) {
     return this.queries.getBranchReviewsByUser(userId, query);
+  }
+  @Get('get-branch-reviews/:branchId')
+  @ApiPaginatedResponse(BranchReviewResponse)
+  async getBranchReviewsByBranch(
+    @Param('branchId') branchId: string,
+    @Query() query: CollectionQuery,
+  ) {
+    return this.queries.getBranchReviewsByBranch(branchId, query);
   }
 
   @Post('create-branch-review')

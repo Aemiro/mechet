@@ -36,7 +36,7 @@ export class FavoriteRepository implements IFavorite {
     }
     return favorites.map((favorite) => this.toFavorite(favorite));
   }
-  async getById(id: string, withDeleted: boolean): Promise<Favorite> {
+  async getById(id: string, withDeleted = false): Promise<Favorite> {
     const favorite = await this.favoriteRepository.find({
       where: { id: id },
       relations: [],

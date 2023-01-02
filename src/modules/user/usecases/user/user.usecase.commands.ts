@@ -14,6 +14,7 @@ import {
 import { Utility } from '@libs/common/utility';
 import { User } from '@user/domains/user/user';
 import { UserRepository } from '@user/persistence/users/user.repository';
+import { CreateStaffUSerCommand } from './staff-user.commands';
 @Injectable()
 export class UserCommands {
   private userDomain = new User();
@@ -125,5 +126,29 @@ export class UserCommands {
     userDomain.profileImage = fileDto as FileDto;
     const result = await this.userRepository.update(id, userDomain);
     return UserResponse.fromDomain(result);
+  }
+
+  async createSataffUser(
+    command: CreateStaffUSerCommand,
+  ): Promise<UserResponse> {
+    if (await this.userRepository.getByPhoneNumber(command.phoneNumber, true)) {
+      throw new BadRequestException(
+        `user stack already exist with this phone number`,
+      );
+    }
+    if (
+      command.email &&
+      (await this.userRepository.getByEmail(command.email, true))
+    ) {
+      throw new BadRequestException(
+        `user stack already exist with this email Address`,
+      );
+    }
+    this.userDomain = CreateStaffUSerCommand.fromCommands(command);
+
+    console.log(this.userDomain);
+    this.userDomain.password = Utility.generatePassword(6);
+    const partner = await this.userRepository.insert(this.userDomain);
+    return UserResponse.fromDomain(partner);
   }
 }

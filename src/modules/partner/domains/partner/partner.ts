@@ -23,6 +23,7 @@ export class Partner {
   updatedAt: Date;
   deletedAt?: Date;
   deletedBy?: string;
+
   branches: Branch[];
   follows: Follow[];
   // partnerReviews: PartnerReview[];

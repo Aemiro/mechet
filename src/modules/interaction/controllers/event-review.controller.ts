@@ -31,7 +31,16 @@ export class EventReviewController {
     private commands: EventReviewCommands,
     private queries: EventReviewQueries,
   ) {}
-
+  @Get('get-event-review/:id')
+  @ApiPaginatedResponse(EventReviewResponse)
+  async getEventReview(@Param('id') id: string) {
+    return this.queries.getEventReview(id);
+  }
+  @Get('get-event-reviews')
+  @ApiPaginatedResponse(EventReviewResponse)
+  async getEventReviews(@Query() query: CollectionQuery) {
+    return this.queries.getEventReviews(query);
+  }
   @Get('get-event-reviews/:userId')
   @ApiPaginatedResponse(EventReviewResponse)
   async getEventReviewsByUser(
@@ -39,6 +48,14 @@ export class EventReviewController {
     @Query() query: CollectionQuery,
   ) {
     return this.queries.getEventReviewsByUser(userId, query);
+  }
+  @Get('get-event-reviews/:eventId')
+  @ApiPaginatedResponse(EventReviewResponse)
+  async getEventReviewsByEvent(
+    @Param('eventId') eventId: string,
+    @Query() query: CollectionQuery,
+  ) {
+    return this.queries.getEventReviewsByEvent(eventId, query);
   }
 
   @Post('create-event-review')

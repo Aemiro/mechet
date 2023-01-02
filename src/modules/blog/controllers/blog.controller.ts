@@ -1,13 +1,42 @@
-import { CreateBlogCommand, UpdateBlogCommand } from '@blog/usecases/blog/blog.commands';
+import {
+  CreateBlogCommentCommand,
+  UpdateBlogCommentCommand,
+} from '@blog/usecases/blog/blog-comment.commands';
+import {
+  CreateBlogCommand,
+  UpdateBlogCommand,
+} from '@blog/usecases/blog/blog.commands';
 import { BlogResponse } from '@blog/usecases/blog/blog.response';
 import { BlogCommands } from '@blog/usecases/blog/blog.usecases.commands';
 import { BlogQueries } from '@blog/usecases/blog/blog.usecases.queries';
 import { CollectionQuery } from '@libs/collection-query/collection-query';
-import { FileManagerHelper, FileManagerService } from '@libs/common/file-manager';
+import {
+  FileManagerHelper,
+  FileManagerService,
+} from '@libs/common/file-manager';
 import { DataResponseFormat } from '@libs/response-format/data-response-format';
-import { BadRequestException, Body, Controller, Delete, Get, Param, Post, Put, Query, UploadedFile, UseInterceptors } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  Query,
+  UploadedFile,
+  UseInterceptors,
+} from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiTags, ApiResponse, ApiExtraModels, ApiOkResponse, ApiConsumes } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiResponse,
+  ApiExtraModels,
+  ApiOkResponse,
+  ApiConsumes,
+} from '@nestjs/swagger';
+import { boolean } from 'joi';
 import { diskStorage } from 'multer';
 @Controller('blogs')
 @ApiTags('blogs')
@@ -15,38 +44,41 @@ import { diskStorage } from 'multer';
 @ApiResponse({ status: 404, description: 'Item not found' })
 @ApiExtraModels(DataResponseFormat)
 export class BlogController {
-   constructor(
+  constructor(
     private commands: BlogCommands,
     private queries: BlogQueries,
     private readonly fileManagerService: FileManagerService,
-    ) { }
-    
-    @Get('get-blog/:id')
+  ) {}
+
+  @Get('get-blog/:id')
   @ApiOkResponse({ type: BlogResponse })
   async getBlog(@Param('id') id: string) {
     return this.queries.getBlog(id);
-    }
-     @Get('get-blogs')
+  }
+  @Get('get-blogs')
   @ApiOkResponse({ type: BlogResponse })
   async getBlogs(@Query() query: CollectionQuery) {
     return this.queries.getBlogs(query);
-    }
-      @Get('get-archived-blogs')
+  }
+  @Get('get-archived-blogs')
   @ApiOkResponse({ type: BlogResponse })
   async getArchivedBlogs(@Query() query: CollectionQuery) {
     return this.queries.getArchivedBlogs(query);
-    }
-     @Post('create-blog')
+  }
+  @Post('create-blog')
   @ApiOkResponse({ type: BlogResponse })
   async createBlog(@Body() createBlogCommand: CreateBlogCommand) {
     return this.commands.createBlog(createBlogCommand);
-    }
-       @Put('update-blog')
+  }
+  @Put('update-blog')
   @ApiOkResponse({ type: BlogResponse })
-  async updateBlog(@Param('id') id: string,@Body() updateBlogCommand: UpdateBlogCommand) {
-    return this.commands.updateBlog(id,updateBlogCommand);
-    }
-    @Delete('archive-blog/:id')
+  async updateBlog(
+    @Param('id') id: string,
+    @Body() updateBlogCommand: UpdateBlogCommand,
+  ) {
+    return this.commands.updateBlog(id, updateBlogCommand);
+  }
+  @Delete('archive-blog/:id')
   @ApiOkResponse({ type: Boolean })
   async ArchiveBlog(@Param('id') id: string) {
     return this.commands.ArchiveBlog(id);
@@ -60,9 +92,9 @@ export class BlogController {
   @ApiOkResponse({ type: BlogResponse })
   async RestoreBlog(@Param('id') id: string) {
     return this.commands.RestoreBlog(id);
-    }
-    
-    @Post('add-cover/:id')
+  }
+
+  @Post('add-cover/:id')
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(
     FileInterceptor('coverImage', {
@@ -95,5 +127,24 @@ export class BlogController {
       }
     }
     throw new BadRequestException(`Bad Request`);
+  }
+  @Post('add-blog-comment')
+  @ApiOkResponse({ type: BlogResponse })
+  async addBlogComment(
+    @Body() createBlogCommentCommand: CreateBlogCommentCommand,
+  ) {
+    return this.commands.addBlogComment(createBlogCommentCommand);
+  }
+  @Put('update-blog-comment')
+  @ApiOkResponse({ type: BlogResponse })
+  async updateBlogComment(
+    @Body() updateBlogCommentCommand: UpdateBlogCommentCommand,
+  ) {
+    return this.commands.updateBlogComment(updateBlogCommentCommand);
+  }
+  @Delete('remove-blog-comment/:id')
+  @ApiOkResponse({ type: Boolean })
+  async removeBlogComment(@Param('id') id: string) {
+    return this.commands.removeBlogComment(id);
   }
 }

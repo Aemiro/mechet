@@ -36,7 +36,7 @@ export class InterestRepository implements IInterest {
     }
     return interests.map((interest) => this.toInterest(interest));
   }
-  async getById(id: string, withDeleted: boolean): Promise<Interest> {
+  async getById(id: string, withDeleted = false): Promise<Interest> {
     const interest = await this.interestRepository.find({
       where: { id: id },
       relations: [],

@@ -1,6 +1,6 @@
 import { Follow } from '@interaction/domains/user-interaction/follows/follow';
 import { FollowRepository } from '@interaction/persistence/user-interaction/follows/follow.repository';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateFollowCommand } from './follow.commands';
 import { FollowResponse } from './follow.response';
 
@@ -15,9 +15,12 @@ export class FollowCommands {
     return FollowResponse.fromDomain(result);
   }
   async removeFollow(id: string): Promise<boolean> {
-    const result = await this.followRepository.getById(id, false);
-    if (result) return true;
+    const follow = await this.followRepository.getById(id);
+    if (!follow) {
+      throw new NotFoundException(`follow not found with id ${id}`);
+    }
+    const result = await this.followRepository.delete(id);
 
-    return false;
+    return result;
   }
 }

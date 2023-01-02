@@ -1,4 +1,8 @@
 import {
+  CreateEventCommentCommand,
+  UpdateEventCommentCommand,
+} from '@event/usecases/event/event-comment.commands';
+import {
   CreateEventCommand,
   UpdateEventCommand,
 } from '@event/usecases/event/event.commands';
@@ -76,5 +80,24 @@ export class EventController {
   @ApiOkResponse({ type: EventResponse })
   async RestoreEvent(@Param('id') id: string) {
     return await this.commands.RestoreEvent(id);
+  }
+  @Post('create-event-comment')
+  @ApiOkResponse({ type: EventResponse })
+  async createEventComment(
+    @Body() createEventCommentCommand: CreateEventCommentCommand,
+  ) {
+    return await this.commands.createEventComment(createEventCommentCommand);
+  }
+  @Put('update-event-comment')
+  @ApiOkResponse({ type: EventResponse })
+  async updateEventComment(
+    @Body() updateEventCommentCommand: UpdateEventCommentCommand,
+  ) {
+    return this.commands.updateEventComment(updateEventCommentCommand);
+  }
+  @Delete('remove-event-comment/:id')
+  @ApiOkResponse({ type: Boolean })
+  async removeEventComment(@Param('id') id: string) {
+    return this.commands.removeEventComment(id);
   }
 }
