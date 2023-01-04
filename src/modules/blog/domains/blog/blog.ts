@@ -20,4 +20,24 @@ export class Blog {
   updatedAt: Date;
   deletedAt?: Date;
   deletedBy?: string;
+
+  //Blog Comment
+  async addBlogComment(blogComment: BlogComment) {
+    this.blogComments.push(blogComment);
+  }
+
+  async updateBlogComment(blogComment: BlogComment) {
+    const existIndex = this.blogComments.findIndex(
+      (element) => element.id == blogComment.id,
+    );
+    this.blogComments[existIndex] = blogComment;
+  }
+
+  async removeBlogComment(id: string) {
+    this.blogComments = this.blogComments.filter((element) => element.id != id);
+  }
+
+  async updateBlogComments(blogComments: BlogComment[]) {
+    this.blogComments = blogComments;
+  }
 }

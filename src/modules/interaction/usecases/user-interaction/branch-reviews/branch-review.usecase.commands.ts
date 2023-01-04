@@ -1,6 +1,6 @@
 import { BranchReview } from '@interaction/domains/user-interaction/branch-reviews/branch-review';
 import { BranchReviewRepository } from '@interaction/persistence/user-interaction/branch-reviews/branch-review.repository';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateBranchReviewCommand } from './branch-review.commands';
 import { BranchReviewResponse } from './branch-review.response';
 
@@ -18,9 +18,11 @@ export class BranchReviewCommands {
     return BranchReviewResponse.fromDomain(result);
   }
   async removeBranchReview(id: string): Promise<boolean> {
-    const result = await this.branchReviewRepository.getById(id, false);
-    if (result) return true;
-
-    return false;
+    const branchReview = await this.branchReviewRepository.getById(id, false);
+    if (!branchReview) {
+      throw new NotFoundException(`branch review not found with id ${id}`);
+    }
+    const result = await this.branchReviewRepository.delete(id);
+    return result;
   }
 }

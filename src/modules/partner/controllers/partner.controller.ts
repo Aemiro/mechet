@@ -17,7 +17,10 @@ import {
   ApiExtraModels,
   ApiOkResponse,
 } from '@nestjs/swagger';
-import { CreateBranchCommand } from '@partner/usecases/partner/branch.commands';
+import {
+  CreateBranchCommand,
+  UpdateBranchCommand,
+} from '@partner/usecases/partner/branch.commands';
 import { BranchResponse } from '@partner/usecases/partner/branch.response';
 import {
   CreatePartnerCommand,
@@ -90,13 +93,21 @@ export class PartnerController {
     return await this.commands.restorePartner(id);
   }
 
-  @Post('create_branch/:partnerId')
+  @Post('create_branch')
   @ApiOkResponse({ type: BranchResponse })
-  async createBranch(
-    @Param('partnerId') partnerId: string,
-    @Body() command: CreateBranchCommand,
-  ) {
-    return await this.commands.createBranch(partnerId, command);
+  async createBranch(@Body() command: CreateBranchCommand) {
+    return await this.commands.createBranch(command);
+  }
+
+  @Put('update_branch')
+  @ApiOkResponse({ type: BranchResponse })
+  async updateBranch(@Body() command: UpdateBranchCommand) {
+    return await this.commands.updateBranch(command);
+  }
+  @Delete('delete-branch/:id')
+  @ApiOkResponse({ type: Boolean })
+  async removeBranch(@Param('id') id: string) {
+    return this.commands.removeBranch(id);
   }
   // @Get('get-schedule-by-branch/:branchId')
   // @ApiPaginatedResponse(ScheduleResponse)

@@ -4,6 +4,10 @@ import { EventRepository } from '@event/persistence/event/event.repository';
 import { FileManagerService } from '@libs/common/file-manager';
 import { CreateEventCommand, UpdateEventCommand } from './event.commands';
 import { EventResponse } from './event.response';
+import {
+  CreateEventCommentCommand,
+  UpdateEventCommentCommand,
+} from './event-comment.commands';
 
 @Injectable()
 export class EventCommands {
@@ -61,21 +65,55 @@ export class EventCommands {
     return EventResponse.fromDomain(event);
   }
 
-  // async createEventComment(
-  //   eventId: string,
-  //   command: CreateEventCommentCommand,
-  // ): Promise<EventCommentResponse> {
-  //   let eventCommentDomain = new EventComment();
-  //   this.eventDomain = await this.eventRepository.getById(eventId);
-  //   if (!this.eventDomain) {
-  //     eventCommentDomain = CreateEventCommentCommand.fromCommands(command);
-  //     this.eventDomain.addEventComment(eventCommentDomain);
-  //     const result = await this.eventRepository.update(id,this.eventDomain);
-  //     if (result) {
-  //       return EventCommentResponse.fromDomain(
-  //         result.eventComments[result.eventComments.length - 1],
-  //       );
-  //     }
-  //   }
-  // }
+  async createEventComment(
+    command: CreateEventCommentCommand,
+  ): Promise<EventResponse> {
+    const eventDomain = await this.eventRepository.getById(command.eventId);
+    if (!eventDomain) {
+      throw new NotFoundException(
+        `event comment not found with id ${command.eventId}`,
+      );
+    }
+    const commentDomain = CreateEventCommentCommand.fromCommands(command);
+    eventDomain.addEventComment(commentDomain);
+    const result = await this.eventRepository.update(
+      command.eventId,
+      eventDomain,
+    );
+    if (result) {
+      return EventResponse.fromDomain(result);
+    }
+  }
+
+  async updateEventComment(
+    command: UpdateEventCommentCommand,
+  ): Promise<EventResponse> {
+    const eventDomain = await this.eventRepository.getById(command.eventId);
+    if (!eventDomain) {
+      throw new NotFoundException(
+        `event comment not found with id ${command.eventId}`,
+      );
+    }
+
+    const commentDomain = UpdateEventCommentCommand.fromCommands(command);
+    eventDomain.updateEventComment(commentDomain);
+    const result = await this.eventRepository.update(
+      command.eventId,
+      eventDomain,
+    );
+    if (result) {
+      return EventResponse.fromDomain(result);
+    }
+
+    return null;
+  }
+  async removeEventComment(id: string): Promise<boolean> {
+    const eventDomain = await this.eventRepository.getById(id);
+    if (eventDomain) {
+      await eventDomain.removeEventComment(id);
+      const result = await this.eventRepository.update(id, eventDomain);
+      if (result) return true;
+    }
+    return false;
+  }
 }

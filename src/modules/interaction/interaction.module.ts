@@ -20,13 +20,30 @@ import { BranchReviewCommands } from './usecases/user-interaction/branch-reviews
 import { BranchReviewQueries } from './usecases/user-interaction/branch-reviews/branch-review.usecase.queries';
 import { EventReviewCommands } from './usecases/user-interaction/event-reviews/event-review.usecase.commands';
 import { EventReviewQueries } from './usecases/user-interaction/event-reviews/event-review.usecase.queries';
-import { UserRepository } from '@user/persistence/users/user.repository';
+import { FavoriteController } from './controllers/favorite.controller';
+import { FollowController } from './controllers/follow.controller';
+import { InterestController } from './controllers/interest.controller';
+import { FavoriteEntity } from './persistence/user-interaction/favorites/favorite.entity';
+import { FavoriteRepository } from './persistence/user-interaction/favorites/favorite.repository';
+import { FollowEntity } from './persistence/user-interaction/follows/follow.entity';
+import { FollowRepository } from './persistence/user-interaction/follows/follow.repository';
+import { InterestEntity } from './persistence/user-interaction/interests/interest.entity';
+import { InterestRepository } from './persistence/user-interaction/interests/interest.repository';
+import { FavoriteCommands } from './usecases/user-interaction/favorites/favorite.usecases.commands';
+import { FavoriteQueries } from './usecases/user-interaction/favorites/favorite.usecases.queries';
+import { FollowCommands } from './usecases/user-interaction/follows/follow.usecases.commands';
+import { FollowQueries } from './usecases/user-interaction/follows/follow.usecases.queries';
+import { InterestQueries } from './usecases/user-interaction/interests/intereset.usecases.queries';
+import { InterestCommands } from './usecases/user-interaction/interests/interest.usecases.commands';
 @Module({
   controllers: [
     FeedbacksController,
     ReviewsController,
     BranchReviewController,
     EventReviewController,
+    FavoriteController,
+    FollowController,
+    InterestController,
   ],
   imports: [
     TypeOrmModule.forFeature([
@@ -34,6 +51,9 @@ import { UserRepository } from '@user/persistence/users/user.repository';
       ReviewEntity,
       EventReviewEntity,
       BranchReviewEntity,
+      FavoriteEntity,
+      FollowEntity,
+      InterestEntity,
     ]),
   ],
   providers: [
@@ -43,13 +63,26 @@ import { UserRepository } from '@user/persistence/users/user.repository';
     ReviewRepository,
     ReviewCommands,
     ReviewQuery,
-    //UserRepository,
+
     EventReviewRepository,
     EventReviewCommands,
     EventReviewQueries,
+
     BranchReviewRepository,
     BranchReviewCommands,
     BranchReviewQueries,
+
+    FavoriteRepository,
+    FavoriteCommands,
+    FavoriteQueries,
+
+    FollowRepository,
+    FollowCommands,
+    FollowQueries,
+
+    InterestRepository,
+    InterestCommands,
+    InterestQueries,
   ],
 })
 export class InteractionModule {}

@@ -2,6 +2,8 @@ import { BlogComment } from '@blog/domains/blog/blog-comment';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateBlogCommentCommand {
+  // @ApiProperty()
+  // id: string;
   @ApiProperty()
   userId: string;
   @ApiProperty()

@@ -1,61 +1,61 @@
-import { BranchReviewEntity } from '@interaction/persistence/user-interaction/branch-reviews/branch-review.entity';
+import { InterestEntity } from '@interaction/persistence/user-interaction/interests/interest.entity';
 import { CollectionQuery } from '@libs/collection-query/collection-query';
 import { FilterOperators } from '@libs/collection-query/filter_operators';
 import { QueryConstructor } from '@libs/collection-query/query-constructor';
 import { DataResponseFormat } from '@libs/response-format/data-response-format';
 import {
-  BadRequestException,
   Injectable,
+  BadRequestException,
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { BranchReviewResponse } from './branch-review.response';
+import { InterestResponse } from './interest.response';
 
 @Injectable()
-export class BranchReviewQueries {
+export class InterestQueries {
   constructor(
-    @InjectRepository(BranchReviewEntity)
-    private branchReviewRepository: Repository<BranchReviewEntity>,
+    @InjectRepository(InterestEntity)
+    private interestRepository: Repository<InterestEntity>,
   ) {}
 
-  async getBranchReview(
+  async getInterest(
     id: string,
     withDeleted = false,
-  ): Promise<BranchReviewResponse> {
-    const follow = await this.branchReviewRepository.find({
+  ): Promise<InterestResponse> {
+    const interest = await this.interestRepository.find({
       where: { id: id },
       relations: [],
       withDeleted: withDeleted,
     });
-    if (!follow[0]) {
-      throw new NotFoundException(`branch review not found with id ${id}`);
+    if (!interest[0]) {
+      throw new NotFoundException(`interest not found with id ${id}`);
     }
-    return BranchReviewResponse.fromEntity(follow[0]);
+    return InterestResponse.fromEntity(interest[0]);
   }
 
-  async getBranchReviews(
+  async getInterests(
     query: CollectionQuery,
-  ): Promise<DataResponseFormat<BranchReviewResponse>> {
-    const dataQuery = QueryConstructor.constructQuery<BranchReviewEntity>(
-      this.branchReviewRepository,
+  ): Promise<DataResponseFormat<InterestResponse>> {
+    const dataQuery = QueryConstructor.constructQuery<InterestEntity>(
+      this.interestRepository,
       query,
     );
-    const d = new DataResponseFormat<BranchReviewResponse>();
+    const d = new DataResponseFormat<InterestResponse>();
     if (query.count) {
       d.count = await dataQuery.getCount();
     } else {
       const [result, total] = await dataQuery.getManyAndCount();
-      d.data = result.map((entity) => BranchReviewResponse.fromEntity(entity));
+      d.data = result.map((entity) => InterestResponse.fromEntity(entity));
       d.count = total;
     }
     return d;
   }
 
-  async getBranchReviewsByUser(
+  async getIntersetsByUser(
     userId: string,
     query: CollectionQuery,
-  ): Promise<DataResponseFormat<BranchReviewResponse>> {
+  ): Promise<DataResponseFormat<InterestResponse>> {
     try {
       if (!query.filter) {
         query.filter = [];
@@ -67,19 +67,17 @@ export class BranchReviewQueries {
           value: userId,
         },
       ]);
-      const dataQuery = QueryConstructor.constructQuery<BranchReviewEntity>(
-        this.branchReviewRepository,
+      const dataQuery = QueryConstructor.constructQuery<InterestEntity>(
+        this.interestRepository,
         query,
       );
       console.log(dataQuery.getSql(), dataQuery.getParameters());
-      const d = new DataResponseFormat<BranchReviewResponse>();
+      const d = new DataResponseFormat<InterestResponse>();
       if (query.count) {
         d.count = await dataQuery.getCount();
       } else {
         const [result, total] = await dataQuery.getManyAndCount();
-        d.data = result.map((entity) =>
-          BranchReviewResponse.fromEntity(entity),
-        );
+        d.data = result.map((entity) => InterestResponse.fromEntity(entity));
         d.count = total;
       }
       return d;
@@ -87,34 +85,32 @@ export class BranchReviewQueries {
       throw new BadRequestException(error.code, error.message);
     }
   }
-  async getBranchReviewsByBranch(
-    branchId: string,
+  async getInterestsByEvent(
+    eventId: string,
     query: CollectionQuery,
-  ): Promise<DataResponseFormat<BranchReviewResponse>> {
+  ): Promise<DataResponseFormat<InterestResponse>> {
     try {
       if (!query.filter) {
         query.filter = [];
       }
       query.filter.push([
         {
-          field: 'branch_id',
+          field: 'event_id',
           operator: FilterOperators.EqualTo,
-          value: branchId,
+          value: eventId,
         },
       ]);
-      const dataQuery = QueryConstructor.constructQuery<BranchReviewEntity>(
-        this.branchReviewRepository,
+      const dataQuery = QueryConstructor.constructQuery<InterestEntity>(
+        this.interestRepository,
         query,
       );
       console.log(dataQuery.getSql(), dataQuery.getParameters());
-      const d = new DataResponseFormat<BranchReviewResponse>();
+      const d = new DataResponseFormat<InterestResponse>();
       if (query.count) {
         d.count = await dataQuery.getCount();
       } else {
         const [result, total] = await dataQuery.getManyAndCount();
-        d.data = result.map((entity) =>
-          BranchReviewResponse.fromEntity(entity),
-        );
+        d.data = result.map((entity) => InterestResponse.fromEntity(entity));
         d.count = total;
       }
       return d;

@@ -36,7 +36,7 @@ export class EventReviewRepository implements IEventReview {
     }
     return eventReviews.map((eventReview) => this.toEventReview(eventReview));
   }
-  async getById(id: string, withDeleted: boolean): Promise<EventReview> {
+  async getById(id: string, withDeleted = false): Promise<EventReview> {
     const eventReview = await this.eventReviewRepository.find({
       where: { id: id },
       relations: [],

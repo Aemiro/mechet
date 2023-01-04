@@ -6,10 +6,12 @@ import {
 import { CreatePartnerCommand, UpdatePartnerCommand } from './partner.commands';
 import { PartnerResponse } from './partners.response';
 import { Partner } from '@partner/domains/partner/partner';
-import { CreateBranchCommand } from './branch.commands';
+import { CreateBranchCommand, UpdateBranchCommand } from './branch.commands';
 import { Branch } from '@partner/domains/partner/branch';
 import { PartnerRepository } from '@partner/persistence/partner/partner.repository';
 import { BranchResponse } from '@partner/usecases/partner/branch.response';
+import { CreateScheduleCommand } from './schedule.commands';
+import { ScheduleResponse } from './schedule.response';
 
 @Injectable()
 export class PartnerCommands {
@@ -81,40 +83,32 @@ export class PartnerCommands {
     return PartnerResponse.fromDomain(partner);
   }
 
-  async createBranch(
-    partnerId: string,
-    createBranchCommand: CreateBranchCommand,
-  ): Promise<BranchResponse> {
-    let branchDomain = new Branch();
-    this.partnerDomain = await this.partnerRepository.getById(partnerId);
-    if (this.partnerDomain) {
+  async createBranch(command: CreateBranchCommand): Promise<BranchResponse> {
+    const partnerDomain = await this.partnerRepository.getById(
+      command.partnerId,
+    );
+    if (partnerDomain) {
       if (
-        await this.partnerRepository.getByPhoneNumber(
-          createBranchCommand.phoneNumber,
-          true,
-        )
+        await this.partnerRepository.getByPhoneNumber(command.phoneNumber, true)
       ) {
         throw new BadRequestException(
           `branch already exist with this phone number`,
         );
       }
       if (
-        createBranchCommand.email &&
-        (await this.partnerRepository.getByEmail(
-          createBranchCommand.email,
-          true,
-        ))
+        command.email &&
+        (await this.partnerRepository.getByEmail(command.email, true))
       ) {
         throw new BadRequestException(
           `branch already exist with this email Address`,
         );
       }
-      branchDomain = CreateBranchCommand.fromCommands(createBranchCommand);
-      if (!this.partnerDomain) {
-        this.partnerDomain.branches = [];
+      const branchDomain = CreateBranchCommand.fromCommands(command);
+      if (partnerDomain) {
+        partnerDomain.branches = [];
       }
-      this.partnerDomain.addBanch(branchDomain);
-      const result = await this.partnerRepository.update(this.partnerDomain);
+      partnerDomain.addBanch(branchDomain);
+      const result = await this.partnerRepository.update(partnerDomain);
       if (result) {
         return BranchResponse.fromDomain(
           result.branches[result.branches.length - 1],
@@ -122,6 +116,34 @@ export class PartnerCommands {
       }
       return null;
     }
+  }
+  async updateBranch(command: UpdateBranchCommand): Promise<BranchResponse> {
+    const partnerDomain = await this.partnerRepository.getById(
+      command.partnerId,
+    );
+    if (!partnerDomain) {
+      throw new NotFoundException(
+        `branch not found with id ${command.partnerId}`,
+      );
+    }
+    const branchDomain = UpdateBranchCommand.fromCommands(command);
+    partnerDomain.updateBranch(branchDomain);
+    const result = await this.partnerRepository.update(partnerDomain);
+    if (result) {
+      return BranchResponse.fromDomain(
+        result.branches[result.branches.length - 1],
+      );
+    }
+    return null;
+  }
+  async removeBranch(id: string): Promise<boolean> {
+    const partnerDomain = await this.partnerRepository.getById(id);
+    if (partnerDomain) {
+      await partnerDomain.removeBranch(id);
+      const result = await this.partnerRepository.update(partnerDomain);
+      if (result) return true;
+    }
+    return false;
   }
 
   // // async updateBranchCoverImage(id: string, fileDto: FileResponseDto) {
@@ -140,32 +162,28 @@ export class PartnerCommands {
   // //   return BranchResponse.fromDomain(result);
   // }
 
-  // async createScheduleByBranchId(
-  //   branchId: string,
-  //   createScheduleCommand: CreateScheduleCommand,
+  // async createSchedule(
+  //   command: CreateScheduleCommand,
   // ): Promise<ScheduleResponse> {
-  //   let scheduleDomain = new Schedule();
-  //   this.partnerDomain = await this.partnerRepository.getById(branchId);
-  //   if (this.branchDomain) {
-  //     scheduleDomain = CreateScheduleCommand.fromCommands(
-  //       createScheduleCommand,
+  //   const partnerDomain = await this.partnerRepository.getById(command.branchId);
+  //   if (!partnerDomain) {
+  //     throw new NotFoundException(
+  //       `schedule not found with id ${command.branchId}`,
   //     );
-  //     if (!this.branchDomain) {
-  //       this.branchDomain.schedules = [];
-  //     }
-  //     this.branchDomain.addSchedule(scheduleDomain);
+
+  //   }
+  //   const scheduleDomain = CreateScheduleCommand.fromCommands(command);
+  //   partnerDomain.addSchedule(scheduleDomain);
   //     const result = await this.partnerRepository.update(
-  //       branchId,
-  //       this.partnerDomain,
+  //       partnerDomain,
   //     );
   //     if (result) {
   //       return ScheduleResponse.fromDomain(
   //         result.schedules[result.schedules.length - 1],
   //       );
-  //     }
   //   }
-  //   return null;
-  // }
+  //    return null;
+  //   }
 
   // async updateScheduleByBranchId(
   //   branchId: string,

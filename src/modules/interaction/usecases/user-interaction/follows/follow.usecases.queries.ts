@@ -1,61 +1,58 @@
-import { BranchReviewEntity } from '@interaction/persistence/user-interaction/branch-reviews/branch-review.entity';
+import { FollowEntity } from '@interaction/persistence/user-interaction/follows/follow.entity';
 import { CollectionQuery } from '@libs/collection-query/collection-query';
 import { FilterOperators } from '@libs/collection-query/filter_operators';
 import { QueryConstructor } from '@libs/collection-query/query-constructor';
 import { DataResponseFormat } from '@libs/response-format/data-response-format';
 import {
-  BadRequestException,
   Injectable,
+  BadRequestException,
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { BranchReviewResponse } from './branch-review.response';
+import { FollowResponse } from './follow.response';
 
 @Injectable()
-export class BranchReviewQueries {
+export class FollowQueries {
   constructor(
-    @InjectRepository(BranchReviewEntity)
-    private branchReviewRepository: Repository<BranchReviewEntity>,
+    @InjectRepository(FollowEntity)
+    private followRepository: Repository<FollowEntity>,
   ) {}
 
-  async getBranchReview(
-    id: string,
-    withDeleted = false,
-  ): Promise<BranchReviewResponse> {
-    const follow = await this.branchReviewRepository.find({
+  async getFollower(id: string, withDeleted = false): Promise<FollowResponse> {
+    const follow = await this.followRepository.find({
       where: { id: id },
       relations: [],
       withDeleted: withDeleted,
     });
     if (!follow[0]) {
-      throw new NotFoundException(`branch review not found with id ${id}`);
+      throw new NotFoundException(`follow not found with id ${id}`);
     }
-    return BranchReviewResponse.fromEntity(follow[0]);
+    return FollowResponse.fromEntity(follow[0]);
   }
 
-  async getBranchReviews(
+  async getFollwers(
     query: CollectionQuery,
-  ): Promise<DataResponseFormat<BranchReviewResponse>> {
-    const dataQuery = QueryConstructor.constructQuery<BranchReviewEntity>(
-      this.branchReviewRepository,
+  ): Promise<DataResponseFormat<FollowResponse>> {
+    const dataQuery = QueryConstructor.constructQuery<FollowEntity>(
+      this.followRepository,
       query,
     );
-    const d = new DataResponseFormat<BranchReviewResponse>();
+    const d = new DataResponseFormat<FollowResponse>();
     if (query.count) {
       d.count = await dataQuery.getCount();
     } else {
       const [result, total] = await dataQuery.getManyAndCount();
-      d.data = result.map((entity) => BranchReviewResponse.fromEntity(entity));
+      d.data = result.map((entity) => FollowResponse.fromEntity(entity));
       d.count = total;
     }
     return d;
   }
 
-  async getBranchReviewsByUser(
+  async getFollowersByUser(
     userId: string,
     query: CollectionQuery,
-  ): Promise<DataResponseFormat<BranchReviewResponse>> {
+  ): Promise<DataResponseFormat<FollowResponse>> {
     try {
       if (!query.filter) {
         query.filter = [];
@@ -67,19 +64,17 @@ export class BranchReviewQueries {
           value: userId,
         },
       ]);
-      const dataQuery = QueryConstructor.constructQuery<BranchReviewEntity>(
-        this.branchReviewRepository,
+      const dataQuery = QueryConstructor.constructQuery<FollowEntity>(
+        this.followRepository,
         query,
       );
       console.log(dataQuery.getSql(), dataQuery.getParameters());
-      const d = new DataResponseFormat<BranchReviewResponse>();
+      const d = new DataResponseFormat<FollowResponse>();
       if (query.count) {
         d.count = await dataQuery.getCount();
       } else {
         const [result, total] = await dataQuery.getManyAndCount();
-        d.data = result.map((entity) =>
-          BranchReviewResponse.fromEntity(entity),
-        );
+        d.data = result.map((entity) => FollowResponse.fromEntity(entity));
         d.count = total;
       }
       return d;
@@ -87,10 +82,10 @@ export class BranchReviewQueries {
       throw new BadRequestException(error.code, error.message);
     }
   }
-  async getBranchReviewsByBranch(
+  async getFollowersByBranch(
     branchId: string,
     query: CollectionQuery,
-  ): Promise<DataResponseFormat<BranchReviewResponse>> {
+  ): Promise<DataResponseFormat<FollowResponse>> {
     try {
       if (!query.filter) {
         query.filter = [];
@@ -102,19 +97,17 @@ export class BranchReviewQueries {
           value: branchId,
         },
       ]);
-      const dataQuery = QueryConstructor.constructQuery<BranchReviewEntity>(
-        this.branchReviewRepository,
+      const dataQuery = QueryConstructor.constructQuery<FollowEntity>(
+        this.followRepository,
         query,
       );
       console.log(dataQuery.getSql(), dataQuery.getParameters());
-      const d = new DataResponseFormat<BranchReviewResponse>();
+      const d = new DataResponseFormat<FollowResponse>();
       if (query.count) {
         d.count = await dataQuery.getCount();
       } else {
         const [result, total] = await dataQuery.getManyAndCount();
-        d.data = result.map((entity) =>
-          BranchReviewResponse.fromEntity(entity),
-        );
+        d.data = result.map((entity) => FollowResponse.fromEntity(entity));
         d.count = total;
       }
       return d;
