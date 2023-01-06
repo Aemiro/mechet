@@ -24,4 +24,4 @@ import { PartnerQueries } from './usecases/partner/partner.usecases.queries';
     FileManagerService,
   ],
 })
-export class PartnerrModule {}
+export class PartnerModule {}

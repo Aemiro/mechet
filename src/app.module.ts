@@ -22,7 +22,7 @@ import {
 import { UserEntity } from '@user/persistence/users/user.entity';
 import { NotificationEntity } from '@notification/persistence/notification/notification.entity';
 import { PartnerCategoryEntity } from '@partner/persistence/partner/partner-category.entity';
-import { PartnerrModule } from '@partner/partner.module';
+import { PartnerModule } from '@partner/partner.module';
 import { BlogCommentEntity } from '@blog/persistence/blog/blog-comment.entity';
 import { InterestEntity } from '@interaction/persistence/user-interaction/interests/interest.entity';
 import { FavoriteEntity } from '@interaction/persistence/user-interaction/favorites/favorite.entity';
@@ -75,7 +75,7 @@ dotenv.config({ path: '.env' });
       synchronize: true,
     }),
     UserModule,
-    PartnerrModule,
+    PartnerModule,
     EventModule,
     InteractionModule,
     BlogModule,
