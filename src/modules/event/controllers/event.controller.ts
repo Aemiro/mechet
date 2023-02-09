@@ -2,6 +2,7 @@ import {
   CreateEventCommentCommand,
   UpdateEventCommentCommand,
 } from '@event/usecases/event/event-comment.commands';
+import { EventCommentResponse } from '@event/usecases/event/event-comment.response';
 import {
   CreateEventCommand,
   UpdateEventCommand,
@@ -57,6 +58,14 @@ export class EventController {
   async createEvent(@Body() createEventCommand: CreateEventCommand) {
     return await this.commands.createEvent(createEventCommand);
   }
+  @Post('add-event-view/:id')
+  @ApiOkResponse({ type: EventResponse })
+  async addEventView(
+    @Param('id') id: string,
+    @Body() createEventCommand: CreateEventCommand,
+  ) {
+    return await this.commands.addEventView(id, createEventCommand);
+  }
 
   @Put('update-event')
   @ApiOkResponse({ type: EventResponse })
@@ -99,5 +108,13 @@ export class EventController {
   @ApiOkResponse({ type: Boolean })
   async removeEventComment(@Param('id') id: string) {
     return this.commands.removeEventComment(id);
+  }
+  @Get('get-event-comments')
+  @ApiOkResponse({ type: EventCommentResponse })
+  async getEventCommentsByEvent(
+    @Param('id') eventId: string,
+    @Query() query: CollectionQuery,
+  ) {
+    return this.queries.getEventCommentsByEvent(eventId, query);
   }
 }

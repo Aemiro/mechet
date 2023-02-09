@@ -12,7 +12,6 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { FeedbackEntity } from '@interaction/persistence/feedbacks/feedback.entity';
-import { ReviewEntity } from '@interaction/persistence/reviews/review.entity';
 import * as dotenv from 'dotenv';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import {
@@ -24,12 +23,12 @@ import { NotificationEntity } from '@notification/persistence/notification/notif
 import { PartnerCategoryEntity } from '@partner/persistence/partner/partner-category.entity';
 import { PartnerModule } from '@partner/partner.module';
 import { BlogCommentEntity } from '@blog/persistence/blog/blog-comment.entity';
-import { InterestEntity } from '@interaction/persistence/user-interaction/interests/interest.entity';
-import { FavoriteEntity } from '@interaction/persistence/user-interaction/favorites/favorite.entity';
-import { FollowEntity } from '@interaction/persistence/user-interaction/follows/follow.entity';
+import { InterestEntity } from '@interaction/persistence/interests/interest.entity';
+import { FavoriteEntity } from '@interaction/persistence/favorites/favorite.entity';
+import { FollowEntity } from '@interaction/persistence/follows/follow.entity';
 import { BranchEntity } from '@partner/persistence/partner/branch.entity';
-import { EventReviewEntity } from '@interaction/persistence/user-interaction/event-reviews/event-review.entity';
-import { BranchReviewEntity } from '@interaction/persistence/user-interaction/branch-reviews/branch-review.entity';
+import { EventReviewEntity } from '@interaction/persistence/event-reviews/event-review.entity';
+import { BranchReviewEntity } from '@interaction/persistence/branch-reviews/branch-review.entity';
 import { EventModule } from '@event/event.module';
 import { EventCategoryEntity } from '@event/persistence/event/event-category.entity';
 import { ECategoryEntity } from '@event/persistence/e-category/e-category.entity';
@@ -61,7 +60,6 @@ dotenv.config({ path: '.env' });
         FavoriteEntity,
         FollowEntity,
         InterestEntity,
-        ReviewEntity,
         EventReviewEntity,
         BranchReviewEntity,
 

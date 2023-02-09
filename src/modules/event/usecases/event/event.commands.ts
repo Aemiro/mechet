@@ -4,16 +4,20 @@ import { Event } from '@event/domains/event/event';
 import { Location } from '@libs/common/location';
 import { Address } from '@libs/common/address';
 
+export class UpdateEventRate {
+  eventId: string;
+  rate: number;
+}
 export class CreateEventCommand {
-  //@ApiProperty()
+  @ApiProperty()
   branchId: string;
-  // @ApiProperty()
+  @ApiProperty()
   partnerId: string;
   @ApiProperty()
   title: string;
   @ApiProperty()
   description: string;
-  @ApiProperty()
+  //@ApiProperty()
   views: number;
   @ApiProperty()
   isPublished: boolean;
@@ -23,7 +27,7 @@ export class CreateEventCommand {
   from: Date;
   @ApiProperty()
   to: Date;
-  @ApiProperty()
+  //@ApiProperty()
   averageRate: AverageRate;
   @ApiProperty()
   address: Address;
@@ -61,7 +65,7 @@ export class UpdateEventCommand {
   title: string;
   @ApiProperty()
   description: string;
-  @ApiProperty()
+  //@ApiProperty()
   views: number;
   @ApiProperty()
   isPublished: boolean;

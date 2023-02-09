@@ -2,6 +2,7 @@ import {
   CreateBlogCommentCommand,
   UpdateBlogCommentCommand,
 } from '@blog/usecases/blog/blog-comment.commands';
+import { BlogCommentResponse } from '@blog/usecases/blog/blog-comment.response';
 import {
   CreateBlogCommand,
   UpdateBlogCommand,
@@ -69,6 +70,14 @@ export class BlogController {
   @ApiOkResponse({ type: BlogResponse })
   async createBlog(@Body() createBlogCommand: CreateBlogCommand) {
     return this.commands.createBlog(createBlogCommand);
+  }
+  @Post('add-blog-view')
+  @ApiOkResponse({ type: BlogResponse })
+  async addBlogView(
+    @Param('id') id: string,
+    @Body() createBlogCommand: CreateBlogCommand,
+  ) {
+    return this.commands.addBlogView(id, createBlogCommand);
   }
   @Put('update-blog')
   @ApiOkResponse({ type: BlogResponse })
@@ -138,13 +147,22 @@ export class BlogController {
   @Put('update-blog-comment')
   @ApiOkResponse({ type: BlogResponse })
   async updateBlogComment(
+    @Param('id') id: string,
     @Body() updateBlogCommentCommand: UpdateBlogCommentCommand,
   ) {
-    return this.commands.updateBlogComment(updateBlogCommentCommand);
+    return this.commands.updateBlogComment(id, updateBlogCommentCommand);
   }
   @Delete('remove-blog-comment/:id')
   @ApiOkResponse({ type: Boolean })
   async removeBlogComment(@Param('id') id: string) {
     return this.commands.removeBlogComment(id);
+  }
+  @Get('get-blog-comments')
+  @ApiOkResponse({ type: BlogCommentResponse })
+  async getBlogCommentsByBlog(
+    @Param('blogId') blogId: string,
+    @Query() query: CollectionQuery,
+  ) {
+    return this.queries.getBlogCommentsByBlog(blogId, query);
   }
 }

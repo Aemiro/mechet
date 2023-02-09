@@ -6,18 +6,32 @@ import {
 import { CreatePartnerCommand, UpdatePartnerCommand } from './partner.commands';
 import { PartnerResponse } from './partners.response';
 import { Partner } from '@partner/domains/partner/partner';
-import { CreateBranchCommand, UpdateBranchCommand } from './branch.commands';
+import {
+  CreateBranchCommand,
+  UpdateBranchCommand,
+  UpdateBranchRate,
+} from './branch.commands';
 import { Branch } from '@partner/domains/partner/branch';
 import { PartnerRepository } from '@partner/persistence/partner/partner.repository';
 import { BranchResponse } from '@partner/usecases/partner/branch.response';
-import { CreateScheduleCommand } from './schedule.commands';
-import { ScheduleResponse } from './schedule.response';
+import { InjectRepository } from '@nestjs/typeorm';
+import { BranchEntity } from '@partner/persistence/partner/branch.entity';
+import { Repository } from 'typeorm';
+import { EventEmitter2, OnEvent } from '@nestjs/event-emitter';
+import { CreatePartenerUserCommand } from '@user/usecases/user/user.commands';
+import { Roles } from '@libs/common/enums';
+import { Utility } from '@libs/common/utility';
 
 @Injectable()
 export class PartnerCommands {
   private partnerDomain = new Partner();
   private branchDomain = new Branch();
-  constructor(private partnerRepository: PartnerRepository) {}
+  constructor(
+    private partnerRepository: PartnerRepository,
+    @InjectRepository(BranchEntity)
+    private branchRepository: Repository<BranchEntity>,
+    private eventEmitter: EventEmitter2,
+  ) {}
 
   async createPartner(command: CreatePartnerCommand): Promise<PartnerResponse> {
     if (
@@ -39,6 +53,17 @@ export class PartnerCommands {
 
     console.log(this.partnerDomain);
     const partner = await this.partnerRepository.insert(this.partnerDomain);
+    if (partner) {
+      const userCommand = new CreatePartenerUserCommand();
+      userCommand.partnerId = partner.id;
+      userCommand.role = [Roles.PARTNERADMIN, Roles.USER];
+      userCommand.name = partner.contactPerson.name;
+      userCommand.email = partner.contactPerson.email;
+      userCommand.gender = partner.contactPerson.gender;
+      userCommand.phoneNumber = partner.contactPerson.phoneNumber;
+      userCommand.password = Utility.generatePassword(6);
+      this.eventEmitter.emit('create.partner.account', userCommand);
+    }
     return PartnerResponse.fromDomain(partner);
   }
 
@@ -46,7 +71,7 @@ export class PartnerCommands {
     const partner = await this.partnerRepository.getById(command.id);
     if (partner != null) {
       const partner = UpdatePartnerCommand.fromCommands(command);
-      const result = await this.partnerRepository.update(partner);
+      const result = await this.partnerRepository.update(command.id, partner);
       return PartnerResponse.fromDomain(result);
     }
     throw new NotFoundException(`Partner not found with id ${command.id}`);
@@ -108,13 +133,35 @@ export class PartnerCommands {
         partnerDomain.branches = [];
       }
       partnerDomain.addBanch(branchDomain);
-      const result = await this.partnerRepository.update(partnerDomain);
+      const result = await this.partnerRepository.update(
+        command.partnerId,
+        partnerDomain,
+      );
       if (result) {
         return BranchResponse.fromDomain(
           result.branches[result.branches.length - 1],
         );
       }
       return null;
+    }
+  }
+  @OnEvent('update.branch.rate')
+  async updateBranchRate(rateCommand: UpdateBranchRate) {
+    const branch = await this.branchRepository.findOneBy({
+      id: rateCommand.branchId,
+    });
+    if (branch) {
+      if (branch.averageRate == null) {
+        branch.averageRate.rate = 0;
+        branch.averageRate.totalReviews = 0;
+      }
+      const currentRate = branch.averageRate.rate;
+      const currentTotatalReview = branch.averageRate.totalReviews;
+      branch.averageRate.totalReviews += 1;
+      branch.averageRate.rate =
+        (currentRate * currentTotatalReview + rateCommand.rate) /
+        branch.averageRate.totalReviews;
+      await this.branchRepository.save(branch);
     }
   }
   async updateBranch(command: UpdateBranchCommand): Promise<BranchResponse> {
@@ -128,7 +175,10 @@ export class PartnerCommands {
     }
     const branchDomain = UpdateBranchCommand.fromCommands(command);
     partnerDomain.updateBranch(branchDomain);
-    const result = await this.partnerRepository.update(partnerDomain);
+    const result = await this.partnerRepository.update(
+      command.id,
+      partnerDomain,
+    );
     if (result) {
       return BranchResponse.fromDomain(
         result.branches[result.branches.length - 1],
@@ -140,7 +190,7 @@ export class PartnerCommands {
     const partnerDomain = await this.partnerRepository.getById(id);
     if (partnerDomain) {
       await partnerDomain.removeBranch(id);
-      const result = await this.partnerRepository.update(partnerDomain);
+      const result = await this.partnerRepository.update(id, partnerDomain);
       if (result) return true;
     }
     return false;

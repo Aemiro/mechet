@@ -1,7 +1,7 @@
-import { CreateEventReviewCommand } from '@interaction/usecases/user-interaction/event-reviews/event-review.commands';
-import { EventReviewResponse } from '@interaction/usecases/user-interaction/event-reviews/event-review.response';
-import { EventReviewCommands } from '@interaction/usecases/user-interaction/event-reviews/event-review.usecase.commands';
-import { EventReviewQueries } from '@interaction/usecases/user-interaction/event-reviews/event-review.usecase.queries';
+import { CreateEventReviewCommand } from '@interaction/usecases/event-reviews/event-review.commands';
+import { EventReviewResponse } from '@interaction/usecases/event-reviews/event-review.response';
+import { EventReviewCommands } from '@interaction/usecases/event-reviews/event-review.usecase.commands';
+import { EventReviewQueries } from '@interaction/usecases/event-reviews/event-review.usecase.queries';
 import { CollectionQuery } from '@libs/collection-query/collection-query';
 import { ApiPaginatedResponse } from '@libs/response-format/api-paginated-response';
 import { DataResponseFormat } from '@libs/response-format/data-response-format';

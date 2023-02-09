@@ -2,7 +2,7 @@ import { Partner } from './partner';
 
 export interface IPartner {
   insert(partner: Partner): Promise<Partner>;
-  update(partner: Partner): Promise<Partner>;
+  update(id: string, partner: Partner): Promise<Partner>;
   delete(id: string): Promise<boolean>;
   getAll(withDeleted: boolean): Promise<Partner[]>;
   getById(id: string, withDeleted: boolean): Promise<Partner>;

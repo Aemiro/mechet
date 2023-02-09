@@ -1,5 +1,5 @@
-import { FavoriteEntity } from '@interaction/persistence/user-interaction/favorites/favorite.entity';
-import { InterestEntity } from '@interaction/persistence/user-interaction/interests/interest.entity';
+import { FavoriteEntity } from '@interaction/persistence/favorites/favorite.entity';
+import { InterestEntity } from '@interaction/persistence/interests/interest.entity';
 import { AverageRate } from '@libs/common/average-rate';
 import { FileDto } from '@libs/common/file-dto';
 import { Location } from '@libs/common/location';
@@ -14,7 +14,7 @@ import {
 import { EventCommentEntity } from './event-comment.entity';
 import { PartnerEntity } from '@partner/persistence/partner/partner.entity';
 import { BranchEntity } from '@partner/persistence/partner/branch.entity';
-import { EventReviewEntity } from '@interaction/persistence/user-interaction/event-reviews/event-review.entity';
+import { EventReviewEntity } from '@interaction/persistence/event-reviews/event-review.entity';
 import { CommonEntity } from '@libs/common/common.entity';
 import { EventCategoryEntity } from './event-category.entity';
 import { Address } from '@libs/common/address';
@@ -25,7 +25,7 @@ export class EventEntity extends CommonEntity {
   id: string;
   @Column({ name: 'category_id', nullable: true })
   categoryId: string;
-  @Column({ name: 'partner_id', nullable: true  })
+  @Column({ name: 'partner_id', nullable: true })
   partnerId: string;
   @Column({ name: 'branch_id', nullable: true })
   branchId: string;

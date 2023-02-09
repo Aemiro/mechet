@@ -4,7 +4,11 @@ import {
 } from '@libs/common/file-manager';
 import { FileDto } from '@libs/common/file-dto';
 import { FileResponseDto } from '@libs/common/file-manager/dtos/file-response.dto';
-import { CreateUserCommand, UpdateUserCommand } from './user.commands';
+import {
+  CreatePartenerUserCommand,
+  CreateUserCommand,
+  UpdateUserCommand,
+} from './user.commands';
 import { UserResponse } from './user.response';
 import {
   Injectable,
@@ -14,7 +18,7 @@ import {
 import { Utility } from '@libs/common/utility';
 import { User } from '@user/domains/user/user';
 import { UserRepository } from '@user/persistence/users/user.repository';
-import { CreateStaffUSerCommand } from './staff-user.commands';
+import { OnEvent } from '@nestjs/event-emitter';
 @Injectable()
 export class UserCommands {
   private userDomain = new User();
@@ -128,9 +132,7 @@ export class UserCommands {
     return UserResponse.fromDomain(result);
   }
 
-  async createSataffUser(
-    command: CreateStaffUSerCommand,
-  ): Promise<UserResponse> {
+  async createSataffUser(command: CreateUserCommand): Promise<UserResponse> {
     if (await this.userRepository.getByPhoneNumber(command.phoneNumber, true)) {
       throw new BadRequestException(
         `user stack already exist with this phone number`,
@@ -144,11 +146,32 @@ export class UserCommands {
         `user stack already exist with this email Address`,
       );
     }
-    this.userDomain = CreateStaffUSerCommand.fromCommands(command);
+    this.userDomain = CreateUserCommand.fromCommands(command);
 
     console.log(this.userDomain);
+    this.userDomain.password = Utility.hashPassword(command.password);
     this.userDomain.password = Utility.generatePassword(6);
     const partner = await this.userRepository.insert(this.userDomain);
     return UserResponse.fromDomain(partner);
+  }
+  @OnEvent('create.partner.account')
+  async createPartnerUSerAccount(command: CreatePartenerUserCommand) {
+    if (
+      !(
+        (await this.userRepository.getByPhoneNumber(
+          command.phoneNumber,
+          true,
+        )) &&
+        command.email &&
+        (await this.userRepository.getByEmail(command.email, true))
+      )
+    ) {
+      this.userDomain = CreatePartenerUserCommand.fromCommands(command);
+
+      console.log(this.userDomain);
+      this.userDomain.password = Utility.hashPassword(command.password);
+      const user = await this.userRepository.insert(this.userDomain);
+      return UserResponse.fromDomain(user);
+    }
   }
 }

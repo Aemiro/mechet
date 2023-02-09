@@ -1,5 +1,6 @@
 import { Blog } from '@blog/domains/blog/blog';
 import { BlogComment } from '@blog/domains/blog/blog-comment';
+import { BlogCommentRepository } from '@blog/persistence/blog/blog-comment.repository';
 import { BlogRepository } from '@blog/persistence/blog/blog.repository';
 import { FileDto } from '@libs/common/file-dto';
 import {
@@ -21,6 +22,7 @@ export class BlogCommands {
   private blogDomain = new Blog();
   constructor(
     private blogRepository: BlogRepository,
+    private blogCommentRepository: BlogCommentRepository,
     private readonly fileManagerService: FileManagerService,
   ) {}
 
@@ -28,6 +30,19 @@ export class BlogCommands {
     this.blogDomain = CreateBlogCommand.fromCommands(command);
     const result = await this.blogRepository.insert(this.blogDomain);
     return BlogResponse.fromDomain(result);
+  }
+  async addBlogView(
+    id: string,
+    createBlogCommand: CreateBlogCommand,
+  ): Promise<BlogResponse> {
+    const eventView = CreateBlogCommand.fromCommands(createBlogCommand);
+    this.blogDomain = await this.blogRepository.getById(id);
+    this.blogDomain.views++;
+
+    const result = await this.blogRepository.update(id, this.blogDomain);
+    if (result) {
+      return BlogResponse.fromDomain(result);
+    }
   }
   async updateBlog(
     id: string,
@@ -89,26 +104,24 @@ export class BlogCommands {
 
   async addBlogComment(
     command: CreateBlogCommentCommand,
-  ): Promise<BlogResponse> {
+  ): Promise<BlogCommentResponse> {
     const blogDomain = await this.blogRepository.getById(command.blogId);
     if (!blogDomain) {
       throw new NotFoundException(
-        `Blog comment not found with id ${command.blogId}`,
+        `blog comment not found with id ${command.blogId}`,
       );
     }
-
-    const commentDomain = CreateBlogCommentCommand.fromCommands(command);
-    blogDomain.addBlogComment(commentDomain);
-    const result = await this.blogRepository.update(command.blogId, blogDomain);
+    const blogComment = CreateBlogCommentCommand.fromCommands(command);
+    const result = await this.blogCommentRepository.insert(blogComment);
     if (result) {
-      return BlogResponse.fromDomain(result);
+      return BlogCommentResponse.fromDomain(result);
     }
-
     return null;
   }
   async updateBlogComment(
+    id: string,
     command: UpdateBlogCommentCommand,
-  ): Promise<BlogResponse> {
+  ): Promise<BlogCommentResponse> {
     const blogDomain = await this.blogRepository.getById(command.blogId);
     if (!blogDomain) {
       throw new NotFoundException(
@@ -116,22 +129,21 @@ export class BlogCommands {
       );
     }
 
-    const commentDomain = UpdateBlogCommentCommand.fromCommands(command);
-    blogDomain.updateBlogComment(commentDomain);
-    const result = await this.blogRepository.update(command.blogId, blogDomain);
+    const blogComment = UpdateBlogCommentCommand.fromCommands(command);
+    const result = await this.blogCommentRepository.update(id, blogComment);
     if (result) {
-      return BlogResponse.fromDomain(result);
+      return BlogCommentResponse.fromDomain(result);
     }
 
     return null;
   }
   async removeBlogComment(id: string): Promise<boolean> {
     const blogDomain = await this.blogRepository.getById(id);
-    if (blogDomain) {
-      await blogDomain.removeBlogComment(id);
-      const result = await this.blogRepository.update(id, blogDomain);
-      if (result) return true;
+    if (!blogDomain) {
+      throw new NotFoundException(`blog comment not found with id ${id}`);
     }
-    return false;
+    const result = await this.blogCommentRepository.delete(id);
+
+    return result;
   }
 }

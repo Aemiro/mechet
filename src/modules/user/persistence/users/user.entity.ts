@@ -12,14 +12,14 @@ import {
 } from 'typeorm';
 import { EventCommentEntity } from '@event/persistence/event/event-comment.entity';
 import { BlogCommentEntity } from '@blog/persistence/blog/blog-comment.entity';
-import { FavoriteEntity } from '@interaction/persistence/user-interaction/favorites/favorite.entity';
-import { FollowEntity } from '@interaction/persistence/user-interaction/follows/follow.entity';
-import { InterestEntity } from '@interaction/persistence/user-interaction/interests/interest.entity';
+import { FavoriteEntity } from '@interaction/persistence/favorites/favorite.entity';
+import { FollowEntity } from '@interaction/persistence/follows/follow.entity';
+import { InterestEntity } from '@interaction/persistence/interests/interest.entity';
 import { PartnerEntity } from '@partner/persistence/partner/partner.entity';
 import { Location } from '@libs/common/location';
 import { BranchEntity } from '@partner/persistence/partner/branch.entity';
-import { BranchReviewEntity } from '@interaction/persistence/user-interaction/branch-reviews/branch-review.entity';
-import { EventReviewEntity } from '@interaction/persistence/user-interaction/event-reviews/event-review.entity';
+import { BranchReviewEntity } from '@interaction/persistence/branch-reviews/branch-review.entity';
+import { EventReviewEntity } from '@interaction/persistence/event-reviews/event-review.entity';
 @Entity({ name: 'users' })
 export class UserEntity extends CommonEntity {
   @Index()

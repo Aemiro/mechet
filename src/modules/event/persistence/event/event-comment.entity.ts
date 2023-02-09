@@ -10,7 +10,7 @@ import {
 import { EventEntity } from './event.entity';
 
 @Entity({ name: 'event_comments' })
-export class EventCommentEntity extends CommonEntity {
+export class EventCommentEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
   @Column({ name: 'user_id', type: 'uuid', nullable: true })

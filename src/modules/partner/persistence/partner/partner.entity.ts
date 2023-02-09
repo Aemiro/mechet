@@ -7,9 +7,8 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { ScheduleEntity } from './schedule.entity';
-import { ReviewEntity } from '@interaction/persistence/reviews/review.entity';
 import { PartnerCategoryEntity } from './partner-category.entity';
-import { FollowEntity } from '@interaction/persistence/user-interaction/follows/follow.entity';
+import { FollowEntity } from '@interaction/persistence/follows/follow.entity';
 import { UserEntity } from '@user/persistence/users/user.entity';
 import { CommonEntity } from '@libs/common/common.entity';
 import { EventEntity } from '@event/persistence/event/event.entity';
@@ -43,10 +42,6 @@ export class PartnerEntity extends CommonEntity {
   @Column({ type: 'jsonb', name: 'contact_person' })
   contactPerson: ContactPerson;
 
-  @OneToMany(() => ReviewEntity, (review) => review.partner, {
-    cascade: true,
-  })
-  reviews: ReviewEntity[];
   @OneToMany(
     () => PartnerCategoryEntity,
     (partnerCategory) => partnerCategory.partner,

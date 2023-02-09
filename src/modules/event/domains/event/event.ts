@@ -1,6 +1,6 @@
-import { EventReview } from '@interaction/domains/user-interaction/event-reviews/event-review';
-import { Favorite } from '@interaction/domains/user-interaction/favorites/favorite';
-import { Interest } from '@interaction/domains/user-interaction/interests/interest';
+import { EventReview } from '@interaction/domains/event-reviews/event-review';
+import { Favorite } from '@interaction/domains/favorites/favorite';
+import { Interest } from '@interaction/domains/interests/interest';
 import { Address } from '@libs/common/address';
 import { AverageRate } from '@libs/common/average-rate';
 import { FileDto } from '@libs/common/file-dto';

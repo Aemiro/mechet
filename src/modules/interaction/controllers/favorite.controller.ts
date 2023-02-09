@@ -1,7 +1,7 @@
-import { CreateFavoriteCommand } from '@interaction/usecases/user-interaction/favorites/favorite.command';
-import { FavoriteResponse } from '@interaction/usecases/user-interaction/favorites/favorite.response';
-import { FavoriteCommands } from '@interaction/usecases/user-interaction/favorites/favorite.usecases.commands';
-import { FavoriteQueries } from '@interaction/usecases/user-interaction/favorites/favorite.usecases.queries';
+import { CreateFavoriteCommand } from '@interaction/usecases/favorites/favorite.command';
+import { FavoriteResponse } from '@interaction/usecases/favorites/favorite.response';
+import { FavoriteCommands } from '@interaction/usecases/favorites/favorite.usecases.commands';
+import { FavoriteQueries } from '@interaction/usecases/favorites/favorite.usecases.queries';
 import { CollectionQuery } from '@libs/collection-query/collection-query';
 import { ApiPaginatedResponse } from '@libs/response-format/api-paginated-response';
 import { DataResponseFormat } from '@libs/response-format/data-response-format';

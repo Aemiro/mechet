@@ -7,4 +7,8 @@ export class ContactPerson {
   phoneNumber: string;
   @ApiProperty()
   responsibility: string;
+  @ApiProperty()
+  email: string;
+  @ApiProperty()
+  gender: string;
 }

@@ -3,19 +3,19 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Blog } from '@blog/domains/blog/blog';
 
 export class CreateBlogCommand {
-  // @ApiProperty()
+  @ApiProperty()
   branchId: string;
   @ApiProperty()
   title: string;
   @ApiProperty()
   description: string;
-  @ApiProperty()
+  //@ApiProperty()
   views: number;
-  @ApiProperty()
+  //@ApiProperty()
   coverImage: FileDto;
   @ApiProperty()
   isPublished: boolean;
-  @ApiProperty()
+  //@ApiProperty()
   publishedDate: Date;
   @ApiProperty()
   tags: string[];

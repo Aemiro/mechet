@@ -34,7 +34,8 @@ import {
 import { UserResponse } from '../usecases/user/user.response';
 import { UserCommands } from '../usecases/user/user.usecase.commands';
 import { UserQueries } from '../usecases/user/user.usecase.queries';
-import { CreateStaffUSerCommand } from '@user/usecases/user/staff-user.commands';
+import { EventCommentResponse } from '@event/usecases/event/event-comment.response';
+import { BlogCommentResponse } from '@blog/usecases/blog/blog-comment.response';
 
 @Controller('users')
 @ApiTags('users')
@@ -144,9 +145,24 @@ export class UsersController {
   }
   @Post('create-staff-user')
   @ApiOkResponse({ type: UserResponse })
-  async createSataffUser(
-    @Body() createStaffUSerCommand: CreateStaffUSerCommand,
+  async createSataffUser(@Body() createUserCommand: CreateUserCommand) {
+    return this.commands.createSataffUser(createUserCommand);
+  }
+
+  @Get('get-event-comments')
+  @ApiOkResponse({ type: EventCommentResponse })
+  async getEventCommentsByUSer(
+    @Param('userId') userId: string,
+    @Query() query: CollectionQuery,
   ) {
-    return this.commands.createSataffUser(createStaffUSerCommand);
+    return this.queries.getEventCommentsByUSer(userId, query);
+  }
+  @Get('get-blog-comments')
+  @ApiOkResponse({ type: BlogCommentResponse })
+  async getBlogCommentsByUser(
+    @Param('userId') userId: string,
+    @Query() query: CollectionQuery,
+  ) {
+    return this.queries.getBlogCommentsByUser(userId, query);
   }
 }

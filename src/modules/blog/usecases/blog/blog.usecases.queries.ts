@@ -1,3 +1,4 @@
+import { BlogCommentEntity } from '@blog/persistence/blog/blog-comment.entity';
 import { BlogEntity } from '@blog/persistence/blog/blog.entity';
 import { CollectionQuery } from '@libs/collection-query/collection-query';
 import { FilterOperators } from '@libs/collection-query/filter_operators';
@@ -10,6 +11,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { BlogCommentResponse } from './blog-comment.response';
 import { BlogResponse } from './blog.response';
 
 @Injectable()
@@ -17,6 +19,8 @@ export class BlogQueries {
   constructor(
     @InjectRepository(BlogEntity)
     private blogRepository: Repository<BlogEntity>,
+    @InjectRepository(BlogCommentEntity)
+    private blogCommentRepository: Repository<BlogCommentEntity>,
   ) {}
   async getBlog(id: string, withDeleted = false): Promise<BlogResponse> {
     const blog = await this.blogRepository.find({
@@ -100,6 +104,40 @@ export class BlogQueries {
       } else {
         const [result, total] = await dataQuery.getManyAndCount();
         d.data = result.map((entity) => BlogResponse.fromEntity(entity));
+        d.count = total;
+      }
+      return d;
+    } catch (error) {
+      throw new BadRequestException(error.code, error.message);
+    }
+  }
+
+  async getBlogCommentsByBlog(
+    blogId: string,
+    query: CollectionQuery,
+  ): Promise<DataResponseFormat<BlogCommentResponse>> {
+    try {
+      if (!query.filter) {
+        query.filter = [];
+      }
+      query.filter.push([
+        {
+          field: 'blog_id',
+          operator: FilterOperators.EqualTo,
+          value: blogId,
+        },
+      ]);
+      const dataQuery = QueryConstructor.constructQuery<BlogCommentEntity>(
+        this.blogCommentRepository,
+        query,
+      );
+      console.log(dataQuery.getSql(), dataQuery.getParameters());
+      const d = new DataResponseFormat<BlogCommentResponse>();
+      if (query.count) {
+        d.count = await dataQuery.getCount();
+      } else {
+        const [result, total] = await dataQuery.getManyAndCount();
+        d.data = result.map((entity) => BlogCommentResponse.fromEntity(entity));
         d.count = total;
       }
       return d;

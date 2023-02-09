@@ -1,7 +1,7 @@
-import { CreateBranchReviewCommand } from '@interaction/usecases/user-interaction/branch-reviews/branch-review.commands';
-import { BranchReviewResponse } from '@interaction/usecases/user-interaction/branch-reviews/branch-review.response';
-import { BranchReviewCommands } from '@interaction/usecases/user-interaction/branch-reviews/branch-review.usecase.commands';
-import { BranchReviewQueries } from '@interaction/usecases/user-interaction/branch-reviews/branch-review.usecase.queries';
+import { CreateBranchReviewCommand } from '@interaction/usecases/branch-reviews/branch-review.commands';
+import { BranchReviewResponse } from '@interaction/usecases/branch-reviews/branch-review.response';
+import { BranchReviewCommands } from '@interaction/usecases/branch-reviews/branch-review.usecase.commands';
+import { BranchReviewQueries } from '@interaction/usecases/branch-reviews/branch-review.usecase.queries';
 import { CollectionQuery } from '@libs/collection-query/collection-query';
 import { ApiPaginatedResponse } from '@libs/response-format/api-paginated-response';
 import { DataResponseFormat } from '@libs/response-format/data-response-format';

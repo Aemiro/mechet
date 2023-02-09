@@ -1,7 +1,7 @@
-import { CreateFollowCommand } from '@interaction/usecases/user-interaction/follows/follow.commands';
-import { FollowResponse } from '@interaction/usecases/user-interaction/follows/follow.response';
-import { FollowCommands } from '@interaction/usecases/user-interaction/follows/follow.usecases.commands';
-import { FollowQueries } from '@interaction/usecases/user-interaction/follows/follow.usecases.queries';
+import { CreateFollowCommand } from '@interaction/usecases/follows/follow.commands';
+import { FollowResponse } from '@interaction/usecases/follows/follow.response';
+import { FollowCommands } from '@interaction/usecases/follows/follow.usecases.commands';
+import { FollowQueries } from '@interaction/usecases/follows/follow.usecases.queries';
 import { CollectionQuery } from '@libs/collection-query/collection-query';
 import { ApiPaginatedResponse } from '@libs/response-format/api-paginated-response';
 import { DataResponseFormat } from '@libs/response-format/data-response-format';

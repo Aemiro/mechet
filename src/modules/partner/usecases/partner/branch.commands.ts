@@ -8,6 +8,10 @@ import { IsEnum } from 'class-validator';
 import { Location } from '@libs/common/location';
 import { ContactPerson } from '@libs/common/contact-person';
 
+export class UpdateBranchRate {
+  branchId: string;
+  rate: number;
+}
 export class CreateBranchCommand {
   @ApiProperty()
   partnerId: string;
@@ -27,7 +31,7 @@ export class CreateBranchCommand {
   location: Location;
   @ApiProperty()
   isMainBranch: boolean;
-  @ApiProperty()
+  //@ApiProperty()
   averageRate: AverageRate;
   @ApiProperty()
   contactPerson: ContactPerson;

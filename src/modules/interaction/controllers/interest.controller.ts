@@ -1,7 +1,7 @@
-import { InterestQueries } from '@interaction/usecases/user-interaction/interests/intereset.usecases.queries';
-import { CreateInterestCommand } from '@interaction/usecases/user-interaction/interests/interest.command';
-import { InterestResponse } from '@interaction/usecases/user-interaction/interests/interest.response';
-import { InterestCommands } from '@interaction/usecases/user-interaction/interests/interest.usecases.commands';
+import { InterestQueries } from '@interaction/usecases/interests/intereset.usecases.queries';
+import { CreateInterestCommand } from '@interaction/usecases/interests/interest.command';
+import { InterestResponse } from '@interaction/usecases/interests/interest.response';
+import { InterestCommands } from '@interaction/usecases/interests/interest.usecases.commands';
 import { CollectionQuery } from '@libs/collection-query/collection-query';
 import { ApiPaginatedResponse } from '@libs/response-format/api-paginated-response';
 import { DataResponseFormat } from '@libs/response-format/data-response-format';
