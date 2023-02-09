@@ -1,4 +1,4 @@
-import { Follow } from '@interaction/domains/user-interaction/follows/follow';
+import { Follow } from '@interaction/domains/follows/follow';
 import { FileDto } from '@libs/common/file-dto';
 import { Schedule } from './schedule';
 import { PartnerCategory } from './partner-category';

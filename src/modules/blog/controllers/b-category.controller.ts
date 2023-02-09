@@ -74,7 +74,7 @@ export class BCategoryController {
   async ArchiveCategory(@Param('id') id: string) {
     return this.commands.ArchiveCategory(id);
   }
-  @Post('restore-blog-category')
+  @Post('restore-blog-category/:id')
   @ApiOkResponse({ type: BCategoryResponse })
   async RestoreCategory(@Param('id') id: string) {
     return await this.commands.RestoreCategory(id);

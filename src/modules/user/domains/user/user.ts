@@ -2,12 +2,12 @@ import { FileDto } from '@libs/common/file-dto';
 import { Address } from '@libs/common/address';
 import { EventComment } from '@event/domains/event/event-comment';
 import { BlogComment } from '@blog/domains/blog/blog-comment';
-import { Favorite } from '@interaction/domains/user-interaction/favorites/favorite';
-import { Follow } from '@interaction/domains/user-interaction/follows/follow';
-import { Interest } from '@interaction/domains/user-interaction/interests/interest';
+import { Favorite } from '@interaction/domains/favorites/favorite';
+import { Follow } from '@interaction/domains/follows/follow';
+import { Interest } from '@interaction/domains/interests/interest';
 import { Location } from '@libs/common/location';
-import { EventReview } from '@interaction/domains/user-interaction/event-reviews/event-review';
-import { BranchReview } from '@interaction/domains/user-interaction/branch-reviews/branch-review';
+import { EventReview } from '@interaction/domains/event-reviews/event-review';
+import { BranchReview } from '@interaction/domains/branch-reviews/branch-review';
 export class User {
   id: string;
   partnerId: string;

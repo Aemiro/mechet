@@ -1,4 +1,4 @@
-import { Follow } from '@interaction/domains/user-interaction/follows/follow';
+import { Follow } from '@interaction/domains/follows/follow';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Partner } from '@partner/domains/partner/partner';
 import { IPartner } from '@partner/domains/partner/partner.repository.interface';
@@ -8,11 +8,11 @@ import { PartnerEntity } from './partner.entity';
 import { ScheduleEntity } from './schedule.entity';
 import { PartnerCategoryEntity } from './partner-category.entity';
 import { PartnerCategory } from '@partner/domains/partner/partner-category';
-import { FollowEntity } from '@interaction/persistence/user-interaction/follows/follow.entity';
+import { FollowEntity } from '@interaction/persistence/follows/follow.entity';
 import { Branch } from '@partner/domains/partner/branch';
 import { BranchEntity } from './branch.entity';
-import { BranchReviewEntity } from '@interaction/persistence/user-interaction/branch-reviews/branch-review.entity';
-import { BranchReview } from '@interaction/domains/user-interaction/branch-reviews/branch-review';
+import { BranchReviewEntity } from '@interaction/persistence/branch-reviews/branch-review.entity';
+import { BranchReview } from '@interaction/domains/branch-reviews/branch-review';
 
 export class PartnerRepository implements IPartner {
   constructor(
@@ -24,7 +24,7 @@ export class PartnerRepository implements IPartner {
     const result = await this.partnerRepository.save(partnerEntity);
     return result ? this.toPartner(result) : null;
   }
-  async update(partner: Partner): Promise<Partner> {
+  async update(id: string, partner: Partner): Promise<Partner> {
     const partnerEntity = this.toPartnerEntity(partner);
     const result = await this.partnerRepository.save(partnerEntity);
     return result ? this.toPartner(result) : null;

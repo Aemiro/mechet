@@ -14,3 +14,11 @@ export enum Status {
   BLOCKED = 'BLOCKED',
   APPROVED = 'APPROVED',
 }
+export enum Roles {
+  ADMIN = 'Admin',
+  FINANCEOFFICER = ' FinanceOfficer',
+  EVENTORGANIZER = 'EventOrganaizer',
+  BLOGGER = 'Blogger',
+  PARTNERADMIN = 'PartnerAdmin',
+  USER = 'USer',
+}

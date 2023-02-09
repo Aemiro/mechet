@@ -1,18 +1,16 @@
 import { Event } from '@event/domains/event/event';
 import { EventCategory } from '@event/domains/event/event-category';
-import { EventComment } from '@event/domains/event/event-comment';
 import { IEventRepository } from '@event/domains/event/event.repositort.interface';
 import { EventEntity } from '@event/persistence/event/event.entity';
-import { EventReview } from '@interaction/domains/user-interaction/event-reviews/event-review';
-import { Favorite } from '@interaction/domains/user-interaction/favorites/favorite';
-import { Interest } from '@interaction/domains/user-interaction/interests/interest';
-import { EventReviewEntity } from '@interaction/persistence/user-interaction/event-reviews/event-review.entity';
-import { FavoriteEntity } from '@interaction/persistence/user-interaction/favorites/favorite.entity';
-import { InterestEntity } from '@interaction/persistence/user-interaction/interests/interest.entity';
+import { EventReview } from '@interaction/domains/event-reviews/event-review';
+import { Favorite } from '@interaction/domains/favorites/favorite';
+import { Interest } from '@interaction/domains/interests/interest';
+import { EventReviewEntity } from '@interaction/persistence/event-reviews/event-review.entity';
+import { FavoriteEntity } from '@interaction/persistence/favorites/favorite.entity';
+import { InterestEntity } from '@interaction/persistence/interests/interest.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { EventCategoryEntity } from './event-category.entity';
-import { EventCommentEntity } from './event-comment.entity';
 
 export class EventRepository implements IEventRepository {
   constructor(
@@ -82,9 +80,6 @@ export class EventRepository implements IEventRepository {
     event.address = eventEntity.address;
     event.location = eventEntity.location;
     event.tags = eventEntity.tags;
-    event.eventComments = eventEntity.eventComments
-      ? eventEntity.eventComments.map((element) => this.toEventComment(element))
-      : [];
     event.eventReviews = event.eventReviews
       ? eventEntity.eventReviews.map((element) => this.toEventReview(element))
       : [];
@@ -125,9 +120,6 @@ export class EventRepository implements IEventRepository {
     eventEntity.address = event.address;
     eventEntity.location = event.location;
     eventEntity.tags = event.tags;
-    eventEntity.eventComments = event.eventComments
-      ? event.eventComments.map((element) => this.toEventCommentEntity(element))
-      : [];
     eventEntity.eventReviews = event.eventReviews
       ? event.eventReviews.map((element) => this.toEventReviewEntity(element))
       : [];
@@ -166,22 +158,7 @@ export class EventRepository implements IEventRepository {
     eventCategoryEntity.categoryId = eventCategory.categoryId;
     return eventCategoryEntity;
   }
-  toEventComment(eventCommentEntity: EventCommentEntity): EventComment {
-    const eventComment: EventComment = new EventComment();
-    eventComment.id = eventCommentEntity.id;
-    eventComment.eventId = eventCommentEntity.eventId;
-    eventComment.userId = eventCommentEntity.userId;
-    eventComment.description = eventCommentEntity.description;
-    return eventComment;
-  }
-  toEventCommentEntity(eventComment: EventComment): EventCommentEntity {
-    const eventCommentEntity: EventCommentEntity = new EventCommentEntity();
-    eventCommentEntity.id = eventComment.id;
-    eventCommentEntity.eventId = eventComment.eventId;
-    eventCommentEntity.userId = eventComment.userId;
-    eventCommentEntity.description = eventComment.description;
-    return eventCommentEntity;
-  }
+
   toInterestEntity(interest: Interest): InterestEntity {
     const interestEntity: InterestEntity = new InterestEntity();
     interestEntity.id = interest.id;

@@ -109,6 +109,15 @@ export class PartnerController {
   async removeBranch(@Param('id') id: string) {
     return this.commands.removeBranch(id);
   }
+
+  @Get('get-branchs/:partnerId')
+  @ApiPaginatedResponse(PartnerResponse)
+  async getBranchs(
+    @Param('partnerId') partnerId: string,
+    @Query() query: CollectionQuery,
+  ) {
+    return this.queries.getBranchsByPartner(partnerId, query);
+  }
   // @Get('get-schedule-by-branch/:branchId')
   // @ApiPaginatedResponse(ScheduleResponse)
   // async getSchedulesByBranchId(

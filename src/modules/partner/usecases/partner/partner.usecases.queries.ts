@@ -2,16 +2,20 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { PartnerEntity } from '@partner/persistence/partner/partner.entity';
 import { Repository } from 'typeorm';
 import { PartnerResponse } from '@partner/usecases/partner/partners.response';
-import { NotFoundException } from '@nestjs/common';
+import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { CollectionQuery } from '@libs/collection-query/collection-query';
 import { QueryConstructor } from '@libs/collection-query/query-constructor';
 import { DataResponseFormat } from '@libs/response-format/data-response-format';
 import { FilterOperators } from '@libs/collection-query/filter_operators';
+import { BranchResponse } from './branch.response';
+import { BranchEntity } from '@partner/persistence/partner/branch.entity';
 export class PartnerQueries {
   constructor(
     @InjectRepository(PartnerEntity)
-    private partnerRepository: Repository<PartnerEntity>, // @InjectRepository(ScheduleEntity)
-  ) // private scheduleRepository: Repository<ScheduleEntity>,
+    private partnerRepository: Repository<PartnerEntity>,
+    @InjectRepository(BranchEntity)
+    private branchRepository: Repository<BranchEntity>,
+  ) // @InjectRepository(ScheduleEntity) // private scheduleRepository: Repository<ScheduleEntity>,
   {}
 
   async getPartner(id: string, withDeleted = false): Promise<PartnerResponse> {
@@ -71,6 +75,40 @@ export class PartnerQueries {
       d.count = total;
     }
     return d;
+  }
+
+  async getBranchsByPartner(
+    partnerId: string,
+    query: CollectionQuery,
+  ): Promise<DataResponseFormat<BranchResponse>> {
+    try {
+      if (!query.filter) {
+        query.filter = [];
+      }
+      query.filter.push([
+        {
+          field: 'partner_id',
+          operator: FilterOperators.EqualTo,
+          value: partnerId,
+        },
+      ]);
+      const dataQuery = QueryConstructor.constructQuery<BranchEntity>(
+        this.branchRepository,
+        query,
+      );
+      console.log(dataQuery.getSql(), dataQuery.getParameters());
+      const d = new DataResponseFormat<BranchResponse>();
+      if (query.count) {
+        d.count = await dataQuery.getCount();
+      } else {
+        const [result, total] = await dataQuery.getManyAndCount();
+        d.data = result.map((entity) => BranchResponse.fromEntity(entity));
+        d.count = total;
+      }
+      return d;
+    } catch (error) {
+      throw new BadRequestException(error.code, error.message);
+    }
   }
 
   // async getSchedulesByBranchId(

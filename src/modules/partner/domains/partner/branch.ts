@@ -3,8 +3,8 @@ import { AverageRate } from '@libs/common/average-rate';
 import { ContactPerson } from '@libs/common/contact-person';
 import { FileDto } from '@libs/common/file-dto';
 import { Location } from '@libs/common/location';
-import { BranchReview } from '@interaction/domains/user-interaction/branch-reviews/branch-review';
-import { Follow } from '@interaction/domains/user-interaction/follows/follow';
+import { BranchReview } from '@interaction/domains/branch-reviews/branch-review';
+import { Follow } from '@interaction/domains/follows/follow';
 import { Schedule } from '@partner/domains/partner/schedule';
 
 export class Branch {

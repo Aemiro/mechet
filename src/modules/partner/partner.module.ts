@@ -11,9 +11,12 @@ import { PCategoryRepository } from './persistence/p-category/p-category.reposit
 import { PCategoryCommands } from './usecases/p-category/p-category.usecases.commands';
 import { PCategoryQueries } from './usecases/p-category/p-category.usecases.queries';
 import { PartnerQueries } from './usecases/partner/partner.usecases.queries';
+import { BranchEntity } from './persistence/partner/branch.entity';
 @Module({
   controllers: [PartnerController, PCategoryController],
-  imports: [TypeOrmModule.forFeature([PartnerEntity, PCategoryEntity])],
+  imports: [
+    TypeOrmModule.forFeature([PartnerEntity, PCategoryEntity, BranchEntity]),
+  ],
   providers: [
     PartnerRepository,
     PartnerCommands,

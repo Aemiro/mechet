@@ -74,7 +74,7 @@ export class ECategoryController {
   async ArchiveCategory(@Param('id') id: string) {
     return this.commands.ArchiveCategory(id);
   }
-  @Post('restore-event-category')
+  @Post('restore-event-category/:id')
   @ApiOkResponse({ type: ECategoryResponse })
   async RestoreCategory(@Param('id') id: string) {
     return await this.commands.RestoreCategory(id);
